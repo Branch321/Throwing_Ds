@@ -3,7 +3,6 @@
 import random
 
 #TODO: Add in -+ modifier rolls
-#TODO: Add in initiative rolls
 
 # Purpose: Write a function to parse down the code
 # Post: Returns a dictonary of dice options (key is # of sides on dice, value is number of rolls)
@@ -27,8 +26,15 @@ def random_dice_generator(dice_dictionary):
     print(max(actual_rolls))
 
 while True:
+    #Get input from user
     dice_roll = input("How many to roll? (format: 1d10)      ")
-    dice_roll = dice_roll.split(' ')
-    dice_options = parse_down(dice_roll)
-    random_dice_generator(dice_options)
+
+    #Below is the initiative roll (Always 1d20)
+    if dice_roll == "init":
+        print(random.randint(1,20))
+    #All other dice rolls
+    else:
+        dice_roll = dice_roll.split(' ')
+        dice_options = parse_down(dice_roll)
+        random_dice_generator(dice_options)
 
