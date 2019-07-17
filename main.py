@@ -21,9 +21,8 @@ def random_dice_generator(dice_dictionary):
     print(dice_dictionary)
     actual_rolls = []
     for dice in dice_dictionary.keys():
-        for value in dice_dictionary[dice]:
-            for number in range(0,int(value)):
-                actual_rolls.append(random.randint(1,int(dice)))
+        for number in range(0,int(dice_dictionary[dice])):
+            actual_rolls.append(random.randint(1,int(dice)))
     print(actual_rolls)
     print(max(actual_rolls))
 
