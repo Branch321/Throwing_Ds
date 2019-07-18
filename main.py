@@ -7,7 +7,7 @@ import copy
 #TODO: Add an ascii dice in the far future
 #TODO: Need to add a verbosity flag for DEBUG:: messages
 #TODO: Add better commenting
-#TODO: Add a state for wounds, shaken/unshaken, and bennie counter
+#TODO: Add a state for wounds, shaken/unshaken
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -64,8 +64,9 @@ def random_dice_generator(dice_dictionary):
 #need to do flags for DEBUG
 #need to read in explosion  files into memory
 
-#global variable for storing last rolled dice
+#global variables
 last_roll = {}
+benny_counter = 3
 with open("crit_fail_quotes.txt") as file:
     #TODO: need to remove extra newline character off this list
     crit_quote_list = file.readlines()
@@ -75,15 +76,17 @@ while True:
     #TODO: Add skill to options(only have attributes right now)
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
     #TODO: need to add a bigger text menu with all options
-    #TODO: Add a benny roller plus roll history
     dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
     #Roll a d20 for init with no modifier
     if dice_roll == "init":
         print(random.randint(1,20))
     #Rolls a damage roll with modifier, does not roll a default 1d6
     if dice_roll == "benny":
-        #TODO: need to count/decrement bennies
-        random_dice_generator(last_roll)
+        if benny_counter==0:
+            print("No more bennies")
+        else:
+            benny_counter-=1
+            random_dice_generator(last_roll)
     elif "damage" in dice_roll:
         dice_roll = dice_roll.split(' ')
         del dice_roll[0]
