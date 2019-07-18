@@ -45,11 +45,13 @@ while True:
     #Get input from user
     dice_roll = input("How many to roll? (format: 1d10 -2, init, or attribute (lowercase))  ")
     #Below is the initiative roll (Always 1d20)
+    print("DEBUG:: " + str(dice_roll))
     if dice_roll == "init":
         print(random.randint(1,20))
     elif dice_roll in options.keys():
         #TODO: Need to add modifiers to attribute rolls
-        print(options[dice_roll])
+        #FIXME: Not parsing the attribute correctly
+        print("DEBUG:: " + str(options[dice_roll]))
         dice_roll = options[dice_roll]
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
@@ -57,6 +59,7 @@ while True:
         random_dice_generator(dice_options)
     #All other dice rolls
     else:
+        print("DEBUG:: " + "Did I make it this far?")
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
         random_dice_generator(dice_options)
