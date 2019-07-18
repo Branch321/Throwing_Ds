@@ -6,6 +6,7 @@ import random
 #TODO: Instead of using for loops with .append we need to use  newlist = map(myfunc, oldlist) for speed
 #TODO: Add an ascii dice in the far future
 #TODO: Need to add a verbosity flag for DEBUG:: messages
+#TODO: Add better commenting
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -37,6 +38,7 @@ def random_dice_generator(dice_dictionary):
                 current_roll = current_roll+random.randint(1,int(dice)) 
             actual_rolls.append(current_roll)
             #TODO: add a crit fail option here
+            #TODO: need to add a check to make sure the dice never rolls below a one (including modifiers)   
     print(max(actual_rolls)+int(modifier))
 
 while True:
@@ -44,7 +46,6 @@ while True:
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
     #TODO: need to add a bigger text menu with all options
     dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
-    #Below is the initiative roll (Always 1d20)
     if dice_roll == "init":
         print(random.randint(1,20))
     elif "damage" in dice_roll:
