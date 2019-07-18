@@ -46,7 +46,7 @@ def random_dice_generator(dice_dictionary):
                 current_roll = current_roll+random.randint(1,int(dice)) 
             actual_rolls.append(current_roll)
             #TODO: add a crit fail option here
-            #TODO: need to add a check to make sure the dice never rolls below a one (including modifiers)   
+            #TODO: need to add a check to make sure the dice never rolls below a one (including modifiers)   "Good thing your not in Vegas!
     print(max(actual_rolls)+int(modifier))
 
 
