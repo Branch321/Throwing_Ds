@@ -1,6 +1,7 @@
 # Throwing_Ds is a dice roller for table top games(mostly Savage Worlds)
 # Written in Python 3.6
 import random
+import copy
 
 #TODO: Add this to Discord for friends to use
 #TODO: Add an ascii dice in the far future
@@ -36,9 +37,7 @@ def random_dice_generator(dice_dictionary):
     #Stores all rolls 
     actual_rolls = []
     #reads in the modifier roll
-    last_roll = dice_dictionary
-    print(last_roll)
-    print(dice_dictionary)
+    last_roll = copy.deepcopy(dice_dictionary)
     modifier = dice_dictionary['modifier']
     #gets rid of the modifier in dictionary because it is no longer needed
     del dice_dictionary['modifier']
@@ -83,6 +82,7 @@ while True:
         print(random.randint(1,20))
     #Rolls a damage roll with modifier, does not roll a default 1d6
     if dice_roll == "benny":
+        #TODO: need to count/decrement bennies
         random_dice_generator(last_roll)
     elif "damage" in dice_roll:
         dice_roll = dice_roll.split(' ')
