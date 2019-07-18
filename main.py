@@ -13,9 +13,10 @@ import random
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list,damage=False):
     dice_dictionary = {'modifier':0}
+    print("DEBUG::dice_dictionary:: "+ str(dice_dictionary))
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     if not damage:
-        dice_dictionary = {'6':'1'}
+        dice_dictionary['6'] = '1'
     #parse and form the dictionary to return
     for each_dice in dice_list:
         #condition for dice roll
@@ -24,7 +25,9 @@ def parse_down(dice_list,damage=False):
             dice_dictionary.update({split_dice[1]: split_dice[0]})
         #condition for modifier
         if '-' in each_dice or '+' in each_dice:
-            dice_dictionary.update({'modifier': each_dice})
+            dice_dictionary['modifier']=each_dice
+            #dice_dictionary.update({'modifier': each_dice})
+    print("DEBUG::dice_dictionary:: "+ str(dice_dictionary))
     return dice_dictionary
 
 # Purpose: Randomizes the dice rolls and prints the max of the rolls
@@ -34,6 +37,7 @@ def random_dice_generator(dice_dictionary):
     #Stores all rolls 
     actual_rolls = []
     #reads in the modifier roll
+    print("DEBUG::dice_dictionary:: " + str(dice_dictionary))
     modifier = dice_dictionary['modifier']
     #gets rid of the modifier in dictionary because it is no longer needed
     del dice_dictionary['modifier']
