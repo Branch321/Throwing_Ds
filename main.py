@@ -3,6 +3,7 @@
 import random
 
 #TODO: Add this to Discord for friends to use
+#TODO: Instead of using for loops with .append we need to use  newlist = map(myfunc, oldlist) for speed
 
 # Purpose: Function that parses and sanitizes user input
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
