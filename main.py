@@ -11,8 +11,8 @@ import random
 # Pre: damage variable determines whether to remove d6 for damage rolls
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list,damage=False):
-    #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     dice_dictionary = {'modifier':0}
+    #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     if not damage:
         dice_dictionary = {'6':'1'}
     for each_dice in dice_list:
@@ -65,8 +65,6 @@ while True:
         dice_options = parse_down(dice_roll,True)
         random_dice_generator(dice_options)
     elif dice_roll in options.keys():
-        #TODO: Need to add modifiers to attribute rolls
-        #FIXME: Not parsing the attribute correctly
         print("DEBUG:: " + str(options[dice_roll]))
         dice_roll = options[dice_roll]
         dice_roll = dice_roll.split(' ')
