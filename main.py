@@ -3,7 +3,6 @@
 import random
 
 #TODO: Add this to Discord for friends to use
-#TODO: Instead of using for loops with .append we need to use  newlist = map(myfunc, oldlist) for speed
 #TODO: Add an ascii dice in the far future
 #TODO: Need to add a verbosity flag for DEBUG:: messages
 #TODO: Add better commenting
@@ -45,9 +44,18 @@ def random_dice_generator(dice_dictionary):
                 print("There has been an explosion!")
                 current_roll = current_roll+random.randint(1,int(dice)) 
             actual_rolls.append(current_roll)
-            #TODO: add a crit fail option here
-            #TODO: need to add a check to make sure the dice never rolls below a one (including modifiers)   "Good thing your not in Vegas!
-    print(max(actual_rolls)+int(modifier))
+
+    final_roll = max(actual_rolls)
+    #below deals with crit fail roll
+    if final_roll == 1:
+        #TODO: Add the crit fail quotes
+        print("Crit Fail")
+    #apply modifier
+    final_roll_with_modifier = final_roll+int(modifier)
+    #if the dice is below 1 set to 1
+    if final_roll_with_modifier<1:
+        final_roll_with_modifier=1
+    print(final_roll_with_modifier)
 
 
 
