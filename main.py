@@ -37,9 +37,10 @@ def random_dice_generator(dice_dictionary):
                 current_roll = current_roll+random.randint(1,int(dice))
 #                print("DEBUG::current_roll " + str(current_roll))
             actual_rolls.append(current_roll)
+            #TODO: add a crit roll option here
     print(actual_rolls)
     print(max(actual_rolls)-int(modifier))
-
+#TODO: Need to add an option to "Exit" this loop
 while True:
     #TODO: Add skill to options(only have attributes right now)
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
