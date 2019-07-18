@@ -7,7 +7,7 @@ import random
 #TODO: Add an ascii dice in the far future
 #TODO: Need to add a verbosity flag for DEBUG:: messages
 #TODO: Add better commenting
-#TODO: Add a state for wounds, shaken/unshaken
+#TODO: Add a state for wounds, shaken/unshaken, and bennie counter
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
