@@ -32,6 +32,7 @@ def random_dice_generator(dice_dictionary):
 #            print("DEBUG::current_roll " + str(current_roll))
 #            print("DEBUG::dice " + str(dice))
             while current_roll == int(dice):
+                print("There has been an explosions!")
                 current_roll = current_roll+random.randint(1,int(dice))
 #                print("DEBUG::current_roll " + str(current_roll))
             actual_rolls.append(current_roll)
@@ -46,6 +47,13 @@ while True:
     #Below is the initiative roll (Always 1d20)
     if dice_roll == "init":
         print(random.randint(1,20))
+    elif dice_roll in options.keys():
+        print(options[dice_roll])
+        dice_roll = options[dice_roll]
+        dice_roll = dice_roll.split(' ')
+        dice_options = parse_down(dice_roll)
+        #print(dice_options)
+        random_dice_generator(dice_options)
     #All other dice rolls
     else:
         dice_roll = dice_roll.split(' ')
