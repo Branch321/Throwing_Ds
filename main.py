@@ -13,7 +13,6 @@ import random
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list,damage=False):
     dice_dictionary = {'modifier':0}
-    print("DEBUG::dice_dictionary:: "+ str(dice_dictionary))
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     if not damage:
         dice_dictionary['6'] = '1'
@@ -27,17 +26,19 @@ def parse_down(dice_list,damage=False):
         if '-' in each_dice or '+' in each_dice:
             dice_dictionary['modifier']=each_dice
             #dice_dictionary.update({'modifier': each_dice})
-    print("DEBUG::dice_dictionary:: "+ str(dice_dictionary))
     return dice_dictionary
 
 # Purpose: Randomizes the dice rolls and prints the max of the rolls
 # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
 # Post: Prints to stdout
 def random_dice_generator(dice_dictionary):
+    global last_roll
     #Stores all rolls 
     actual_rolls = []
     #reads in the modifier roll
-    print("DEBUG::dice_dictionary:: " + str(dice_dictionary))
+    last_roll = dice_dictionary
+    print(last_roll)
+    print(dice_dictionary)
     modifier = dice_dictionary['modifier']
     #gets rid of the modifier in dictionary because it is no longer needed
     del dice_dictionary['modifier']
@@ -48,12 +49,11 @@ def random_dice_generator(dice_dictionary):
                 print("There has been an explosion!")
                 current_roll = current_roll+random.randint(1,int(dice)) 
             actual_rolls.append(current_roll)
-
     final_roll = max(actual_rolls)
     #below deals with crit fail roll
     if final_roll == 1:
-        #TODO: Add the crit fail quotes
-        print("Crit Fail")
+        random_quote_index = random.randint(0, len(crit_quote_list))
+        print(crit_quote_list[random_quote_index])
     #apply modifier
     final_roll_with_modifier = final_roll+int(modifier)
     #if the dice is below 1 set to 1
@@ -61,18 +61,29 @@ def random_dice_generator(dice_dictionary):
         final_roll_with_modifier=1
     print(final_roll_with_modifier)
 
+#Set up
+#need to do flags for DEBUG
+#need to read in explosion  files into memory
 
+#global variable for storing last rolled dice
+last_roll = {}
+with open("crit_fail_quotes.txt") as file:
+    #TODO: need to remove extra newline character off this list
+    crit_quote_list = file.readlines()
 
 #Here is main loop
 while True:
     #TODO: Add skill to options(only have attributes right now)
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
     #TODO: need to add a bigger text menu with all options
+    #TODO: Add a benny roller plus roll history
     dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
     #Roll a d20 for init with no modifier
     if dice_roll == "init":
         print(random.randint(1,20))
     #Rolls a damage roll with modifier, does not roll a default 1d6
+    if dice_roll == "benny":
+        random_dice_generator(last_roll)
     elif "damage" in dice_roll:
         dice_roll = dice_roll.split(' ')
         del dice_roll[0]
