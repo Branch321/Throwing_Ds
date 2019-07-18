@@ -7,7 +7,9 @@ import random
 # Purpose: Function that parses and sanitizes user input
 # Post: Returns a dictionary of dice options format: {# sided dice: [# of rolls, modifier]}
 def parse_down(dice_list):
-    dice_dictionary = {}
+    #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
+    #TODO: Need to not roll a default d6 on damage rolls
+    dice_dictionary = {'6':['1','0']}
     for each_dice in dice_list:
         split_dice = each_dice.split('d')
         if '-' in split_dice[1]:
@@ -25,23 +27,22 @@ def parse_down(dice_list):
     return dice_dictionary
 
 # Purpose: Randomizes the dice rolls and prints the max of the rolls
-#TODO: Add in -+ modifier rolls
-#TODO: Deal with explosions
-
 def random_dice_generator(dice_dictionary):
     print(dice_dictionary)
     actual_rolls = []
     for dice in dice_dictionary.keys():
         for number in range(0,int(dice_dictionary[dice][0])):
-            actual_rolls.append(random.randint(1,int(dice)))
+            #TODO: Deal with explosions here
+            current_roll = random.randint(1,int(dice))
+            modified_current_roll  = current_roll + int(dice_dictionary[dice][1])
+            actual_rolls.append(modified_current_roll)
     print(actual_rolls)
     print(max(actual_rolls))
 
 while True:
     #TODO: Add stat/skill specific rolls
     #Get input from user
-    dice_roll = input("How many to roll? (format: 1d10-2 or initiative)  ")
-
+    dice_roll = input("How many to roll? (format: 1d10-2 or init)  ")
     #Below is the initiative roll (Always 1d20)
     if dice_roll == "init":
         print(random.randint(1,20))
