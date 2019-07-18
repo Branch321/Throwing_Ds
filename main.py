@@ -13,6 +13,7 @@ import random
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list,damage=False):
     dice_dictionary = {'modifier':0}
+
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     if not damage:
         dice_dictionary = {'6':'1'}
@@ -25,6 +26,8 @@ def parse_down(dice_list,damage=False):
     return dice_dictionary
 
 # Purpose: Randomizes the dice rolls and prints the max of the rolls
+# Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
+# Post: Prints to stdout
 def random_dice_generator(dice_dictionary):
     actual_rolls = []
     modifier = dice_dictionary['modifier']
@@ -46,20 +49,30 @@ while True:
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
     #TODO: need to add a bigger text menu with all options
     dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
+
+    #Roll a d20 for init with no modifier
     if dice_roll == "init":
         print(random.randint(1,20))
+
+    #Rolls a damage roll with modifier, does not roll a default 1d6
     elif "damage" in dice_roll:
         dice_roll = dice_roll.split(' ')
         del dice_roll[0]
         dice_options = parse_down(dice_roll,True)
         random_dice_generator(dice_options)
+
+    #Rolls an attribute roll with modifier based on the options dictionary
     elif dice_roll in options.keys():
         dice_roll = options[dice_roll]
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
         random_dice_generator(dice_options)
+
+    #Exit condition
     elif dice_roll =="exit":
         exit()
+
+    #All standard dice rolls
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
