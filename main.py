@@ -3,10 +3,9 @@
 import random
 
 #TODO: Add this to Discord for friends to use
-#      Need to fully redo how modifiers works in this program
 
 # Purpose: Function that parses and sanitizes user input
-# Post: Returns a dictionary of dice options format: {# sided dice: [# of rolls, modifier]}
+# Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list):
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     #TODO: Need to not roll a default d6 on damage rolls
@@ -28,16 +27,22 @@ def random_dice_generator(dice_dictionary):
     del dice_dictionary['modifier']
     for dice in dice_dictionary.keys():
         for number in range(0,int(dice_dictionary[dice][0])):
-            #TODO: Deal with explosions here
             current_roll = random.randint(1,int(dice))
+            #TODO: Need to verify this actually works
+#            print("DEBUG::current_roll " + str(current_roll))
+#            print("DEBUG::dice " + str(dice))
+            while current_roll == int(dice):
+                current_roll = current_roll+random.randint(1,int(dice))
+#                print("DEBUG::current_roll " + str(current_roll))
             actual_rolls.append(current_roll)
     print(actual_rolls)
-    print(max(actual_rolls))
+    print(max(actual_rolls)-int(modifier))
 
 while True:
-    #TODO: Add stat/skill specific rolls
+    #TODO: Add skill to options
+    options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
     #Get input from user
-    dice_roll = input("How many to roll? (format: 1d10-2 or init)  ")
+    dice_roll = input("How many to roll? (format: 1d10 -2, init, or or attribute (lowercase))  ")
     #Below is the initiative roll (Always 1d20)
     if dice_roll == "init":
         print(random.randint(1,20))
