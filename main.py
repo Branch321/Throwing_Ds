@@ -48,6 +48,7 @@ while True:
     if dice_roll == "init":
         print(random.randint(1,20))
     elif dice_roll in options.keys():
+        #TODO: Need to add modifiers to attribute rolls
         print(options[dice_roll])
         dice_roll = options[dice_roll]
         dice_roll = dice_roll.split(' ')
