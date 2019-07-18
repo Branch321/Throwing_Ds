@@ -4,12 +4,12 @@ import random
 
 #TODO: Add this to Discord for friends to use
 #TODO: Instead of using for loops with .append we need to use  newlist = map(myfunc, oldlist) for speed
+#TODO: Add an ascii dice in the far future
 
 # Purpose: Function that parses and sanitizes user input
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list):
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
-    #TODO: Need to not roll a default d6 on damage rolls
     dice_dictionary = {'6':'1','modifier':'0'}
     for each_dice in dice_list:
         if 'd' in each_dice:
@@ -37,9 +37,10 @@ def random_dice_generator(dice_dictionary):
                 current_roll = current_roll+random.randint(1,int(dice))
 #                print("DEBUG::current_roll " + str(current_roll))
             actual_rolls.append(current_roll)
-            #TODO: add a crit roll option here
+            #TODO: add a crit fail option here
     print(actual_rolls)
     print(max(actual_rolls)-int(modifier))
+
 #TODO: Need to add an option to "Exit" this loop
 while True:
     #TODO: Add skill to options(only have attributes right now)
@@ -48,6 +49,7 @@ while True:
     dice_roll = input("How many to roll? (format: 1d10 -2, init, or attribute (lowercase))  ")
     #Below is the initiative roll (Always 1d20)
     print("DEBUG:: " + str(dice_roll))
+    #TODO: Add Damage Roll option here
     if dice_roll == "init":
         print(random.randint(1,20))
     elif dice_roll in options.keys():
