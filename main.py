@@ -3,26 +3,20 @@
 import random
 
 #TODO: Add this to Discord for friends to use
+#      Need to fully redo how modifiers works in this program
 
 # Purpose: Function that parses and sanitizes user input
 # Post: Returns a dictionary of dice options format: {# sided dice: [# of rolls, modifier]}
 def parse_down(dice_list):
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     #TODO: Need to not roll a default d6 on damage rolls
-    dice_dictionary = {'6':['1','0']}
+    dice_dictionary = {'6':'1','modifier':'0'}
     for each_dice in dice_list:
-        split_dice = each_dice.split('d')
-        if '-' in split_dice[1]:
-            modifier_position = split_dice[1].find('-')
-            modifier = split_dice[1][modifier_position:len(split_dice[1])]
-            dice_dictionary.update({split_dice[1][:modifier_position]: [split_dice[0], modifier]})
-        elif '+' in split_dice[1]:
-            modifier_position = split_dice[1].find('+')
-            modifier = split_dice[1][modifier_position:len(split_dice[1])]
-            dice_dictionary.update({split_dice[1][:modifier_position]: [split_dice[0], modifier]})
-        else:
-            modifier = '0'
-            dice_dictionary.update({split_dice[1]: [split_dice[0],modifier]})
+        if 'd' in each_dice:
+            split_dice = each_dice.split('d')
+            dice_dictionary.update({split_dice[1]: split_dice[0]})
+        if '-' in each_dice or '+' in each_dice:
+            dice_dictionary.update({'modifier': each_dice})
     print(dice_dictionary)
     return dice_dictionary
 
@@ -30,12 +24,13 @@ def parse_down(dice_list):
 def random_dice_generator(dice_dictionary):
     print(dice_dictionary)
     actual_rolls = []
+    modifier = dice_dictionary['modifier']
+    del dice_dictionary['modifier']
     for dice in dice_dictionary.keys():
         for number in range(0,int(dice_dictionary[dice][0])):
             #TODO: Deal with explosions here
             current_roll = random.randint(1,int(dice))
-            modified_current_roll  = current_roll + int(dice_dictionary[dice][1])
-            actual_rolls.append(modified_current_roll)
+            actual_rolls.append(current_roll)
     print(actual_rolls)
     print(max(actual_rolls))
 
