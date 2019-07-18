@@ -42,8 +42,8 @@ def random_dice_generator(dice_dictionary):
 while True:
     #TODO: Add skill to options(only have attributes right now)
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
-    #Get input from user
-    dice_roll = input("How many to roll? (format: 1d10 -2, init, or attribute (lowercase))  ")
+    #TODO: need to add a bigger text menu with all options
+    dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
     #Below is the initiative roll (Always 1d20)
     if dice_roll == "init":
         print(random.randint(1,20))
