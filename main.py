@@ -5,19 +5,23 @@ import random
 #TODO: Add this to Discord for friends to use
 #TODO: Instead of using for loops with .append we need to use  newlist = map(myfunc, oldlist) for speed
 #TODO: Add an ascii dice in the far future
+#TODO: Need to add a verbosity flag for DEBUG:: messages
 
 # Purpose: Function that parses and sanitizes user input
+# Pre: damage variable determines whether to remove d6 for damage rolls
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
-def parse_down(dice_list):
+def parse_down(dice_list,damage=False):
     #initilize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
-    dice_dictionary = {'6':'1','modifier':'0'}
+    dice_dictionary = {'modifier':0}
+    if not damage:
+        dice_dictionary = {'6':'1'}
     for each_dice in dice_list:
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
             dice_dictionary.update({split_dice[1]: split_dice[0]})
         if '-' in each_dice or '+' in each_dice:
             dice_dictionary.update({'modifier': each_dice})
-    print(dice_dictionary)
+    print("DEBUG::This is variable leaving parse_down():: " + str(dice_dictionary))
     return dice_dictionary
 
 # Purpose: Randomizes the dice rolls and prints the max of the rolls
@@ -34,12 +38,13 @@ def random_dice_generator(dice_dictionary):
 #            print("DEBUG::dice " + str(dice))
             while current_roll == int(dice):
                 print("There has been an explosion!")
-                current_roll = current_roll+random.randint(1,int(dice))
+                current_roll = current_roll+random.randint(1,int(dice)) 
 #                print("DEBUG::current_roll " + str(current_roll))
             actual_rolls.append(current_roll)
             #TODO: add a crit fail option here
     print(actual_rolls)
-    print(max(actual_rolls)-int(modifier))
+    print("DEUBG::modifier roll:: " + str(int(modifier)))
+    print(max(actual_rolls)+int(modifier))
 
 #TODO: Need to add an option to "Exit" this loop
 while True:
@@ -52,6 +57,13 @@ while True:
     #TODO: Add Damage Roll option here
     if dice_roll == "init":
         print(random.randint(1,20))
+    elif "damage" in dice_roll:
+        print("DEBUG::This is the damage roll before parsing::  " + str(dice_roll))
+        dice_roll = dice_roll.split(' ')
+        del dice_roll[0]
+        print("DEUBG::This is damage roll after split:: " +str(dice_roll))
+        dice_options = parse_down(dice_roll,True)
+        random_dice_generator(dice_options)
     elif dice_roll in options.keys():
         #TODO: Need to add modifiers to attribute rolls
         #FIXME: Not parsing the attribute correctly
