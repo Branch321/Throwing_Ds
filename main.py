@@ -177,6 +177,7 @@ while True:
         # TODO: Need to write settings and stuff back out to .ini file
         exit()
     # All standard dice rolls
+    # TODO Make sure to deal with wounds and wound modifiers
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
