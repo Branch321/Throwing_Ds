@@ -10,6 +10,7 @@ import time
 #TODO: Add better commenting
 #TODO: Add a state for wounds, shaken/unshaken
 #TODO: Create a class for player status
+#TODO: Add a session duration time
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -92,7 +93,7 @@ def intro_banner():
     print("")
     print("* ",end='')
     time.sleep(1)
-    for letter in "I am your Savage Worlds Assistant.":
+    for letter in "I am your Savage World's Assistant.":
         print(letter,end='',flush=True)
         time.sleep(.1)
     print("")
@@ -101,7 +102,13 @@ def intro_banner():
         print(letter, end='',flush=True)
         time.sleep(.1)
     print("")
-    print("*"*65)
+    print("* ",end='')
+    print("Load",end='')
+    time.sleep(1)
+    for letter in "....":
+        print(letter,end='',flush=True)
+        time.sleep(1)
+    print("")
     time.sleep(1)
 
 #need to do flags for DEBUG
