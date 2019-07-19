@@ -16,7 +16,7 @@ import player
 # TODO: Need to add a sanitization function to stop program from crashing on bad input
 # TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
-
+# TODO: Added a dice statistics option to print out all the statistics of the current session
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
