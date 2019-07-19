@@ -144,8 +144,6 @@ def intro_banner():
 # Main Start of Program
 current_player = player.player()
 # TODO Check for luck and great luck edges
-config = configparser.ConfigParser()
-config.read('player.ini')
 with open("crit_fail_quotes.txt") as file:
     crit_quote_list = file.read().splitlines()
 with open("explosion_quotes.txt") as file:
