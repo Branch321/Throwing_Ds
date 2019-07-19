@@ -141,7 +141,7 @@ with open("crit_fail_quotes.txt") as file:
     crit_quote_list = file.read().splitlines()
 with open("explosion_quotes.txt") as file:
     explosion_quote_list = file.read().splitlines()
-intro_banner()
+#intro_banner()
 while True:
     main_menu()
     # TODO: Add skill to options(only have attributes right now)
@@ -183,10 +183,10 @@ while True:
         # TODO: Need to write settings and stuff back out to .ini file
         exit()
     # All standard dice rolls
-    # TODO Make sure to deal with wounds and wound modifiers
-    # FIXME There is no current_player
+    # TODO Not fully done with wound modifier
     elif dice_roll == "wound":
         current_player.wound_count+=1
+    # TODO Not fully done with fatigue modifier
     elif dice_roll == "fatigue":
         current_player.fat_count+=1
     else:
