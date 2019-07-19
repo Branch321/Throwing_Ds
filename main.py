@@ -44,7 +44,6 @@ def parse_down(dice_list, damage=False):
 # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
 # Post: Prints to stdout
 def random_dice_generator(dice_dictionary):
-    global current_player.last_roll
     # Stores all rolls
     actual_rolls = []
     current_player.last_roll = copy.deepcopy(dice_dictionary)
