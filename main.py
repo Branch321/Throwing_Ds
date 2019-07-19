@@ -59,21 +59,20 @@ def random_dice_generator(dice_dictionary):
     #if the dice is below 1 set to 1
     if final_roll_with_modifier<1:
         final_roll_with_modifier=1
-    print(final_roll_with_modifier)
+    print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
 
 def main_menu():
-    print("*"*50)
-    print("*")
+    print("*"*65)
     print("*" + " Status: " + "Bennies: " + str(benny_counter))
+    #FIXME: Need to make the "Last Roll" option look prettier
     print("*" + " Last Roll: " + str(last_roll))
     print("*" + " Types of Commands: Roll a dice (Format: 1d10 2d20 -2)")
     print("*"+" "*20+"Attribute roll (Format: vigor -2)")
     print("*"+" "*20+"Reroll with a benny (Format: benny)")
-    print("*"+" "*20+"Exit this program (Format: exit)")
     print("*"+" "*20+"Roll for initiative (Format: init)")
     print("*"+" "*20+"Roll for damage (Format: damage 1d4 -2)")
-    print("*")
-    print("*"*50)
+    print("*"+" "*20+"Exit this program (Format: exit)")
+    print("*"*65)
 #Set up
 #need to do flags for DEBUG
 #need to read in explosion quotes files into memory
@@ -92,7 +91,7 @@ while True:
     main_menu()
     #TODO: Add skill to options(only have attributes right now)
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
-    dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
+    dice_roll = input("* Input: ")
     #Roll a d20 for init with no modifier
     if dice_roll == "init":
         print(random.randint(1,20))
