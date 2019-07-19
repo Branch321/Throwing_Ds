@@ -5,8 +5,6 @@ import copy
 import time
 import configparser
 
-#Reference for doing config files: https://stackoverflow.com/questions/19078170/python-how-would-you-save-a-simple-settings-config-file
-
 #TODO: Add this to Discord for friends to use
 #TODO: Add an ascii dice in the far future
 #TODO: Need to add a verbosity flag for DEBUG:: messages
@@ -14,6 +12,7 @@ import configparser
 #TODO: Add a state for wounds, shaken/unshaken
 #TODO: Create a class for player status, stats, last roll, session duration, etc....
 #TODO: Need to add a sanitization function to stop program from crashing on bad input
+#TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -58,9 +57,10 @@ def random_dice_generator(dice_dictionary):
     final_roll = max(actual_rolls)
     #below deals with crit fail roll
     #FIXME: if crit roll you do not need to output a 1
+    #FIXME: Need to output a '* ' for prettier print out
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
-        print(crit_quote_list[random_quote_index])
+        print("* " + str(crit_quote_list[random_quote_index]))
     #apply modifier
     final_roll_with_modifier = final_roll+int(modifier)
     #if the dice is below 1 set to 1
@@ -115,8 +115,7 @@ def intro_banner():
     print("")
     time.sleep(1)
 
-#need to do flags for DEBUG
-#need to read in explosion quotes files into memory
+#Main Start of Program
 last_roll = {}
 benny_counter = 3
 traits = {}
@@ -125,8 +124,10 @@ config.read('player.ini')
 for key in config['traits']:
     traits[key] = config['traits'][key]
 with open("crit_fail_quotes.txt") as file:
-    #TODO: need to remove extra newline character off this list preferably with list comprehension or the like
-    crit_quote_list = file.readlines()
+    crit_quote_list = file.read().splitlines()
+
+with open("explosion_quotes.txt") as file:
+    explosion_quote_list = file.read().splitlines()
 intro_banner()
 
 while True:
