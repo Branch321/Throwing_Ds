@@ -1,7 +1,7 @@
 # This module will contain a "player" class that will hold all statuses/attributes
 
 import configparser
-
+import datetime
 
 # TODO: Create a class for player status, stats, last roll, session duration, etc....
 
@@ -12,7 +12,9 @@ class player:
     #            benny_counter - # of bennies player has
     #            traits - holds attributes and skills
     #            wound_count - # of wounds the player has
-    #            fat.count - # of fatigue the player has
+    #            fat_count - # of fatigue the player has
+    #            shaken - boolean determines if player is shaken or not
+    #            session_duration - holds the time the player started the ice era assistant
     """
 
     def __init__(self):
@@ -26,3 +28,4 @@ class player:
         self.wound_count = int(config['wounds']['wounds'])
         self.fat_count = int(config['fatigue']['fatigue'])
         self.shaken = False
+        self.session_duration = datetime.time

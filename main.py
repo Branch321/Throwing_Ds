@@ -4,7 +4,7 @@ import configparser
 import copy
 import random
 import time
-
+import datetime
 import player
 
 
@@ -17,6 +17,7 @@ import player
 # TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
+# TODO: Create a logger for all dice history
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -66,16 +67,18 @@ def random_dice_generator(dice_dictionary):
             actual_rolls.append(current_roll)
     final_roll = max(actual_rolls)
     # below deals with crit fail roll
-    # FIXME: if crit roll you do not need to output a 1
+    # FIXME: if you crit fail there is no modifiers attached
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
         print("* " + str(crit_quote_list[random_quote_index]))
         crit_fail = True
-    # apply modifier
-    final_roll_with_modifier = final_roll + int(modifier)
+        final_roll_with_modifier = final_roll
+    else:
+        final_roll_with_modifier = final_roll+int(modifier)
     # if the dice is below 1 set to 1
     if final_roll_with_modifier < 1:
         final_roll_with_modifier = 1
+    # FIXME: there may still be instances where you need to print out the dice roll with the modifier
     if not crit_fail:
         print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
     return final_roll_with_modifier
@@ -186,6 +189,7 @@ while True:
     # Exit condition
     elif dice_roll == "exit":
         # TODO: Need to write settings and stuff back out to .ini file
+        print("* You played for ")
         exit()
     # wound modifier
     elif dice_roll == "wound":
