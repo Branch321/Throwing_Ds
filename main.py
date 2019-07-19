@@ -14,17 +14,18 @@ import player
 # TODO: Need to add a sanitization function to stop program from crashing on bad input
 # TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
-# TODO: Add fatigue to play status
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list, damage=False):
+    # below takes care of wound and fatigue modifier
     if current_player.wound_count > 0 or current_player.fat_count > 0:
         dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
+    # if no external modifier default to 0
     else:
         dice_dictionary = {'modifier': 0}
-    # initialize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
+    # Below is default 1d6 if it is not a damage roll
     if not damage:
         dice_dictionary['6'] = '1'
     # parse and form the dictionary to return
@@ -33,10 +34,9 @@ def parse_down(dice_list, damage=False):
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
             dice_dictionary.update({split_dice[1]: split_dice[0]})
-        # condition for modifier
+        # condition for modifier and add other modifiers (fatigue and wounds)
         if '-' in each_dice or '+' in each_dice:
             dice_dictionary['modifier'] += int(each_dice)
-            # dice_dictionary.update({'modifier': each_dice})
     return dice_dictionary
 
 
@@ -46,6 +46,7 @@ def parse_down(dice_list, damage=False):
 def random_dice_generator(dice_dictionary):
     # Stores all rolls
     actual_rolls = []
+    # Copies the roll in case of benny
     current_player.last_roll = copy.deepcopy(dice_dictionary)
     # reads in modifier
     modifier = dice_dictionary['modifier']
@@ -140,14 +141,15 @@ while True:
     # TODO: Add skill to options(only have attributes right now)
     dice_roll = input("* Input: ")
     print("*" * 65)
-    # Roll a d20 for init with no modifier
+    # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
         # FIXME: You can spend a benny to reroll init, need to set the default d6 to false
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
-    # If shaken you will stay in loop until you beat a spirit roll of 4
+    # This is for shaken status
     elif dice_roll == "shaken":
         # TODO: if player spends a benny you can immediately become unshaken
         current_player.shaken = True
+        # If shaken you will stay in loop until you beat a spirit roll of 4
         while current_player.shaken:
             input("* You are shaken. Hit enter to roll a spirit.")
             dice_roll = current_player.traits['spirit']
@@ -156,19 +158,20 @@ while True:
             spirit_check_value = random_dice_generator(dice_options)
             if spirit_check_value>=4:
                 current_player.shaken = False
-    # Rolls a damage roll with modifier, does not roll a default 1d6
+    # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
         if current_player.benny_counter == 0:
             print("No more bennies")
         else:
             current_player.benny_counter -= 1
             random_dice_generator(current_player.last_roll)
+    # Rolls a damage roll with modifier, does not roll a default 1d6
     elif "dmg" in dice_roll:
         dice_roll = dice_roll.split(' ')
         del dice_roll[0]
         dice_options = parse_down(dice_roll, True)
         random_dice_generator(dice_options)
-    # Rolls an attribute roll with modifier based on the options dictionary
+    # Rolls an attribute roll with modifier based on the traits dictionary
     elif dice_roll in current_player.traits.keys():
         dice_roll = current_player.traits[dice_roll]
         dice_roll = dice_roll.split(' ')
@@ -178,14 +181,14 @@ while True:
     elif dice_roll == "exit":
         # TODO: Need to write settings and stuff back out to .ini file
         exit()
-    # All standard dice rolls
+    #wound modifier
     elif dice_roll == "wound":
         # TODO Need to add effect for incapacitated (model after shaken block)
         current_player.wound_count+=1
-        # Wound modifier
+    #fatigue modifier
     elif dice_roll == "fatigue":
         current_player.fat_count+=1
-        # Fatigue modifier
+    #all other custom dice rolls
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
