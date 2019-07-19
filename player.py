@@ -15,6 +15,7 @@ class player:
     #            fat_count - # of fatigue the player has
     #            shaken - boolean determines if player is shaken or not
     #            session_duration - holds the time the player started the ice era assistant
+    #            incap - boolean determines if player is incapacitated
     """
 
     def __init__(self):
@@ -29,5 +30,6 @@ class player:
         self.fat_count = int(config['fatigue']['fatigue'])
         self.shaken = False
         self.session_duration = datetime.time
+        self.incap = False
 
     #def time_to_quit(self):
