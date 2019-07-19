@@ -8,6 +8,7 @@ import copy
 #TODO: Need to add a verbosity flag for DEBUG:: messages
 #TODO: Add better commenting
 #TODO: Add a state for wounds, shaken/unshaken
+#TODO: Create a class for player status
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -61,6 +62,9 @@ def random_dice_generator(dice_dictionary):
         final_roll_with_modifier=1
     print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
 
+# Purpose: Prints out a menu with player status, last roll, and types of commands
+# Pre: None
+# Post: Will print to standard output
 def main_menu():
     print("*"*65)
     print("*" + " Status: " + "Bennies: " + str(benny_counter))
@@ -71,6 +75,7 @@ def main_menu():
     print("*"+" "*20+"Reroll with a benny (Format: benny)")
     print("*"+" "*20+"Roll for initiative (Format: init)")
     print("*"+" "*20+"Roll for damage (Format: damage 1d4 -2)")
+    print("*"+" "*20+"Shaken status (Format: shaken)")
     print("*"+" "*20+"Exit this program (Format: exit)")
     print("*"*65)
 #Set up
@@ -95,6 +100,13 @@ while True:
     #Roll a d20 for init with no modifier
     if dice_roll == "init":
         print(random.randint(1,20))
+    #If shaken you will stay in loop until you beat a spirit roll of 4
+    if dice_roll == "shaken":
+        shaken = True
+        while shaken:
+            input("* You are shaken. Hit enter to roll a spirit.")
+            #FIXME: Need to fix the random_dice_generator() function to return a dice roll in order to use this
+            shaken = False
     #Rolls a damage roll with modifier, does not roll a default 1d6
     if dice_roll == "benny":
         if benny_counter==0:
