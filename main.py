@@ -124,6 +124,7 @@ def intro_banner():
 # Main Start of Program
 last_roll = {}
 benny_counter = 3
+# TODO Check for luck and great luck edges
 traits = {}
 config = configparser.ConfigParser()
 config.read('player.ini')
