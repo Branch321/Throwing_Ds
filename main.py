@@ -77,6 +77,7 @@ def random_dice_generator(dice_dictionary):
                 print("There has been an explosion!")
                 current_roll = current_roll + random.randint(1, int(dice))
             actual_rolls.append(current_roll)
+    print("DEBUG::actual_roll " + str(actual_rolls))
     final_roll = max(actual_rolls)
     # below deals with crit fail roll
     # FIXME: if you crit fail there is no modifiers attached
@@ -117,6 +118,7 @@ def main_menu():
     print("*" + " " * 20 + "Roll for damage (Format: dmg 1d4 -2)")
     print("*" + " " * 20 + "Shaken status (Format: shaken)")
     print("*" + " " * 20 + "Exit this program (Format: exit)")
+    print("*" + " " * 20 + "Take a wound (Format: wound)")
     print("*" * 65)
 
 
