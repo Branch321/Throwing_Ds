@@ -4,7 +4,9 @@ import configparser
 import copy
 import random
 import time
+
 import player
+
 
 # TODO: Add this to Discord for friends to use
 # TODO: Add an ascii dice in the far future
@@ -135,7 +137,7 @@ with open("crit_fail_quotes.txt") as file:
     crit_quote_list = file.read().splitlines()
 with open("explosion_quotes.txt") as file:
     explosion_quote_list = file.read().splitlines()
-#intro_banner()
+# intro_banner()
 while True:
     main_menu()
     # TODO: Add skill to options(only have attributes right now)
@@ -156,7 +158,7 @@ while True:
             dice_roll = dice_roll.split(' ')
             dice_options = parse_down(dice_roll)
             spirit_check_value = random_dice_generator(dice_options)
-            if spirit_check_value>=4:
+            if spirit_check_value >= 4:
                 current_player.shaken = False
     # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
@@ -181,14 +183,14 @@ while True:
     elif dice_roll == "exit":
         # TODO: Need to write settings and stuff back out to .ini file
         exit()
-    #wound modifier
+    # wound modifier
     elif dice_roll == "wound":
         # TODO Need to add effect for incapacitated (model after shaken block)
-        current_player.wound_count+=1
-    #fatigue modifier
+        current_player.wound_count += 1
+    # fatigue modifier
     elif dice_roll == "fatigue":
-        current_player.fat_count+=1
-    #all other custom dice rolls
+        current_player.fat_count += 1
+    # all other custom dice rolls
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
