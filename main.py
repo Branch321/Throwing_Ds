@@ -1,5 +1,6 @@
 # Throwing_Ds is a dice roller for table top games(mostly Savage Worlds)
 # Written in Python 3.6
+import configparser
 import copy
 import random
 import time
@@ -69,13 +70,12 @@ def random_dice_generator(dice_dictionary):
                 print("There has been an explosion!")
                 current_roll = current_roll + random.randint(1, int(dice))
             actual_rolls.append(current_roll)
-    print("DEBUG::actual_rolls::" + str(actual_rolls))
     final_roll = max(actual_rolls)
     # below deals with crit fail roll
     # FIXME: if you crit fail there is no modifiers attached
     # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
     if final_roll == 1:
-        random_quote_index = random.randint(0, len(crit_quote_list)-1)
+        random_quote_index = random.randint(0, len(crit_quote_list))
         print("* " + str(crit_quote_list[random_quote_index]))
         crit_fail = True
         final_roll_with_modifier = final_roll
