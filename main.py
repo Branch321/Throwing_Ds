@@ -186,6 +186,8 @@ while True:
     # FIXME There is no current_player
     elif dice_roll == "wound":
         current_player.wound_count+=1
+    elif dice_roll == "fatigue":
+        current_player.fat_count+=1
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)

@@ -12,6 +12,7 @@ class player:
     #            benny_counter - # of bennies player has
     #            traits - holds attributes and skills
     #            wound_count - # of wounds the player has
+    #            fat.count - # of fatigue the player has
     """
 
     def __init__(self):
@@ -23,3 +24,4 @@ class player:
         for key in config['traits']:
             self.traits[key] = config['traits'][key]
         self.wound_count = int(config['wounds']['wounds'])
+        self.fat_count = int(config['fatigue']['fatigue'])
