@@ -187,6 +187,7 @@ while True:
         random_dice_generator(dice_options)
     # Rolls an attribute roll with modifier based on the traits dictionary
     elif dice_roll in current_player.traits.keys():
+        #FIXME Fix dice roll for damage using trait dice
         dice_roll = current_player.traits[dice_roll]
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
