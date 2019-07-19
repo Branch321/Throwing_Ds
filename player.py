@@ -1,6 +1,9 @@
-#This module will contain a "player" class that will hold all statuses/attributes
+# This module will contain a "player" class that will hold all statuses/attributes
 
 import configparser
+
+
+# TODO: Create a class for player status, stats, last roll, session duration, etc....
 
 class player:
     """
