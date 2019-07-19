@@ -147,15 +147,15 @@ while True:
     # If shaken you will stay in loop until you beat a spirit roll of 4
     elif dice_roll == "shaken":
         # TODO: if player spends a benny you can immediately become unshaken
-        shaken = True
-        while shaken:
+        current_player.shaken = True
+        while current_player.shaken:
             input("* You are shaken. Hit enter to roll a spirit.")
             dice_roll = current_player.traits['spirit']
             dice_roll = dice_roll.split(' ')
             dice_options = parse_down(dice_roll)
             spirit_check_value = random_dice_generator(dice_options)
             if spirit_check_value>=4:
-                shaken = False
+                current_player.shaken = False
     # Rolls a damage roll with modifier, does not roll a default 1d6
     elif dice_roll == "benny":
         if current_player.benny_counter == 0:

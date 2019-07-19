@@ -25,3 +25,4 @@ class player:
             self.traits[key] = config['traits'][key]
         self.wound_count = int(config['wounds']['wounds'])
         self.fat_count = int(config['fatigue']['fatigue'])
+        self.shaken = False
