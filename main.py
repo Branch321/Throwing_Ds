@@ -3,7 +3,7 @@
 import copy
 import random
 import time
-import datetime
+
 import player
 
 
@@ -40,14 +40,16 @@ def parse_down(dice_list, damage=False):
         # condition for dice roll
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
-            # FIXME: This is not working for the default 1d6 and rolling a 1d6
-            dice_dictionary.update({split_dice[1]: split_dice[0]})
+            # FIXME: still not working for dmg rolls. tries to roll 2d6
+            if split_dice[1]=='6':
+                dice_dictionary['6'] = str(int(split_dice[0]) + 1)
+            else:
+                dice_dictionary.update({split_dice[1]: split_dice[0]})
             print(dice_dictionary)
         # condition for modifier and add other modifiers (fatigue and wounds)
         if '-' in each_dice or '+' in each_dice:
             dice_dictionary['modifier'] += int(each_dice)
     return dice_dictionary
-
 
 
 def random_dice_generator(dice_dictionary):
@@ -85,7 +87,7 @@ def random_dice_generator(dice_dictionary):
         crit_fail = True
         final_roll_with_modifier = final_roll
     else:
-        final_roll_with_modifier = final_roll+int(modifier)
+        final_roll_with_modifier = final_roll + int(modifier)
     # if the dice is below 1 set to 1
     if final_roll_with_modifier < 0:
         final_roll_with_modifier = 0
@@ -93,7 +95,6 @@ def random_dice_generator(dice_dictionary):
     if not crit_fail:
         print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
     return final_roll_with_modifier
-
 
 
 def main_menu():
@@ -117,7 +118,6 @@ def main_menu():
     print("*" + " " * 20 + "Shaken status (Format: shaken)")
     print("*" + " " * 20 + "Exit this program (Format: exit)")
     print("*" * 65)
-
 
 
 def intro_banner():
@@ -200,7 +200,7 @@ while True:
         random_dice_generator(dice_options)
     # Rolls an attribute roll with modifier based on the traits dictionary
     elif dice_roll in current_player.traits.keys():
-        #FIXME Fix dice roll for damage using trait dice
+        # FIXME Fix dice roll for damage using trait dice
         dice_roll = current_player.traits[dice_roll]
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
