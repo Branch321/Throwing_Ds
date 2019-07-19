@@ -58,6 +58,7 @@ def random_dice_generator(dice_dictionary):
     # gets rid of the modifier in dictionary because it is no longer needed
     del dice_dictionary['modifier']
     for dice in dice_dictionary.keys():
+        # FIXME: The [0] on dice_dictionary[dice][0] may be unnecessary
         for number in range(0, int(dice_dictionary[dice][0])):
             current_roll = random.randint(1, int(dice))
             while current_roll == int(dice):
@@ -68,6 +69,7 @@ def random_dice_generator(dice_dictionary):
     final_roll = max(actual_rolls)
     # below deals with crit fail roll
     # FIXME: if you crit fail there is no modifiers attached
+    # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
         print("* " + str(crit_quote_list[random_quote_index]))
@@ -76,8 +78,8 @@ def random_dice_generator(dice_dictionary):
     else:
         final_roll_with_modifier = final_roll+int(modifier)
     # if the dice is below 1 set to 1
-    if final_roll_with_modifier < 1:
-        final_roll_with_modifier = 1
+    if final_roll_with_modifier < 0:
+        final_roll_with_modifier = 0
     # FIXME: there may still be instances where you need to print out the dice roll with the modifier
     if not crit_fail:
         print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
@@ -169,6 +171,7 @@ while True:
                 current_player.shaken = False
     # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
+        # FIXME: you cannot benny a critical fail
         if current_player.benny_counter == 0:
             print("No more bennies")
         else:

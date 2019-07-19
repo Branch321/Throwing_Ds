@@ -7,7 +7,7 @@ import datetime
 
 class player:
     """
-    # Purpose:
+    # Purpose: This class will hold all the player stats and statuses
     # Variables: last_roll - holds the player's last roll
     #            benny_counter - # of bennies player has
     #            traits - holds attributes and skills
