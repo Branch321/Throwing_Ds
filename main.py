@@ -21,7 +21,7 @@ import player
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list, damage=False):
     if current_player.wound_count > 0:
-        dice_dictionary = {'modifier', -current_player.wound_count}
+        dice_dictionary = {'modifier': -current_player.wound_count}
     else:
         dice_dictionary = {'modifier': 0}
     print(dice_dictionary)
