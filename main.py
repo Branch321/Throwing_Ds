@@ -50,6 +50,7 @@ def random_dice_generator(dice_dictionary):
             actual_rolls.append(current_roll)
     final_roll = max(actual_rolls)
     #below deals with crit fail roll
+    #FIXME: if crit roll you do not need to output a 1
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
         print(crit_quote_list[random_quote_index])
@@ -60,22 +61,37 @@ def random_dice_generator(dice_dictionary):
         final_roll_with_modifier=1
     print(final_roll_with_modifier)
 
+def main_menu():
+    print("*"*50)
+    print("*")
+    print("*" + " Status: " + "Bennies: " + str(benny_counter))
+    print("*" + " Last Roll: " + str(last_roll))
+    print("*" + " Types of Commands: Roll a dice (Format: 1d10 2d20 -2)")
+    print("*"+" "*20+"Attribute roll (Format: vigor -2)")
+    print("*"+" "*20+"Reroll with a benny (Format: benny)")
+    print("*"+" "*20+"Exit this program (Format: exit)")
+    print("*"+" "*20+"Roll for initiative (Format: init)")
+    print("*"+" "*20+"Roll for damage (Format: damage 1d4 -2)")
+    print("*")
+    print("*"*50)
 #Set up
 #need to do flags for DEBUG
-#need to read in explosion  files into memory
+#need to read in explosion quotes files into memory
 
 #global variables
 last_roll = {}
 benny_counter = 3
+
 with open("crit_fail_quotes.txt") as file:
     #TODO: need to remove extra newline character off this list
     crit_quote_list = file.readlines()
 
 #Here is main loop
 while True:
+    #TODO: when adding shaken/unshaken your spirit roll has to beat a 4
+    main_menu()
     #TODO: Add skill to options(only have attributes right now)
     options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
-    #TODO: need to add a bigger text menu with all options
     dice_roll = input("How many to roll? (format: 1d10 -2, init, attribute (lowercase))  ")
     #Roll a d20 for init with no modifier
     if dice_roll == "init":
