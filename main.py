@@ -39,7 +39,8 @@ def parse_down(dice_list, damage=False):
         # condition for dice roll
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
-            dice_dictionary.update({split_dice[1]: str(int(split_dice[0])+int(dice_dictionary[split_dice[1]]))})
+            # FIXME: This is not working for the default 1d6 and rolling a 1d6
+            dice_dictionary.update({split_dice[1]: split_dice[0]})
             print(dice_dictionary)
         # condition for modifier and add other modifiers (fatigue and wounds)
         if '-' in each_dice or '+' in each_dice:
