@@ -142,6 +142,7 @@ while True:
     print("*" * 65)
     # Roll a d20 for init with no modifier
     if dice_roll == "init":
+        #FIXME: You can spend a benny to reroll init, need to set the default d6 to false
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
     # If shaken you will stay in loop until you beat a spirit roll of 4
     elif dice_roll == "shaken":
