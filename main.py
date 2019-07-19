@@ -184,6 +184,18 @@ while True:
             spirit_check_value = random_dice_generator(dice_options)
             if spirit_check_value >= 4:
                 current_player.shaken = False
+    elif current_player.wound_count >= 3:
+        # TODO: If player rolls crit fail they die
+        current_player.incap = True
+        # If incapacitated you will stay in loop until you beat a vigor roll of 4
+        while current_player.incap:
+            input("* You are incapacitated. Hit enter to roll a vigor")
+            dice_roll = current_player.traits ['vigor']
+            dice_roll = dice_roll.split(' ')
+            dice_options = parse_down(dice_roll)
+            vigor_check_value = random_dice_generator(dice_options)
+            if vigor_check_value >= 4:
+                current_player.incap = False
     # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
         # FIXME: you cannot benny a critical fail
