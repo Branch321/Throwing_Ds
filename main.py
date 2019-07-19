@@ -182,12 +182,12 @@ while True:
         # TODO: Need to write settings and stuff back out to .ini file
         exit()
     # All standard dice rolls
-    # TODO Not fully done with wound modifier
     elif dice_roll == "wound":
         current_player.wound_count+=1
-    # TODO Not fully done with fatigue modifier
+        # Wound modifier
     elif dice_roll == "fatigue":
         current_player.fat_count+=1
+        # Fatigue modifier
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
