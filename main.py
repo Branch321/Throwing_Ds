@@ -18,10 +18,14 @@ import player
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
 
-# Purpose: Function that parses and sanitizes user input
-# Pre: damage variable determines whether to remove d6 for damage rolls
-# Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
+
 def parse_down(dice_list, damage=False):
+    """
+    # Purpose: Function that parses and sanitizes user input
+    # Pre: damage variable determines whether to remove d6 for damage rolls
+    # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
+    """
+
     # below takes care of wound and fatigue modifier
     if current_player.wound_count > 0 or current_player.fat_count > 0:
         dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
@@ -45,10 +49,14 @@ def parse_down(dice_list, damage=False):
     return dice_dictionary
 
 
-# Purpose: Randomizes the dice rolls and prints the max of the rolls
-# Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
-# Post: Prints to stdout
+
 def random_dice_generator(dice_dictionary):
+    """
+    # Purpose: Randomizes the dice rolls and prints the max of the rolls
+    # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
+    # Post: Prints to stdout
+    """
+
     # Stores all rolls
     crit_fail = False
     actual_rolls = []
@@ -87,10 +95,14 @@ def random_dice_generator(dice_dictionary):
     return final_roll_with_modifier
 
 
-# Purpose: Prints out a menu with player status, last roll, and types of commands
-# Pre: None
-# Post: Will print to standard output
+
 def main_menu():
+    """
+    # Purpose: Prints out a menu with player status, last roll, and types of commands
+    # Pre: None
+    # Post: Will print to standard output
+    """
+
     print("*" * 65)
     print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
     print("*           " + "Wounds: " + str(current_player.wound_count))
@@ -107,10 +119,14 @@ def main_menu():
     print("*" * 65)
 
 
-# Purpose: Welcome banner for startup
-# Pre: None
-# Post: Will print to standard output
+
 def intro_banner():
+    """
+    # Purpose: Welcome banner for startup
+    # Pre: None
+    # Post: Will print to standard output
+    """
+
     print("*" * 65)
     print("* ", end='')
     for letter in "Hello,":
