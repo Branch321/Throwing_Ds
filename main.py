@@ -180,6 +180,7 @@ while True:
         exit()
     # All standard dice rolls
     elif dice_roll == "wound":
+        # TODO Need to add effect for incapacitated (model after shaken block)
         current_player.wound_count+=1
         # Wound modifier
     elif dice_roll == "fatigue":
