@@ -41,6 +41,7 @@ def parse_down(dice_list, damage=False):
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
             # FIXME: still not working for dmg rolls. tries to roll 2d6
+            # FIXME: wounds do not give modifiers on dmg rolls
             if split_dice[1]=='6':
                 dice_dictionary['6'] = str(int(split_dice[0]) + 1)
             else:
