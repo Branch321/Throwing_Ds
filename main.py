@@ -28,11 +28,9 @@ def parse_down(dice_list, damage=False):
     # if no external modifier default to 0
     else:
         dice_dictionary = {'modifier': 0}
-    print(dice_dictionary)
     # Below is default 1d6 if it is not a damage roll
     if not damage:
         dice_dictionary['6'] = '1'
-    print(dice_dictionary)
     # parse and form the dictionary to return
     for each_dice in dice_list:
         # condition for dice roll
