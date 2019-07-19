@@ -146,7 +146,6 @@ while True:
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
     # If shaken you will stay in loop until you beat a spirit roll of 4
     elif dice_roll == "shaken":
-        # TODO: when adding shaken/unshaken your spirit roll has to beat a 4
         # TODO: if player spends a benny you can immediately become unshaken
         shaken = True
         while shaken:
