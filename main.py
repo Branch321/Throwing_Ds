@@ -4,7 +4,7 @@ import configparser
 import copy
 import random
 import time
-
+import player
 
 # TODO: Add this to Discord for friends to use
 # TODO: Add an ascii dice in the far future
@@ -45,7 +45,7 @@ def random_dice_generator(dice_dictionary):
     # Stores all rolls
     actual_rolls = []
     last_roll = copy.deepcopy(dice_dictionary)
-    #reads in modifier
+    # reads in modifier
     modifier = dice_dictionary['modifier']
     # gets rid of the modifier in dictionary because it is no longer needed
     del dice_dictionary['modifier']
@@ -122,6 +122,7 @@ def intro_banner():
 
 
 # Main Start of Program
+current_player = player.player()
 last_roll = {}
 benny_counter = 3
 # TODO Check for luck and great luck edges
@@ -143,7 +144,7 @@ while True:
     print("*" * 65)
     # Roll a d20 for init with no modifier
     if dice_roll == "init":
-        #FIXME: You can spend a benny to reroll init, need to set the default d6 to false
+        # FIXME: You can spend a benny to reroll init, need to set the default d6 to false
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
     # If shaken you will stay in loop until you beat a spirit roll of 4
     elif dice_roll == "shaken":
