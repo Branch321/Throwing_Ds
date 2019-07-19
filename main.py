@@ -13,6 +13,8 @@ import configparser
 #TODO: Create a class for player status, stats, last roll, session duration, etc....
 #TODO: Need to add a sanitization function to stop program from crashing on bad input
 #TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
+#TODO: Added a text to voice for introduction
+#TODO: Add fatigue to play status
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -57,7 +59,6 @@ def random_dice_generator(dice_dictionary):
     final_roll = max(actual_rolls)
     #below deals with crit fail roll
     #FIXME: if crit roll you do not need to output a 1
-    #FIXME: Need to output a '* ' for prettier print out
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
         print("* " + str(crit_quote_list[random_quote_index]))
@@ -73,10 +74,11 @@ def random_dice_generator(dice_dictionary):
 # Post: Will print to standard output
 def main_menu():
     print("*"*65)
-    print("*" + " Status: " + "Bennies: " + str(benny_counter))
+    print("*" + " Status - " + "Bennies: " + str(benny_counter))
+    print("*           " + "Wounds: " + str(wound_count))
     #FIXME: Need to make the "Last Roll" option look prettier
-    print("*" + " Last Roll: " + str(last_roll))
-    print("*" + " Types of Commands: Roll a dice (Format: 1d10 2d20 -2)")
+    print("*" + " Last Roll - " + str(last_roll))
+    print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
     print("*"+" "*20+"Attribute roll (Format: vigor -2)")
     print("*"+" "*20+"Reroll with a benny (Format: benny)")
     print("*"+" "*20+"Roll for initiative (Format: init)")
@@ -97,7 +99,7 @@ def intro_banner():
     print("")
     print("* ",end='')
     time.sleep(1)
-    for letter in "I am your Savage World's Assistant.":
+    for letter in "I am your Ice Era Assistant.":
         print(letter,end='',flush=True)
         time.sleep(.1)
     print("")
@@ -123,15 +125,13 @@ config = configparser.ConfigParser()
 config.read('player.ini')
 for key in config['traits']:
     traits[key] = config['traits'][key]
+wound_count = config['wounds']['wounds']
 with open("crit_fail_quotes.txt") as file:
     crit_quote_list = file.read().splitlines()
-
 with open("explosion_quotes.txt") as file:
     explosion_quote_list = file.read().splitlines()
 intro_banner()
-
 while True:
-    #TODO: when adding shaken/unshaken your spirit roll has to beat a 4
     main_menu()
     #TODO: Add skill to options(only have attributes right now)
     dice_roll = input("* Input: ")
@@ -141,6 +141,7 @@ while True:
         print("* Your initiation roll is " + str(random.randint(1,20))+'.')
     #If shaken you will stay in loop until you beat a spirit roll of 4
     elif dice_roll == "shaken":
+        #TODO: when adding shaken/unshaken your spirit roll has to beat a 4
         shaken = True
         while shaken:
             input("* You are shaken. Hit enter to roll a spirit.")
@@ -166,6 +167,7 @@ while True:
         random_dice_generator(dice_options)
     #Exit condition
     elif dice_roll =="exit":
+        #TODO: Need to write settings and stuff back out to .ini file
         exit()
     #All standard dice rolls
     else:
