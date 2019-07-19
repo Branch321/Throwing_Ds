@@ -24,7 +24,7 @@ def parse_down(dice_list, damage=False):
         dice_dictionary = {'modifier', -wound_count}
     else:
         dice_dictionary = {'modifier': 0}
-    dice_dictionary = {'modifier': 0}
+    print(dice_dictionary)
     # initialize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     if not damage:
         dice_dictionary['6'] = '1'
@@ -81,7 +81,7 @@ def random_dice_generator(dice_dictionary):
 def main_menu():
     print("*" * 65)
     print("*" + " Status - " + "Bennies: " + str(benny_counter))
-    print("*           " + "Wounds: " + str(wound_count))
+    print("*           " + "Wounds: " + str(current_player.wound_count))
     # FIXME: Need to make the "Last Roll" option look prettier
     print("*" + " Last Roll - " + str(last_roll))
     print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
@@ -185,7 +185,7 @@ while True:
     # TODO Make sure to deal with wounds and wound modifiers
     # FIXME There is no current_player
     elif dice_roll == "wound":
-        current_player.wound_count-=1
+        current_player.wound_count+=1
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)

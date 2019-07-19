@@ -22,4 +22,4 @@ class player:
         config.read('player.ini')
         for key in config['traits']:
             self.traits[key] = config['traits'][key]
-        self.wound_count = config['wounds']['wounds']
+        self.wound_count = int(config['wounds']['wounds'])
