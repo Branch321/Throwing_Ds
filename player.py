@@ -29,3 +29,5 @@ class player:
         self.fat_count = int(config['fatigue']['fatigue'])
         self.shaken = False
         self.session_duration = datetime.time
+
+    #def time_to_quit(self):

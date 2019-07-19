@@ -76,7 +76,7 @@ def random_dice_generator(dice_dictionary):
     # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
-        print("* " + str(crit_quote_list[random_quote_index]))
+        print("* " + str(crit_quote_list[random_quote_index-1]))
         crit_fail = True
         final_roll_with_modifier = final_roll
     else:
