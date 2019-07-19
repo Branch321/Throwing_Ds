@@ -44,10 +44,10 @@ def parse_down(dice_list, damage=False):
 # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
 # Post: Prints to stdout
 def random_dice_generator(dice_dictionary):
-    global last_roll
+    global current_player.last_roll
     # Stores all rolls
     actual_rolls = []
-    last_roll = copy.deepcopy(dice_dictionary)
+    current_player.last_roll = copy.deepcopy(dice_dictionary)
     # reads in modifier
     modifier = dice_dictionary['modifier']
     # gets rid of the modifier in dictionary because it is no longer needed
@@ -79,11 +79,11 @@ def random_dice_generator(dice_dictionary):
 # Post: Will print to standard output
 def main_menu():
     print("*" * 65)
-    print("*" + " Status - " + "Bennies: " + str(benny_counter))
+    print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
     print("*           " + "Wounds: " + str(current_player.wound_count))
     print("*          " + "Fatigue: " + str(current_player.fat_count))
     # FIXME: Need to make the "Last Roll" option look prettier
-    print("*" + " Last Roll - " + str(last_roll))
+    print("*" + " Last Roll - " + str(current_player.last_roll))
     print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
     print("*" + " " * 20 + "Attribute roll (Format: vigor -2)")
     print("*" + " " * 20 + "Reroll with a benny (Format: benny)")
@@ -127,15 +127,9 @@ def intro_banner():
 
 # Main Start of Program
 current_player = player.player()
-last_roll = {}
-benny_counter = 3
 # TODO Check for luck and great luck edges
-traits = {}
 config = configparser.ConfigParser()
 config.read('player.ini')
-for key in config['traits']:
-    traits[key] = config['traits'][key]
-wound_count = config['wounds']['wounds']
 with open("crit_fail_quotes.txt") as file:
     crit_quote_list = file.read().splitlines()
 with open("explosion_quotes.txt") as file:
@@ -161,19 +155,19 @@ while True:
             shaken = False
     # Rolls a damage roll with modifier, does not roll a default 1d6
     elif dice_roll == "benny":
-        if benny_counter == 0:
+        if current_player.benny_counter == 0:
             print("No more bennies")
         else:
-            benny_counter -= 1
-            random_dice_generator(last_roll)
+            current_player.benny_counter -= 1
+            random_dice_generator(current_player.last_roll)
     elif "dmg" in dice_roll:
         dice_roll = dice_roll.split(' ')
         del dice_roll[0]
         dice_options = parse_down(dice_roll, True)
         random_dice_generator(dice_options)
     # Rolls an attribute roll with modifier based on the options dictionary
-    elif dice_roll in traits.keys():
-        dice_roll = traits[dice_roll]
+    elif dice_roll in current_player.traits.keys():
+        dice_roll = current_player.traits[dice_roll]
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
         random_dice_generator(dice_options)
