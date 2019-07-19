@@ -10,7 +10,7 @@ import time
 # TODO: Add an ascii dice in the far future
 # TODO: Need to add a verbosity flag for DEBUG:: messages
 # TODO: Add better commenting
-# TODO: Add a state for wounds, shaken/unshaken
+# TODO: MOST-IMPORTANT: Add a state for wounds, shaken/unshaken
 # TODO: Need to add a sanitization function to stop program from crashing on bad input
 # TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
@@ -146,6 +146,7 @@ while True:
     # If shaken you will stay in loop until you beat a spirit roll of 4
     elif dice_roll == "shaken":
         # TODO: when adding shaken/unshaken your spirit roll has to beat a 4
+        # TODO: if player spends a benny you can immediately become unshaken
         shaken = True
         while shaken:
             input("* You are shaken. Hit enter to roll a spirit.")
