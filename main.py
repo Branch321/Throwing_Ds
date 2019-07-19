@@ -17,7 +17,7 @@ import player
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-
+# TODO: Add incap and shaken status to main menu
 
 def parse_down(dice_list, damage=False):
     """
