@@ -17,6 +17,7 @@ import player
 # TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
+
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
@@ -47,6 +48,7 @@ def parse_down(dice_list, damage=False):
 # Post: Prints to stdout
 def random_dice_generator(dice_dictionary):
     # Stores all rolls
+    crit_fail = False
     actual_rolls = []
     # Copies the roll in case of benny
     current_player.last_roll = copy.deepcopy(dice_dictionary)
@@ -68,12 +70,14 @@ def random_dice_generator(dice_dictionary):
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
         print("* " + str(crit_quote_list[random_quote_index]))
+        crit_fail = True
     # apply modifier
     final_roll_with_modifier = final_roll + int(modifier)
     # if the dice is below 1 set to 1
     if final_roll_with_modifier < 1:
         final_roll_with_modifier = 1
-    print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
+    if not crit_fail:
+        print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
     return final_roll_with_modifier
 
 
