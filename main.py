@@ -71,6 +71,7 @@ def random_dice_generator(dice_dictionary):
     if final_roll_with_modifier < 1:
         final_roll_with_modifier = 1
     print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
+    return final_roll_with_modifier
 
 
 # Purpose: Prints out a menu with player status, last roll, and types of commands
@@ -150,8 +151,12 @@ while True:
         shaken = True
         while shaken:
             input("* You are shaken. Hit enter to roll a spirit.")
-            # FIXME: Need to fix the random_dice_generator() function to return a dice roll in order to use this
-            shaken = False
+            dice_roll = current_player.traits['spirit']
+            dice_roll = dice_roll.split()
+            dice_options = parse_down(dice_roll)
+            spirit_check_value = random_dice_generator(dice_options)
+            if spirit_check_value>=4:
+                shaken = False
     # Rolls a damage roll with modifier, does not roll a default 1d6
     elif dice_roll == "benny":
         if current_player.benny_counter == 0:
