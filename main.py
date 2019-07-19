@@ -3,14 +3,17 @@
 import random
 import copy
 import time
+import configparser
+
+#Reference for doing config files: https://stackoverflow.com/questions/19078170/python-how-would-you-save-a-simple-settings-config-file
 
 #TODO: Add this to Discord for friends to use
 #TODO: Add an ascii dice in the far future
 #TODO: Need to add a verbosity flag for DEBUG:: messages
 #TODO: Add better commenting
 #TODO: Add a state for wounds, shaken/unshaken
-#TODO: Create a class for player status
-#TODO: Add a session duration time
+#TODO: Create a class for player status, stats, last roll, session duration, etc....
+#TODO: Need to add a sanitization function to stop program from crashing on bad input
 
 # Purpose: Function that parses and sanitizes user input
 # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -48,6 +51,7 @@ def random_dice_generator(dice_dictionary):
         for number in range(0,int(dice_dictionary[dice][0])):
             current_roll = random.randint(1,int(dice))
             while current_roll == int(dice):
+                #FIXME: It needs to count the explosions and output the final value
                 print("There has been an explosion!")
                 current_roll = current_roll+random.randint(1,int(dice)) 
             actual_rolls.append(current_roll)
@@ -76,7 +80,7 @@ def main_menu():
     print("*"+" "*20+"Attribute roll (Format: vigor -2)")
     print("*"+" "*20+"Reroll with a benny (Format: benny)")
     print("*"+" "*20+"Roll for initiative (Format: init)")
-    print("*"+" "*20+"Roll for damage (Format: damage 1d4 -2)")
+    print("*"+" "*20+"Roll for damage (Format: dmg 1d4 -2)")
     print("*"+" "*20+"Shaken status (Format: shaken)")
     print("*"+" "*20+"Exit this program (Format: exit)")
     print("*"*65)
@@ -103,7 +107,7 @@ def intro_banner():
         time.sleep(.1)
     print("")
     print("* ",end='')
-    print("Load",end='')
+    print("Loading",end='')
     time.sleep(1)
     for letter in "....":
         print(letter,end='',flush=True)
@@ -113,22 +117,22 @@ def intro_banner():
 
 #need to do flags for DEBUG
 #need to read in explosion quotes files into memory
-
-#global variables and settings/configuration
 last_roll = {}
 benny_counter = 3
-
+traits = {}
+config = configparser.ConfigParser()
+config.read('player.ini')
+for key in config['traits']:
+    traits[key] = config['traits'][key]
 with open("crit_fail_quotes.txt") as file:
     #TODO: need to remove extra newline character off this list preferably with list comprehension or the like
     crit_quote_list = file.readlines()
-
-#Start of program
 intro_banner()
+
 while True:
     #TODO: when adding shaken/unshaken your spirit roll has to beat a 4
     main_menu()
     #TODO: Add skill to options(only have attributes right now)
-    options = {'agility':'1d8','smarts':'1d10','spirit':'1d4','strength':'1d6','vigor':'1d4'}
     dice_roll = input("* Input: ")
     print("*"*65)
     #Roll a d20 for init with no modifier
@@ -148,14 +152,14 @@ while True:
         else:
             benny_counter-=1
             random_dice_generator(last_roll)
-    elif "damage" in dice_roll:
+    elif "dmg" in dice_roll:
         dice_roll = dice_roll.split(' ')
         del dice_roll[0]
         dice_options = parse_down(dice_roll,True)
         random_dice_generator(dice_options)
     #Rolls an attribute roll with modifier based on the options dictionary
-    elif dice_roll in options.keys():
-        dice_roll = options[dice_roll]
+    elif dice_roll in traits.keys():
+        dice_roll = traits[dice_roll]
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
         random_dice_generator(dice_options)
