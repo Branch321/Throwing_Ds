@@ -151,7 +151,7 @@ while True:
         while shaken:
             input("* You are shaken. Hit enter to roll a spirit.")
             dice_roll = current_player.traits['spirit']
-            dice_roll = dice_roll.split()
+            dice_roll = dice_roll.split(' ')
             dice_options = parse_down(dice_roll)
             spirit_check_value = random_dice_generator(dice_options)
             if spirit_check_value>=4:
