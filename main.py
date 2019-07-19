@@ -20,11 +20,10 @@ import player
 # Pre: damage variable determines whether to remove d6 for damage rolls
 # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
 def parse_down(dice_list, damage=False):
-    if current_player.wound_count > 0:
-        dice_dictionary = {'modifier': -current_player.wound_count}
+    if current_player.wound_count > 0 or current_player.fat_count > 0:
+        dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
     else:
         dice_dictionary = {'modifier': 0}
-    print(dice_dictionary)
     # initialize dice_dictionary with 1d6 always because Savage Worlds specific dice roller
     if not damage:
         dice_dictionary['6'] = '1'
@@ -36,7 +35,7 @@ def parse_down(dice_list, damage=False):
             dice_dictionary.update({split_dice[1]: split_dice[0]})
         # condition for modifier
         if '-' in each_dice or '+' in each_dice:
-            dice_dictionary['modifier'] = each_dice
+            dice_dictionary['modifier'] += int(each_dice)
             # dice_dictionary.update({'modifier': each_dice})
     return dice_dictionary
 
