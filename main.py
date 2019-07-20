@@ -32,11 +32,11 @@ engine.stop()
 # TODO: Create a logger for all dice history
 
 def parse_down(dice_list, all_dice):
-    # FIXME: fix the documentation
+    # TODO: Need to check if user input is valid dice
     """
-    # Purpose: Function that parses and sanitizes user input
-    # Pre: damage variable determines whether to remove d6 for damage rolls
-    # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
+    # Purpose: Function that parses user input
+    # Pre: dice_list is the user input and all_dice is an object of dice class
+    # Post: will modify all_dice
     """
 
     dice_list_split_on_spaces = dice_list.split(' ')
@@ -49,7 +49,6 @@ def parse_down(dice_list, all_dice):
         # condition for modifier
         if '-' in each_dice or '+' in each_dice:
             all_dice.dice_dictionary['modifier'] = int(each_dice)
-    print("DEBUG::dice_dictionary at the end of parse_down()::" + str(all_dice.dice_dictionary))
 
 def main_menu():
     """
@@ -135,74 +134,21 @@ all_dice = dice.dice()
 
 # intro_banner()
 while True:
-    main_menu()
+    # main_menu()
     # TODO: Add skill to options(only have attributes right now)
     dice_roll = input("* Input: ")
     print("*" * 65)
 
 
     '''
-    # This is for shaken status
-    elif dice_roll == "shaken":
-        current_player.shaken = True
-        # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
-        while current_player.shaken:
-            main_menu()
-            user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
-            if user_input == "benny":
-                if current_player.benny_counter == 0:
-                    print("No more bennies")
-                else:
-                    current_player.benny_counter -= 1
-                    current_player.shaken = False
-                    print("You've used a benny to unshake.")
-            else:
-                dice_roll = current_player.traits['spirit']
-                dice_options = parse_down(dice_roll)
-                spirit_check_value = random_dice_generator(dice_options)
-                if spirit_check_value >= 4:
-                    current_player.shaken = False
-    # Rerolls the last current_player.last_roll
-    elif dice_roll == "benny":
-        # FIXME Not supposed to be able to use benny on crit fails
-        if current_player.benny_counter == 0:
-            print("No more bennies")
-        else:
-            current_player.benny_counter -= 1
-            random_dice_generator(current_player.last_roll)    
+
     # Exit condition
     elif dice_roll == "exit":
         # TODO: Need to write settings and stuff back out to .ini file
         print("* You played for ")
         sys.exit()
-    # wound modifier
-    elif dice_roll == "wound":
-        # FIXME Incapacitation only triggers once before not triggering
-        if current_player.wound_count >= 3:
-            current_player.incap = True
-            current_player.wound_count = 3
-        # If incapacitated you will stay in loop until you beat a vigor roll of 4
-        while current_player.incap:
-            main_menu()
-            input("* You are incapacitated. Hit enter to roll a vigor")
-            dice_roll = current_player.traits['vigor']
-            dice_options = parse_down(dice_roll)
-            vigor_check_value = random_dice_generator(dice_options)
-            if vigor_check_value == 1:
-                death_banner()
-                current_player.dead = True
-            if vigor_check_value >= 4:
-                current_player.incap = False
-        else:
-            current_player.wound_count += 1
-            # If incapacitated crit fail will cause death
-            # If incapacitated success on vigor will stablize player
-    # fatigue modifier
-    elif dice_roll == "fatigue":
-        current_player.fat_count += 1
-    # all other custom dice rolls
-    elif dice_roll == "death":
-        death_banner()
+   # fatigue modifier
+
     '''
     # TODO damage for melee weapons includes trait dice
     # Roll a d20 for init with no modifier and no default d6
@@ -215,10 +161,19 @@ while True:
         all_dice.roll_them_bones("trait",current_player)
     elif "dmg" in dice_roll:
         dice_roll = dice_roll.replace("dmg",'')
-        print("DEBUG::dice_roll::"+str(dice_roll))
         parse_down(dice_roll,all_dice)
         all_dice.roll_them_bones("damage",current_player)
         # wound modifier
+    # Rerolls the last current_player.last_roll
+    elif dice_roll == "benny":
+        # FIXME Not supposed to be able to use benny on crit fails
+        if current_player.benny_counter == 0:
+            print("No more bennies")
+        elif all_dice.last_roll_was_crit_fail:
+            print("You cannot benny if you crit failed last roll.")
+        else:
+            current_player.benny_counter -= 1
+            all_dice.roll_them_bones("benny",current_player)
     elif dice_roll == "wound":
         # FIXME Incapacitation only triggers once before not triggering
         if current_player.wound_count >= 3:
@@ -257,6 +212,10 @@ while True:
                 spirit_check_value = all_dice.roll_them_bones("traits",current_player)
                 if spirit_check_value >= 4:
                     current_player.shaken = False
+    elif dice_roll == "fatigue":
+        current_player.fat_count += 1
+    elif dice_roll == "death":
+        death_banner()
     else:
         parse_down(dice_roll,all_dice)
         all_dice.roll_them_bones("custom_roll",current_player)

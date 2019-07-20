@@ -3,8 +3,6 @@
 import configparser
 import datetime
 
-# TODO: Create a class for player status, stats, last roll, session duration, etc....
-
 class player:
     """
     # Purpose: This class will hold all the player stats and statuses

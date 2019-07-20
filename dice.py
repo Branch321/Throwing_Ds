@@ -2,11 +2,13 @@
 import random
 import copy
 
+
 class dice:
     def __init__(self):
         self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
         self.last_roll = {}
         self.number_of_explosions = 0
+        self.last_roll_was_crit_fail = False
         with open("crit_fail_quotes.txt") as file:
             self.crit_quote_list = file.read().splitlines()
         with open("explosion_quotes.txt") as file:
@@ -24,23 +26,24 @@ class dice:
         if type_of_roll=='initiative':
             print("Your initiative is " + str(random.randint(1,20)) + ".")
         else:
-            print("DEBUG::State of dice class::" + str(self.dice_dictionary))
             crit_fail = False
             actual_rolls = []
-            # modify the modifier
-            if current_player.wound_count > 0 or current_player.fat_count > 0:
-                self.dice_dictionary['modifier'] += -(current_player.wound_count + current_player.fat_count)
+
+            if not type_of_roll =='benny':
+                # modify the modifier
+                if current_player.wound_count > 0 or current_player.fat_count > 0:
+                    self.dice_dictionary['modifier'] += -(current_player.wound_count + current_player.fat_count)
+                if type_of_roll != "damage":
+                    self.dice_dictionary['6'] += 1
+                self.last_roll = copy.deepcopy(self.dice_dictionary)
+            else:
+                self.dice_dictionary = copy.deepcopy(self.last_roll)
             #copying roll into last roll for bennies
-            self.last_roll = copy.deepcopy(self.dice_dictionary)
             # deleting uneeded modifiers
             modifier = self.dice_dictionary['modifier']
             del self.dice_dictionary['modifier']
             # done modifying the modifier
             print("DEBUG::modifier:: " + str(modifier))
-            # add default d6 when not a damage or initiative roll
-            if type_of_roll != "damage":
-                self.dice_dictionary['6'] += 1
-            # below takes care of wound and fatigue modifier
             print("DEBUG::dice_dictionary in random_dice_generator::" + str(self.dice_dictionary))
             # TODO: need to add to self.last_roll()
             for dice in self.dice_dictionary.keys():
@@ -72,6 +75,7 @@ class dice:
             # FIXME: there may still be instances where you need to print out the dice roll with the modifier
             if not crit_fail:
                 print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
+            self.last_roll_was_crit_fail = crit_fail
             self.reset_roll()
             return final_roll_with_modifier
 
