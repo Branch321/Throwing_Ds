@@ -18,6 +18,7 @@ class dice:
         # Post: Prints to stdout
         """
 
+        # FIXME Enable using benny to reroll initiative
         if type_of_roll=='initiative':
             print("Your initiative is " + str(random.randint(1,20)) + ".")
         else:
@@ -44,10 +45,12 @@ class dice:
                 for number in range(0, int(self.dice_dictionary[dice])):
                     current_roll = random.randint(1, int(dice))
                     while current_roll == int(dice):
+                        self.number_of_explosions += 1
                         # FIXME: It needs to count the explosions and output the final value
                         print("There has been an explosion!")
-                        current_roll = current_roll + random.randint(1, int(dice))
+                        current_roll += random.randint(1, int(dice))
                     actual_rolls.append(current_roll)
+                    print("DEBUG::number_of_explosions" + str(self.number_of_explosions))
             print("DEBUG::actual_roll " + str(actual_rolls))
             final_roll = max(actual_rolls)
             # below deals with crit fail roll
