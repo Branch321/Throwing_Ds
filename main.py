@@ -5,7 +5,11 @@ import random
 import time
 import sys
 import player
+import pyttsx3
 
+engine = pyttsx3.init()
+engine.say("I will speak this text")
+engine.runAndWait()
 
 # TODO: Add this to Discord for friends to use
 # TODO: Add an ascii dice in the far future
