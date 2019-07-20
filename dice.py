@@ -18,7 +18,7 @@ class dice:
         with open("explosion_quotes.txt") as file:
             self.explosion_quote_list = file.read().splitlines()
 
-    def roll_them_bones(self, type_of_roll, current_player):
+    def roll_them_bones(self, type_of_roll, allow_explosions = True):
         #FIXME: fix the documentation
         #TODO: May need a function to do the "actual" rolling instead of roll them bones
         """
@@ -85,13 +85,26 @@ class dice:
             print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
         self.last_roll_was_crit_fail = crit_fail
         self.reset_roll()
-    #this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
+
     def pick_your_poison(self, type_of_roll, current_player):
-        pass
-    #Initiative: does not explode - can use benny - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers
-    #Damage: does explode - can use benny - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
-    #Trait: does explode - can use benny - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
-    #Custom: does explode - can use benny - does not use wild die - modified by wounds and fatigue - modified by custom modifiers
+        # this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
+        if type_of_roll == "init":
+            self.dice_dictionary["20"] = 1
+            self.roll_them_bones("init", False)
+            #Initiative: does not explode - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers - roll 1d20
+        if type_of_roll == "dmg":
+            self.roll_them_bones("dmg")
+            #Damage: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
+        if type_of_roll ==  "traits":
+            self.dice_dictionary["6"] += 1
+            if current_player.wound_count > 0 or current_player.fat_count > 0:
+                self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
+            self.roll_them_bones("traits")
+            #Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
+        else:
+            self.roll_them_bones()
+            #Custom: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
+
     def reset_roll(self):
         """
         # Purpose:

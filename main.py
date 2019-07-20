@@ -142,16 +142,16 @@ while True:
     # TODO damage for melee weapons includes trait dice
     # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
-        all_dice.roll_them_bones("initiative")
+        all_dice.pick_your_poison("init", current_player)
     elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
         selected_trait = dice_roll.split(' ')[0]
         dice_roll = dice_roll.replace(selected_trait,current_player.traits[selected_trait])
         parse_down(dice_roll,all_dice)
-        all_dice.roll_them_bones("trait",current_player)
+        all_dice.pick_your_poison("trait",current_player)
     elif "dmg" in dice_roll:
         dice_roll = dice_roll.replace("dmg",'')
         parse_down(dice_roll,all_dice)
-        all_dice.roll_them_bones("damage",current_player)
+        all_dice.pick_your_poison("dmg",current_player)
         # wound modifier
     # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
