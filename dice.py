@@ -64,7 +64,7 @@ class dice:
                     # FIXME: It needs to count the explosions and output the final value
                     current_roll = random.randint(1, int(dice))
                 actual_rolls.append(current_roll+self.number_of_explosions*int(dice))
-                print("* There were " + str(self.number_of_explosions) + " on the " + dice + " die")
+                print("* There were " + str(self.number_of_explosions) + " explosions "if self.number_of_explosions!=1 else " explosion " + " on the " + dice + " die")
                 self.number_of_explosions = 0
         print("DEBUG::actual_roll " + str(actual_rolls))
         final_roll = max(actual_rolls)
