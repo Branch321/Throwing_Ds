@@ -3,7 +3,7 @@
 import copy
 import random
 import time
-import os
+import sys
 import player
 
 
@@ -155,6 +155,17 @@ def intro_banner():
     print("")
     time.sleep(1)
 
+def death_banner():
+    print("\n"*40)
+    time.sleep(5)
+    print(", _  _, _,_   __, _ ___,")
+    print("\ | / \ | |   | \ | |_  |")
+    print(" \| \ / | |   |_/ | |   |")
+    print("  )  ~  `~'   ~   ~ ~~~ .")
+    print(" ~'")
+    print("\n"*10)
+    input("Better luck next time. Press enter to exit")
+    sys.exit()
 
 # Main Start of Program
 current_player = player.player()
@@ -175,7 +186,6 @@ while True:
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
     # This is for shaken status
     elif dice_roll == "shaken":
-        # TODO: if player spends a benny you can immediately become unshaken
         current_player.shaken = True
         # If shaken you will stay in loop until you beat a spirit roll of 4
         while current_player.shaken:
@@ -219,9 +229,10 @@ while True:
     elif dice_roll == "exit":
         # TODO: Need to write settings and stuff back out to .ini file
         print("* You played for ")
-        exit()
+        sys.exit()
     # wound modifier
     elif dice_roll == "wound":
+        print(death_banner())
         # TODO Need to add effect for incapacitated (model after shaken block)
         if current_player.wound_count == 3:
         # TODO: If player rolls crit fail they die
@@ -233,6 +244,9 @@ while True:
             dice_roll = dice_roll.split(' ')
             dice_options = parse_down(dice_roll)
             vigor_check_value = random_dice_generator(dice_options)
+            if vigor_check_value == 1:
+                death_banner()
+                current_player.dead = True
             if vigor_check_value >= 4:
                 current_player.incap = False
         else:
@@ -241,6 +255,8 @@ while True:
     elif dice_roll == "fatigue":
         current_player.fat_count += 1
     # all other custom dice rolls
+    elif dice_roll == "death":
+        death_banner()
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
