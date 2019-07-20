@@ -41,7 +41,7 @@ def parse_down(dice_list, damage=False):
     # below takes care of wound and fatigue modifier
     # if current_player.wound_count > 0 or current_player.fat_count > 0:
     #    dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
-    dice_dictionary = {'4':'0','6':'0', '8':'0','10':'0','12':'0','20':'0','modifier':'0'}
+    dice_dictionary = {'4':0,'6':0, '8':0,'10':0,'12':0,'20':0,'modifier':0}
     dice_list_split_on_spaces = dice_list.split(' ')
     # parse and form the dictionary to return
     for each_dice in dice_list_split_on_spaces:
