@@ -37,22 +37,23 @@ class dice:
             actual_rolls = []
 
             if not type_of_roll =='benny':
-                # modify the modifier
+                # modifier for wounds and fatigue are applied
                 if current_player.wound_count > 0 or current_player.fat_count > 0:
                     self.dice_dictionary['modifier'] += -(current_player.wound_count + current_player.fat_count)
+                # adds a wild 1d6 if it is not a damage roll
                 if type_of_roll != "damage":
                     self.dice_dictionary['6'] += 1
+                # copy the current dice configuration into last_roll in case of benny next turn
                 self.last_roll = copy.deepcopy(self.dice_dictionary)
+            # if the type_of_roll is a benny then copy the last_roll back into dice_dictionary and roll with previous
+            # configuration
             else:
                 self.dice_dictionary = copy.deepcopy(self.last_roll)
-            #copying roll into last roll for bennies
-            # deleting uneeded modifiers
+            # Set and delete modifier from dice_dictionary
             modifier = self.dice_dictionary['modifier']
             del self.dice_dictionary['modifier']
-            # done modifying the modifier
             print("DEBUG::modifier:: " + str(modifier))
             print("DEBUG::dice_dictionary in random_dice_generator::" + str(self.dice_dictionary))
-            # TODO: need to add to self.last_roll()
             for dice in self.dice_dictionary.keys():
                 for number in range(0, int(self.dice_dictionary[dice])):
                     current_roll = random.randint(1, int(dice))
