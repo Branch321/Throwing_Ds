@@ -139,17 +139,6 @@ while True:
     dice_roll = input("* Input: ")
     print("*" * 65)
 
-
-    '''
-
-    # Exit condition
-    elif dice_roll == "exit":
-        # TODO: Need to write settings and stuff back out to .ini file
-        print("* You played for ")
-        sys.exit()
-   # fatigue modifier
-
-    '''
     # TODO damage for melee weapons includes trait dice
     # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
@@ -216,6 +205,10 @@ while True:
         current_player.fat_count += 1
     elif dice_roll == "death":
         death_banner()
+    elif dice_roll == "exit":
+        # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
+        print("* You played for ")
+        sys.exit()
     else:
         parse_down(dice_roll,all_dice)
         all_dice.roll_them_bones("custom_roll",current_player)
