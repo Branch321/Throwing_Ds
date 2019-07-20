@@ -214,6 +214,7 @@ while True:
     elif dice_roll == "death":
         death_banner()
     '''
+    # TODO damage for melee weapons includes trait dice
     # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
         all_dice.roll_them_bones("initiative")
