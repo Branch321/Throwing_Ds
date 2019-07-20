@@ -134,7 +134,7 @@ all_dice = dice.dice()
 
 # intro_banner()
 while True:
-    # main_menu()
+    main_menu()
     # TODO: Add skill to options(only have attributes right now)
     dice_roll = input("* Input: ")
     print("*" * 65)
@@ -159,7 +159,7 @@ while True:
         if current_player.benny_counter == 0:
             print("No more bennies")
         elif all_dice.last_roll_was_crit_fail:
-            print("You cannot benny if you crit failed last roll.")
+            print("* You cannot benny if you crit failed last roll.")
         else:
             current_player.benny_counter -= 1
             all_dice.roll_them_bones("benny",current_player)
