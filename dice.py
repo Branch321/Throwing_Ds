@@ -1,9 +1,13 @@
-#class to hold all the dice
+#class to hold all the dice configuration
 import random
 import copy
 
 
 class dice:
+    """
+    # Purpose:
+    # Variables:
+    """
     def __init__(self):
         self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
         self.last_roll = {}
@@ -18,8 +22,11 @@ class dice:
         #FIXME: fix the documentation
         """
         # Purpose: Randomizes the dice rolls and prints the max of the rolls
-        # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
-        # Post: Prints to stdout
+        # Pre: type_of_roll is a 'iniative','benny', or 'damage'
+        #      current_layer is needed for the wound and fatigue modifiers
+        #      you need to set the dice object's dice_dictionary before calling this function
+        # Post: Prints to stdout and resets the dice object's dice_dictionary
+        #       sets last_roll, number_of_explosions, and last_roll_was_crit_fail
         """
 
         # FIXME Enable using benny to reroll initiative
@@ -77,9 +84,13 @@ class dice:
                 print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
             self.last_roll_was_crit_fail = crit_fail
             self.reset_roll()
-            return final_roll_with_modifier
 
     def reset_roll(self):
+        """
+        # Purpose:
+        # Pre:
+        # Post:
+        """
         # FIXME: fix all the documentation
         self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
         self.explosions = 0
