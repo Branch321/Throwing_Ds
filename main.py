@@ -242,7 +242,6 @@ while True:
         sys.exit()
     # wound modifier
     elif dice_roll == "wound":
-        print(death_banner())
         # TODO Need to add effect for incapacitated (model after shaken block)
         if current_player.wound_count == 3:
         # TODO: If player rolls crit fail they die
