@@ -40,9 +40,7 @@ def parse_down(dice_list, all_dice, damage=False):
     # Pre: damage variable determines whether to remove d6 for damage rolls
     # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
     """
-    # below takes care of wound and fatigue modifier
-    # if current_player.wound_count > 0 or current_player.fat_count > 0:
-    #    dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
+
     dice_list_split_on_spaces = dice_list.split(' ')
     # parse and form the dictionary to return
     for each_dice in dice_list_split_on_spaces:
@@ -54,7 +52,6 @@ def parse_down(dice_list, all_dice, damage=False):
         if '-' in each_dice or '+' in each_dice:
             all_dice.dice_dictionary['modifier'] = int(each_dice)
     print("DEBUG::dice_dictionary at the end of parse_down()::" + str(all_dice.dice_dictionary))
-    return all_dice.dice_dictionary
 
 def main_menu():
     """
@@ -144,10 +141,9 @@ while True:
     # TODO: Add skill to options(only have attributes right now)
     dice_roll = input("* Input: ")
     print("*" * 65)
+
+
     '''
-    # Roll a d20 for init with no modifier and no default d6
-    if dice_roll == "init":
-        print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
     # This is for shaken status
     elif dice_roll == "shaken":
         current_player.shaken = True
@@ -220,7 +216,11 @@ while True:
     # all other custom dice rolls
     elif dice_roll == "death":
         death_banner()
-    else:
     '''
-    parse_down(dice_roll,all_dice)
-    all_dice.roll_them_bones("custom_roll")
+    # Roll a d20 for init with no modifier and no default d6
+    if dice_roll == "init":
+        all_dice.dice_dictionary['20'] = 1
+        all_dice.roll_them_bones("initiative")
+    else:
+        parse_down(dice_roll,all_dice)
+        all_dice.roll_them_bones("custom_roll")

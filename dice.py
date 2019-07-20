@@ -16,6 +16,10 @@ class dice:
         # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
         # Post: Prints to stdout
         """
+
+        if type_of_roll=='initiative':
+            print("Your initiative is " + random.randint(1,20))
+
         print("DEBUG::State of dice class::" + str(self.dice_dictionary))
         crit_fail = False
         actual_rolls = []
@@ -25,7 +29,9 @@ class dice:
         # add default d6 when not a damage or initiative roll
         if type_of_roll != "dmg" or type_of_roll != "initiative":
             self.dice_dictionary['6'] += 1
-
+        # below takes care of wound and fatigue modifier
+        # if current_player.wound_count > 0 or current_player.fat_count > 0:
+        #    dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
         print("DEBUG::dice_dictionary in random_dice_generator::" + str(self.dice_dictionary))
         # TODO: need to add to self.last_roll()
         for dice in self.dice_dictionary.keys():
