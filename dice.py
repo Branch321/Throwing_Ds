@@ -31,7 +31,9 @@ class dice:
 
         # FIXME Enable using benny to reroll initiative
         if type_of_roll=='initiative':
-            print("Your initiative is " + str(random.randint(1,20)) + ".")
+            current_roll = random.randint(1,20)
+            print("Your initiative is " + str(current_roll) + ".")
+            self.last_roll['20'] = 1
         else:
             crit_fail = False
             actual_rolls = []
@@ -45,6 +47,7 @@ class dice:
                     self.dice_dictionary['6'] += 1
                 # copy the current dice configuration into last_roll in case of benny next turn
                 self.last_roll = copy.deepcopy(self.dice_dictionary)
+
             # if the type_of_roll is a benny then copy the last_roll back into dice_dictionary and roll with previous
             # configuration
             else:
