@@ -1,5 +1,6 @@
 # Throwing_Ds is a dice roller for table top games(mostly Savage Worlds)
 # Written in Python 3.6
+# External Libraries Needed: Text-to-Speech - pyttsx3 2.71
 import copy
 import random
 import time
@@ -13,6 +14,7 @@ voices = engine.getProperty('voices')       #getting details of current voice
 engine.setProperty('voice', voices[1].id)   #changing index, changes voices. 1 for female
 engine.say("I will speak this text")
 engine.runAndWait()
+engine.stop()
 
 # TODO: Add this to Discord for friends to use
 # TODO: Add an ascii dice in the far future
