@@ -9,15 +9,17 @@ import sys
 import player
 import pyttsx3
 
+'''
+# Below is sample code for text to voice
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')       #getting details of current voice
-#engine.setProperty('voice', voices[0].id)  #changing index, changes voices. o for male
 engine.setProperty('voice', voices[1].id)   #changing index, changes voices. 1 for female
 rate = engine.getProperty('rate')   # getting details of current speaking rate
 engine.setProperty('rate', 125)     # setting up new voice rate
 engine.say("I will speak this text")
 engine.runAndWait()
 engine.stop()
+'''
 
 # TODO: Add this to Discord for friends to use
 # TODO: Add an ascii dice in the far future
