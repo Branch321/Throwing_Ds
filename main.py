@@ -2,8 +2,6 @@
 # Written in Python 3.6
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
-import copy
-import random
 import sys
 import time
 import player
@@ -29,12 +27,12 @@ engine.stop()
 # TODO: Need to add a verbosity flag for DEBUG:: messages
 # TODO: Add better commenting
 # TODO: Need to add a sanitization function to stop program from crashing on bad input
-# TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
 
 def parse_down(dice_list, all_dice):
+    # FIXME: fix the documentation
     """
     # Purpose: Function that parses and sanitizes user input
     # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -83,7 +81,7 @@ def intro_banner():
     # Pre: None
     # Post: Will print to standard output
     """
-
+    # TODO: Need to multi-thread  the voice to test for the intro_banner function
     print("*" * 65)
     print("* ", end='')
     for letter in "Hello,":
@@ -171,15 +169,7 @@ while True:
             print("No more bennies")
         else:
             current_player.benny_counter -= 1
-            random_dice_generator(current_player.last_roll)
-    # Rolls a damage roll with modifier, does not roll a default 1d6
-    
-    # Rolls an attribute roll with modifier based on the traits dictionary
-    elif dice_roll in current_player.traits.keys():
-        # FIXME Fix dice roll for damage using trait dice
-        dice_roll = current_player.traits[dice_roll]
-        dice_options = parse_down(dice_roll)
-        random_dice_generator(dice_options)
+            random_dice_generator(current_player.last_roll)    
     # Exit condition
     elif dice_roll == "exit":
         # TODO: Need to write settings and stuff back out to .ini file
@@ -228,6 +218,45 @@ while True:
         print("DEBUG::dice_roll::"+str(dice_roll))
         parse_down(dice_roll,all_dice)
         all_dice.roll_them_bones("damage",current_player)
+        # wound modifier
+    elif dice_roll == "wound":
+        # FIXME Incapacitation only triggers once before not triggering
+        if current_player.wound_count >= 3:
+            current_player.incap = True
+            current_player.wound_count = 3
+        # If incapacitated you will stay in loop until you beat a vigor roll of 4
+        while current_player.incap:
+            input("* You are incapacitated. Hit enter to roll a vigor.")
+            dice_roll = current_player.traits['vigor']
+            dice_options = parse_down(dice_roll,all_dice)
+            vigor_check_value = all_dice.roll_them_bones("traits",current_player)
+            if vigor_check_value == 1:
+                death_banner()
+                current_player.dead = True
+            if vigor_check_value >= 4:
+                current_player.incap = False
+        else:
+            current_player.wound_count += 1
+        # This is for shaken status
+    elif dice_roll == "shaken":
+        current_player.shaken = True
+        # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
+        while current_player.shaken:
+            main_menu()
+            user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
+            if user_input == "benny":
+                if current_player.benny_counter == 0:
+                    print("No more bennies")
+                else:
+                    current_player.benny_counter -= 1
+                    current_player.shaken = False
+                    print("You've used a benny to unshake.")
+            else:
+                dice_roll = current_player.traits['spirit']
+                dice_options = parse_down(dice_roll,all_dice)
+                spirit_check_value = all_dice.roll_them_bones("traits",current_player)
+                if spirit_check_value >= 4:
+                    current_player.shaken = False
     else:
         parse_down(dice_roll,all_dice)
         all_dice.roll_them_bones("custom_roll",current_player)

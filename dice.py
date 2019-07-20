@@ -1,6 +1,7 @@
 #class to hold all the dice
 import random
 import copy
+
 class dice:
     def __init__(self):
         self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
@@ -12,6 +13,7 @@ class dice:
             self.explosion_quote_list = file.read().splitlines()
 
     def roll_them_bones(self, type_of_roll, current_player=None):
+        #FIXME: fix the documentation
         """
         # Purpose: Randomizes the dice rolls and prints the max of the rolls
         # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
@@ -72,5 +74,6 @@ class dice:
             return final_roll_with_modifier
 
     def reset_roll(self):
+        # FIXME: fix all the documentation
         self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
         self.explosions = 0
