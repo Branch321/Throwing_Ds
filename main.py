@@ -4,10 +4,10 @@
 
 import copy
 import random
-import time
 import sys
+import time
 import player
-import pyttsx3
+# import pyttsx3
 
 '''
 # Below is sample code for text to voice
@@ -21,6 +21,7 @@ engine.runAndWait()
 engine.stop()
 '''
 
+
 # TODO: Add this to Discord for friends to use
 # TODO: Add an ascii dice in the far future
 # TODO: Need to add a verbosity flag for DEBUG:: messages
@@ -30,7 +31,6 @@ engine.stop()
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-# TODO: Add incap and shaken status to main menu
 
 def parse_down(dice_list, damage=False):
     """
@@ -38,52 +38,53 @@ def parse_down(dice_list, damage=False):
     # Pre: damage variable determines whether to remove d6 for damage rolls
     # Post: Returns a dictionary of dice options format: {# sided dice: # of rolls,'modifier':0}
     """
-
     # below takes care of wound and fatigue modifier
-    if current_player.wound_count > 0 or current_player.fat_count > 0:
-        dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
-    # if no external modifier default to 0
-    else:
-        dice_dictionary = {'modifier': 0}
-    # Below is default 1d6 if it is not a damage roll
-    if not damage:
-        dice_dictionary['6'] = '1'
+    # if current_player.wound_count > 0 or current_player.fat_count > 0:
+    #    dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
+    dice_dictionary = {'4':'0','6':'0', '8':'0','10':'0','12':'0','20':'0','modifier':'0'}
+    dice_list_split_on_spaces = dice_list.split(' ')
     # parse and form the dictionary to return
-    for each_dice in dice_list:
+    for each_dice in dice_list_split_on_spaces:
         # condition for dice roll
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
-            # FIXME: still not working for dmg rolls. tries to roll 2d6
-            # FIXME: wounds do not give modifiers on dmg rolls
-            if split_dice[1]=='6':
-                dice_dictionary['6'] = str(int(split_dice[0]) + 1)
-            else:
-                dice_dictionary.update({split_dice[1]: split_dice[0]})
-        # condition for modifier and add other modifiers (fatigue and wounds)
+            dice_dictionary.update({split_dice[1]: split_dice[0]})
+        # condition for modifier
         if '-' in each_dice or '+' in each_dice:
-            dice_dictionary['modifier'] += int(each_dice)
+            dice_dictionary.update()
+            dice_dictionary['modifier'] = str(each_dice)
+    print("DEBUG::dice_dictionary at the end of parse_down()::" + str(dice_dictionary))
     return dice_dictionary
 
 
-def random_dice_generator(dice_dictionary):
+def random_dice_generator(dice_dictionary, type_of_roll):
     """
     # Purpose: Randomizes the dice rolls and prints the max of the rolls
     # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
     # Post: Prints to stdout
     """
 
-    # Stores all rolls
     crit_fail = False
     actual_rolls = []
+    modifier = 0
+
+    # Start with modifiers first
+    if type_of_roll != "dmg" or type_of_roll != "initiative":
+        pass
+
+
+    # read in the modifier if there is one
+    if 'modifier' in dice_dictionary:
+        modifier = dice_dictionary['modifier']
     # Copies the roll in case of benny
     current_player.last_roll = copy.deepcopy(dice_dictionary)
     # reads in modifier
     modifier = dice_dictionary['modifier']
     # gets rid of the modifier in dictionary because it is no longer needed
     del dice_dictionary['modifier']
+    print("DEBUG::dice_dictionary in random_dice_generator::" + str(dice_dictionary))
     for dice in dice_dictionary.keys():
-        # FIXME: The [0] on dice_dictionary[dice][0] may be unnecessary
-        for number in range(0, int(dice_dictionary[dice][0])):
+        for number in range(0, int(dice_dictionary[dice])):
             current_roll = random.randint(1, int(dice))
             while current_roll == int(dice):
                 # FIXME: It needs to count the explosions and output the final value
@@ -93,7 +94,6 @@ def random_dice_generator(dice_dictionary):
     print("DEBUG::actual_roll " + str(actual_rolls))
     final_roll = max(actual_rolls)
     # below deals with crit fail roll
-    # FIXME: if you crit fail there is no modifiers attached
     # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
     if final_roll == 1:
         random_quote_index = random.randint(0, len(crit_quote_list))
@@ -122,8 +122,6 @@ def main_menu():
     print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
     print("*          " + "Wounds: " + str(current_player.wound_count))
     print("*          " + "Fatigue: " + str(current_player.fat_count))
-    print("*          " + "Incapacitated: " + str(current_player.incap))
-    print("*          " + "Shaken: " + str(current_player.shaken))
     # FIXME: Need to make the "Last Roll" option look prettier
     print("*" + " Last Roll - " + str(current_player.last_roll))
     print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
@@ -170,6 +168,7 @@ def intro_banner():
     print("")
     time.sleep(1)
 
+
 def death_banner():
     """"
     # Purpose: Banner for death
@@ -177,7 +176,7 @@ def death_banner():
     # Post: Will print death banner and exit program
     """
 
-    print("\n"*40)
+    print("\n" * 40)
     time.sleep(3)
     print("██ ╗  ██ ╗ ██████ ╗  ██ ╗  ██ ╗    ██████ ╗  ██ ╗ ███████ ╗")
     print("╚██ ╗██ ╔╝██ ╔═══██ ╗ ██ ║  ██ ║    ██ ╔═██ ║  ██ ║ ██╔════════╝")
@@ -185,7 +184,7 @@ def death_banner():
     print("   ╚██ ╔╝  ██ ║   ██ ║ ██ ║  ██ ║    ██ ║ ██ ║  ██ ║ ██╔═════╝  ")
     print("    ██ ║    ╚█████ ╔╝  █████ ╔╝     █████ ╔╝  ██ ║ ███████ ╗")
     print("    ╚═══╝     ╚════════╝   ╚════════╝      ╚═══════╝   ╚════╝ ╚═══════════╝")
-    print("\n"*10)
+    print("\n" * 10)
     input("Better luck next time. Press enter to exit")
     sys.exit()
 
@@ -222,7 +221,6 @@ while True:
                     print("You've used a benny to unshake.")
             else:
                 dice_roll = current_player.traits['spirit']
-                dice_roll = dice_roll.split(' ')
                 dice_options = parse_down(dice_roll)
                 spirit_check_value = random_dice_generator(dice_options)
                 if spirit_check_value >= 4:
@@ -237,7 +235,6 @@ while True:
             random_dice_generator(current_player.last_roll)
     # Rolls a damage roll with modifier, does not roll a default 1d6
     elif "dmg" in dice_roll:
-        dice_roll = dice_roll.split(' ')
         del dice_roll[0]
         dice_options = parse_down(dice_roll, True)
         random_dice_generator(dice_options)
@@ -245,7 +242,6 @@ while True:
     elif dice_roll in current_player.traits.keys():
         # FIXME Fix dice roll for damage using trait dice
         dice_roll = current_player.traits[dice_roll]
-        dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
         random_dice_generator(dice_options)
     # Exit condition
@@ -264,16 +260,15 @@ while True:
             main_menu()
             input("* You are incapacitated. Hit enter to roll a vigor")
             dice_roll = current_player.traits['vigor']
-            dice_roll = dice_roll.split(' ')
             dice_options = parse_down(dice_roll)
             vigor_check_value = random_dice_generator(dice_options)
             if vigor_check_value == 1:
                 death_banner()
                 current_player.dead = True
-            if vigor_check_value >=4:
+            if vigor_check_value >= 4:
                 current_player.incap = False
         else:
-            current_player.wound_count +=1
+            current_player.wound_count += 1
             # If incapacitated crit fail will cause death
             # If incapacitated success on vigor will stablize player
     # fatigue modifier
@@ -285,6 +280,5 @@ while True:
     # Quick command for death banner
 
     else:
-        dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
         random_dice_generator(dice_options)
