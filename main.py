@@ -3,7 +3,7 @@
 import copy
 import random
 import time
-
+import sys
 import player
 
 
@@ -165,7 +165,7 @@ def death_banner():
     print(" ~'")
     print("\n"*10)
     input("Better luck next time. Press enter to exit")
-    exit()
+    sys.exit()
 
 # Main Start of Program
 current_player = player.player()
