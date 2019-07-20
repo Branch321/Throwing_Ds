@@ -46,7 +46,6 @@ def parse_down(dice_list, damage=False):
                 dice_dictionary['6'] = str(int(split_dice[0]) + 1)
             else:
                 dice_dictionary.update({split_dice[1]: split_dice[0]})
-            print(dice_dictionary)
         # condition for modifier and add other modifiers (fatigue and wounds)
         if '-' in each_dice or '+' in each_dice:
             dice_dictionary['modifier'] += int(each_dice)
@@ -180,13 +179,21 @@ while True:
         current_player.shaken = True
         # If shaken you will stay in loop until you beat a spirit roll of 4
         while current_player.shaken:
-            input("* You are shaken. Hit enter to roll a spirit.")
-            dice_roll = current_player.traits['spirit']
-            dice_roll = dice_roll.split(' ')
-            dice_options = parse_down(dice_roll)
-            spirit_check_value = random_dice_generator(dice_options)
-            if spirit_check_value >= 4:
-                current_player.shaken = False
+            user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
+            if user_input == "benny":
+                if current_player.benny_counter == 0:
+                    print("No more bennies")
+                else:
+                    current_player.benny_counter -= 1
+                    current_player.shaken = False
+                    print("You've used a benny to unshake.")
+            else:
+                dice_roll = current_player.traits['spirit']
+                dice_roll = dice_roll.split(' ')
+                dice_options = parse_down(dice_roll)
+                spirit_check_value = random_dice_generator(dice_options)
+                if spirit_check_value >= 4:
+                    current_player.shaken = False
     # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
         # FIXME: you cannot benny a critical fail
