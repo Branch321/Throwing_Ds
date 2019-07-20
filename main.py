@@ -30,7 +30,6 @@ engine.stop()
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-# TODO: Create a function that will write a player.ini file if there is not one so players can input their stats
 
 def parse_down(dice_list, all_dice):
     # TODO: Need to check if user input is valid dice
