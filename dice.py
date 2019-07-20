@@ -48,6 +48,7 @@ class dice:
                     current_roll = random.randint(1, int(dice))
                     while current_roll == int(dice):
                         self.number_of_explosions += 1
+                        print("DEBUG::current_roll::" + str(current_roll))
                         # FIXME: It needs to count the explosions and output the final value
                         print("There has been an explosion!")
                         current_roll += random.randint(1, int(dice))
@@ -58,7 +59,8 @@ class dice:
             # below deals with crit fail roll
             # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
             if final_roll == 1:
-                random_quote_index = random.randint(0, len(self.crit_quote_list))
+                # testing the for loop below
+                random_quote_index = random.randint(0, len(self.crit_quote_list)-1)
                 print("* " + str(self.crit_quote_list[random_quote_index]))
                 crit_fail = True
                 final_roll_with_modifier = final_roll
