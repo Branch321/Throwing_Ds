@@ -58,6 +58,7 @@ class dice:
         for dice in self.dice_dictionary.keys():
             for number in range(0, int(self.dice_dictionary[dice])):
                 current_roll = random.randint(1, int(dice))
+                #TODO Skip while loop when rolling intiative
                 while current_roll == int(dice):
                     self.number_of_explosions += 1
                     print("DEBUG::current_roll::" + str(current_roll))
