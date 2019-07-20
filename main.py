@@ -20,7 +20,6 @@ engine.stop()
 # TODO: Add an ascii dice in the far future
 # TODO: Need to add a verbosity flag for DEBUG:: messages
 # TODO: Add better commenting
-# TODO: MOST-IMPORTANT: Add a state for wounds, shaken/unshaken
 # TODO: Need to add a sanitization function to stop program from crashing on bad input
 # TODO: Need to check for only viable dice (i.e. 1d4,1d6,1d8,1d10,1d20)
 # TODO: Added a text to voice for introduction
@@ -116,8 +115,10 @@ def main_menu():
 
     print("*" * 65)
     print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
-    print("*           " + "Wounds: " + str(current_player.wound_count))
+    print("*          " + "Wounds: " + str(current_player.wound_count))
     print("*          " + "Fatigue: " + str(current_player.fat_count))
+    print("*          " + "Incapacitated: " + str(current_player.incap))
+    print("*          " + "Shaken: " + str(current_player.shaken))
     # FIXME: Need to make the "Last Roll" option look prettier
     print("*" + " Last Roll - " + str(current_player.last_roll))
     print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
@@ -165,6 +166,12 @@ def intro_banner():
     time.sleep(1)
 
 def death_banner():
+    """"
+    # Purpose: Banner for death
+    # Pre: None
+    # Post: Will print death banner and exit program
+    """
+
     print("\n"*40)
     time.sleep(3)
     print("██ ╗  ██ ╗ ██████ ╗  ██ ╗  ██ ╗    ██████ ╗  ██ ╗ ███████ ╗")
@@ -176,6 +183,7 @@ def death_banner():
     print("\n"*10)
     input("Better luck next time. Press enter to exit")
     sys.exit()
+
 
 # Main Start of Program
 current_player = player.player()
@@ -192,13 +200,13 @@ while True:
     print("*" * 65)
     # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
-        # FIXME: You can spend a benny to reroll init, need to set the default d6 to false
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
     # This is for shaken status
     elif dice_roll == "shaken":
         current_player.shaken = True
-        # If shaken you will stay in loop until you beat a spirit roll of 4
+        # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
         while current_player.shaken:
+            main_menu()
             user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
             if user_input == "benny":
                 if current_player.benny_counter == 0:
@@ -216,7 +224,7 @@ while True:
                     current_player.shaken = False
     # Rerolls the last current_player.last_roll
     elif dice_roll == "benny":
-        # FIXME: you cannot benny a critical fail
+        # FIXME Not supposed to be able to use benny on crit fails
         if current_player.benny_counter == 0:
             print("No more bennies")
         else:
@@ -242,12 +250,13 @@ while True:
         sys.exit()
     # wound modifier
     elif dice_roll == "wound":
-        # TODO Need to add effect for incapacitated (model after shaken block)
-        if current_player.wound_count == 3:
-        # TODO: If player rolls crit fail they die
+        # FIXME Incapacitation only triggers once before not triggering
+        if current_player.wound_count >= 3:
             current_player.incap = True
-            # If incapacitated you will stay in loop until you beat a vigor roll of 4
+            current_player.wound_count = 3
+        # If incapacitated you will stay in loop until you beat a vigor roll of 4
         while current_player.incap:
+            main_menu()
             input("* You are incapacitated. Hit enter to roll a vigor")
             dice_roll = current_player.traits['vigor']
             dice_roll = dice_roll.split(' ')
@@ -256,16 +265,20 @@ while True:
             if vigor_check_value == 1:
                 death_banner()
                 current_player.dead = True
-            if vigor_check_value >= 4:
+            if vigor_check_value >=4:
                 current_player.incap = False
         else:
             current_player.wound_count +=1
+            # If incapacitated crit fail will cause death
+            # If incapacitated success on vigor will stablize player
     # fatigue modifier
     elif dice_roll == "fatigue":
         current_player.fat_count += 1
     # all other custom dice rolls
     elif dice_roll == "death":
         death_banner()
+    # Quick command for death banner
+
     else:
         dice_roll = dice_roll.split(' ')
         dice_options = parse_down(dice_roll)
