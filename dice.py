@@ -88,6 +88,10 @@ class dice:
     #this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
     def pick_your_poison(self, type_of_roll, current_player):
         pass
+    #Initiative: does not explode - can use benny - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers
+    #Damage: does explode - can use benny - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
+    #Trait: does explode - can use benny - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
+    #Custom: does explode - can use benny - does not use wild die - modified by wounds and fatigue - modified by custom modifiers
     def reset_roll(self):
         """
         # Purpose:
