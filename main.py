@@ -34,7 +34,7 @@ engine.stop()
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
 
-def parse_down(dice_list, all_dice, damage=False):
+def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses and sanitizes user input
     # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -173,10 +173,7 @@ while True:
             current_player.benny_counter -= 1
             random_dice_generator(current_player.last_roll)
     # Rolls a damage roll with modifier, does not roll a default 1d6
-    elif "dmg" in dice_roll:
-        del dice_roll[0]
-        dice_options = parse_down(dice_roll, True)
-        random_dice_generator(dice_options)
+    
     # Rolls an attribute roll with modifier based on the traits dictionary
     elif dice_roll in current_player.traits.keys():
         # FIXME Fix dice roll for damage using trait dice
@@ -219,8 +216,17 @@ while True:
     '''
     # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
-        all_dice.dice_dictionary['20'] = 1
         all_dice.roll_them_bones("initiative")
+    elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
+        selected_trait = dice_roll.split(' ')[0]
+        dice_roll = dice_roll.replace(selected_trait,current_player.traits[selected_trait])
+        parse_down(dice_roll,all_dice)
+        all_dice.roll_them_bones("trait",current_player)
+    elif "dmg" in dice_roll:
+        dice_roll = dice_roll.replace("dmg",'')
+        print("DEBUG::dice_roll::"+str(dice_roll))
+        parse_down(dice_roll,all_dice)
+        all_dice.roll_them_bones("damage",current_player)
     else:
         parse_down(dice_roll,all_dice)
-        all_dice.roll_them_bones("custom_roll")
+        all_dice.roll_them_bones("custom_roll",current_player)
