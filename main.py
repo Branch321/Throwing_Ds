@@ -7,6 +7,7 @@ import random
 import sys
 import time
 import player
+import dice
 # import pyttsx3
 
 '''
@@ -23,6 +24,7 @@ engine.stop()
 
 
 # TODO: Add this to Discord for friends to use
+# TODO Check for luck and great luck edges
 # TODO: Add an ascii dice in the far future
 # TODO: Need to add a verbosity flag for DEBUG:: messages
 # TODO: Add better commenting
@@ -32,7 +34,7 @@ engine.stop()
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
 
-def parse_down(dice_list, damage=False):
+def parse_down(dice_list, all_dice, damage=False):
     """
     # Purpose: Function that parses and sanitizes user input
     # Pre: damage variable determines whether to remove d6 for damage rolls
@@ -41,75 +43,18 @@ def parse_down(dice_list, damage=False):
     # below takes care of wound and fatigue modifier
     # if current_player.wound_count > 0 or current_player.fat_count > 0:
     #    dice_dictionary = {'modifier': -(current_player.wound_count + current_player.fat_count)}
-    dice_dictionary = {'4':0,'6':0, '8':0,'10':0,'12':0,'20':0,'modifier':0}
     dice_list_split_on_spaces = dice_list.split(' ')
     # parse and form the dictionary to return
     for each_dice in dice_list_split_on_spaces:
         # condition for dice roll
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
-            dice_dictionary.update({split_dice[1]: split_dice[0]})
+            all_dice.dice_dictionary[split_dice[1]] = int(split_dice[0])
         # condition for modifier
         if '-' in each_dice or '+' in each_dice:
-            dice_dictionary.update()
-            dice_dictionary['modifier'] = str(each_dice)
-    print("DEBUG::dice_dictionary at the end of parse_down()::" + str(dice_dictionary))
-    return dice_dictionary
-
-
-def random_dice_generator(dice_dictionary, type_of_roll):
-    """
-    # Purpose: Randomizes the dice rolls and prints the max of the rolls
-    # Pre: must be passed a dictionary with the format {# sided dice: # of rolls,'modifier':0}
-    # Post: Prints to stdout
-    """
-
-    crit_fail = False
-    actual_rolls = []
-    modifier = 0
-
-    # Start with modifiers first
-    if type_of_roll != "dmg" or type_of_roll != "initiative":
-        pass
-
-
-    # read in the modifier if there is one
-    if 'modifier' in dice_dictionary:
-        modifier = dice_dictionary['modifier']
-    # Copies the roll in case of benny
-    current_player.last_roll = copy.deepcopy(dice_dictionary)
-    # reads in modifier
-    modifier = dice_dictionary['modifier']
-    # gets rid of the modifier in dictionary because it is no longer needed
-    del dice_dictionary['modifier']
-    print("DEBUG::dice_dictionary in random_dice_generator::" + str(dice_dictionary))
-    for dice in dice_dictionary.keys():
-        for number in range(0, int(dice_dictionary[dice])):
-            current_roll = random.randint(1, int(dice))
-            while current_roll == int(dice):
-                # FIXME: It needs to count the explosions and output the final value
-                print("There has been an explosion!")
-                current_roll = current_roll + random.randint(1, int(dice))
-            actual_rolls.append(current_roll)
-    print("DEBUG::actual_roll " + str(actual_rolls))
-    final_roll = max(actual_rolls)
-    # below deals with crit fail roll
-    # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
-    if final_roll == 1:
-        random_quote_index = random.randint(0, len(crit_quote_list))
-        print("* " + str(crit_quote_list[random_quote_index]))
-        crit_fail = True
-        final_roll_with_modifier = final_roll
-    else:
-        final_roll_with_modifier = final_roll + int(modifier)
-    # if the dice is below 1 set to 1
-    if final_roll_with_modifier < 0:
-        final_roll_with_modifier = 0
-    # FIXME: there may still be instances where you need to print out the dice roll with the modifier
-    if not crit_fail:
-        print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
-    return final_roll_with_modifier
-
+            all_dice.dice_dictionary['modifier'] = int(each_dice)
+    print("DEBUG::dice_dictionary at the end of parse_down()::" + str(all_dice.dice_dictionary))
+    return all_dice.dice_dictionary
 
 def main_menu():
     """
@@ -191,17 +136,15 @@ def death_banner():
 
 # Main Start of Program
 current_player = player.player()
-# TODO Check for luck and great luck edges
-with open("crit_fail_quotes.txt") as file:
-    crit_quote_list = file.read().splitlines()
-with open("explosion_quotes.txt") as file:
-    explosion_quote_list = file.read().splitlines()
+all_dice = dice.dice()
+
 # intro_banner()
 while True:
     main_menu()
     # TODO: Add skill to options(only have attributes right now)
     dice_roll = input("* Input: ")
     print("*" * 65)
+    '''
     # Roll a d20 for init with no modifier and no default d6
     if dice_roll == "init":
         print("* Your initiation roll is " + str(random.randint(1, 20)) + '.')
@@ -277,8 +220,7 @@ while True:
     # all other custom dice rolls
     elif dice_roll == "death":
         death_banner()
-    # Quick command for death banner
-
     else:
-        dice_options = parse_down(dice_roll)
-        random_dice_generator(dice_options)
+    '''
+    parse_down(dice_roll,all_dice)
+    all_dice.roll_them_bones("custom_roll")
