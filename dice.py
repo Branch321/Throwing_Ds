@@ -18,7 +18,7 @@ class dice:
         with open("explosion_quotes.txt") as file:
             self.explosion_quote_list = file.read().splitlines()
 
-    def roll_them_bones(self, type_of_roll, current_player=None):
+    def roll_them_bones(self, type_of_roll, current_player):
         #FIXME: fix the documentation
         #TODO: May need a function to do the "actual" rolling instead of roll them bones
         """
@@ -60,13 +60,11 @@ class dice:
                 current_roll = random.randint(1, int(dice))
                 while current_roll == int(dice):
                     self.number_of_explosions += 1
-                    print("DEBUG::current_roll::" + str(current_roll))
-                    # FIXME: It needs to count the explosions and output the final value
                     current_roll = random.randint(1, int(dice))
                 actual_rolls.append(current_roll+self.number_of_explosions*int(dice))
-                print("* There were " + str(self.number_of_explosions) + " explosions "if self.number_of_explosions!=1 else " explosion " + " on the " + dice + " die")
+                print("* There were " + str(self.number_of_explosions) + " explosions " if self.number_of_explosions!=1 else " explosion " + " on the " + dice + " die")
                 self.number_of_explosions = 0
-        print("DEBUG::actual_roll " + str(actual_rolls))
+        print("DEBUG::actual_roll::" + str(actual_rolls))
         final_roll = max(actual_rolls)
         # below deals with crit fail roll
         # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
@@ -87,7 +85,7 @@ class dice:
         self.last_roll_was_crit_fail = crit_fail
         self.reset_roll()
     #this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
-    def pick_your_poison(self):
+    def pick_your_poison(self, type_of_roll, current_player):
         pass
     def reset_roll(self):
         """
