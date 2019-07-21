@@ -44,10 +44,10 @@ class dice:
         for dice in self.dice_dictionary.keys():
             for number in range(0, int(self.dice_dictionary[dice])):
                 current_roll = random.randint(1, int(dice))
-                #TODO Skip while loop when rolling intiative
-                while current_roll == int(dice):
-                    self.number_of_explosions += 1
-                    current_roll = random.randint(1, int(dice))
+                if allow_explosions:
+                    while current_roll == int(dice):
+                        self.number_of_explosions += 1
+                        current_roll = random.randint(1, int(dice))
                 actual_rolls.append(current_roll+self.number_of_explosions*int(dice))
                 if self.number_of_explosions!=0:
                     print("* There were " + str(self.number_of_explosions) + " explosions " if self.number_of_explosions!=1 else " explosion " + " on the " + dice + " die")

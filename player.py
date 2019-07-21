@@ -29,4 +29,6 @@ class player:
         self.shaken = False
         self.session_duration = datetime.time
         self.incap = False
-    #def time_to_quit(self):
+
+    def time_to_quit(self):
+        pass
