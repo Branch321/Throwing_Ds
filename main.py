@@ -168,7 +168,7 @@ if __name__ == '__main__':
                 print("* You cannot benny if you crit failed last roll.")
             else:
                 current_player.benny_counter -= 1
-                all_dice.roll_them_bones("benny", current_player)
+                all_dice.pick_your_poison("benny", current_player)
         elif dice_roll == "wound":
             # FIXME Incapacitation only triggers once before not triggering
             if current_player.wound_count >= 3:
