@@ -2,16 +2,15 @@
 # Written in Python 3.6
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
-import sys
-import time
 import os
+import sys
 import threading
+import time
+
 import pyttsx3
+
 import dice
 import player
-
-
-
 
 
 # TODO: Add this to Discord for friends to use
@@ -24,8 +23,9 @@ import player
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
 
+
+# TODO before release: sanitizer , update player.ini in main menu, output fat/wound, and maybe a logger.
 def parse_down(dice_list, all_dice):
-    # TODO: Need to check if user input is valid dice
     """
     # Purpose: Function that parses user input
     # Pre: dice_list is the user input and all_dice is an object of dice class
@@ -68,16 +68,28 @@ def main_menu():
     print("*" + " " * 20 + "Take a wound (Format: wound)")
     print("*" * 65)
 
+def onWord(name,location,length):
+    onWord.index += 1
+    print(name,onWord.index)
+
 def intro_banner_voice():
+    onWord.index=0
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
     rate = engine.getProperty('rate')  # getting details of current speaking rate
     engine.setProperty('rate', 125)  # setting up new voice rate
-    engine.say("Hello, ")
-    engine.say("I am your Ice Era Assistant. I hope you have fun in tonight's session. I am loading now.")
+    engine.connect('started-word', onWord)
+    engine.say("Hello, ","Hello, ")
+    onWord.index=0
+    engine.say("I am your Ice Era Assistant.", "I am your Ice Era Assistant.")
+    onWord.index = 0
+    engine.say("I hope you have fun in tonight's session.","I hope you have fun in tonight's session.")
+    onWord.index = 0
     engine.runAndWait()
     engine.stop()
+
+
 def intro_banner():
     """
     # Purpose: Welcome banner for startup
@@ -86,10 +98,12 @@ def intro_banner():
     """
     # TODO: Need to multi-thread  the voice to test for the intro_banner function
     # TODO: Add a character selection so you can have multiple
-
+    # TODO: change how this works using callbacks so the prints happen with the voice
     # Below is sample code for text to voice
-    voice_thread = threading.Thread(target = intro_banner_voice)
-    voice_thread.start()
+    #voice_thread = threading.Thread(target=intro_banner_voice)
+    #voice_thread.start()
+    #intro_banner_voice()
+    '''
     time.sleep(.5)
     print("*" * 65)
     print("* ", end='')
@@ -116,6 +130,7 @@ def intro_banner():
         time.sleep(1)
     print("")
     time.sleep(1)
+    '''
 
 
 def death_banner():
@@ -233,7 +248,7 @@ if __name__ == '__main__':
         # For healing wounds
         elif dice_roll == "heal":
             if current_player.wound_count > 0:
-                current_player.wound_count -=1
+                current_player.wound_count -= 1
                 print("One of your wounds has been healed.")
             else:
                 print("You do not have any wounds to heal.")
