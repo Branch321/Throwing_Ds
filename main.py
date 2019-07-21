@@ -169,29 +169,28 @@ if __name__ == '__main__':
                 current_player.benny_counter -= 1
                 all_dice.pick_your_poison("benny", current_player)
         elif dice_roll == "wound":
-            # FIXME Incapacitation only triggers once before not triggering
             if current_player.wound_count >= 3:
-                current_player.incap = True
                 current_player.wound_count = 3
+                current_player.incap = True
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
-            # FIXME Cannot get out of incap loop
             while current_player.incap:
                 input("* You are incapacitated. Hit enter to roll a vigor.")
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("traits", current_player)
                 print("DEBUG::last_actual_roll for incap::" + str(all_dice.last_actual_roll))
-                if all_dice.last_actual_roll == 1:
+                if all_dice.last_roll_was_crit_fail:
                     death_banner()
                     current_player.dead = True
                 if all_dice.last_actual_roll >= 4:
                     current_player.incap = False
+            if current_player.wound_count >= 3:
+                current_player.wound_count = 3
             else:
                 current_player.wound_count += 1
             # This is for shaken status
         elif dice_roll == "shaken":
             current_player.shaken = True
-            #FIXME Cannot unshake with spirit roll
                 # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             while current_player.shaken:
                 main_menu()
@@ -207,8 +206,9 @@ if __name__ == '__main__':
                     dice_roll = current_player.traits['spirit']
                     parse_down(dice_roll, all_dice)
                     all_dice.pick_your_poison("traits", current_player)
-                    if spirit_check_value >= 4:
+                    if all_dice.last_actual_roll >= 4:
                         current_player.shaken = False
+                        print("Your spirit is strong!")
         elif dice_roll == "soak":
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
