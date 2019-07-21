@@ -32,6 +32,7 @@ engine.stop()
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
+# TODO: Add Soak Rolls
 
 def parse_down(dice_list, all_dice):
     # TODO: Need to check if user input is valid dice
@@ -159,7 +160,8 @@ if __name__ == '__main__':
             # wound modifier
         # Rerolls the last current_player.last_roll
         elif dice_roll == "benny":
-            # FIXME: bennies are not currently working
+            # FIXME BENNIES NOT WORKING!
+            # FIXME Not supposed to be able to use benny on crit fails
             if current_player.benny_counter == 0:
                 print("No more bennies")
             elif all_dice.last_roll_was_crit_fail:
@@ -173,6 +175,7 @@ if __name__ == '__main__':
                 current_player.incap = True
                 current_player.wound_count = 3
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
+            # FIXME Cannot get out of incap loop
             while current_player.incap:
                 input("* You are incapacitated. Hit enter to roll a vigor.")
                 dice_roll = current_player.traits['vigor']
@@ -188,8 +191,10 @@ if __name__ == '__main__':
             # This is for shaken status
         elif dice_roll == "shaken":
             current_player.shaken = True
-            # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
+            #FIXME Cannot unshake with spirit roll
+                # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             while current_player.shaken:
+                main_menu()
                 user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
                 if user_input == "benny":
                     if current_player.benny_counter == 0:
@@ -200,8 +205,8 @@ if __name__ == '__main__':
                         print("You've used a benny to unshake.")
                 else:
                     dice_roll = current_player.traits['spirit']
-                    parse_down(dice_roll, all_dice)
-                    spirit_check_value = all_dice.roll_them_bones("traits", current_player)
+                    dice_options = parse_down(dice_roll, all_dice)
+                    spirit_check_value = all_dice.pick_your_poison("traits", current_player)
                     if spirit_check_value >= 4:
                         current_player.shaken = False
         elif dice_roll == "fatigue":

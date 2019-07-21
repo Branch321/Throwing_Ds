@@ -78,6 +78,7 @@ class dice:
         # Pre:
         # Post:
         """
+        # FIXME crit fail message appearing for all roll. Needs to be just trait rolls
         # this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
         if type_of_roll == "init":
             self.dice_dictionary["20"] = 1
@@ -93,6 +94,17 @@ class dice:
             print("DEBUG::pick_your_poison::self.roll_them_bones()::" + str(self.dice_dictionary))
             self.roll_them_bones("trait")
             #Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
+        elif type_of_roll == "soak":
+            self.dice_dictionary["6"] += 1
+            if current_player.wound_count >= 1 and current_player.benny_counter >= 1:
+                current_player.wound_count -= 1
+                current_player.benny_counter -= 1
+            if current_player.wound_count > 0 or current_player.fat_count > 0:
+                self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
+             else:
+                print("You don't have any bennies left")
+            self.roll_them_bones("soak")
+
         else:
             self.roll_them_bones("custom")
             #Custom: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
