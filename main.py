@@ -235,10 +235,11 @@ if __name__ == '__main__':
 
         # For fatigue counting
         elif dice_roll == "fatigue":
-            if current_player.fat_count > 2:
+            if current_player.fat_count == 3:
+                print(current_player.fat_count)
                 current_player.fat_count = 3
                 current_player.incap = True
-
+                print(current_player.incap)
             else:
                 current_player.fat_count += 1
 
@@ -248,6 +249,8 @@ if __name__ == '__main__':
                 current_player.fat_count = 0
                 current_player.incap = False
                 print("* " + "You feel rested.")
+            else:
+                print("* " + "You aren't quite tired enough to sleep.")
 
         # To roll death banner
         elif dice_roll == "death":
