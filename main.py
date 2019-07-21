@@ -206,6 +206,16 @@ if __name__ == '__main__':
                     spirit_check_value = all_dice.pick_your_poison("traits", current_player)
                     if spirit_check_value >= 4:
                         current_player.shaken = False
+        elif dice_roll == "soak":
+                dice_roll = current_player.traits['vigor']
+                dice_options = parse_down(dice_roll, all_dice)
+                all_dice.pick_your_poison("soak", current_player)
+        elif dice_roll == "heal":
+            if current_player.wound_count > 0:
+                current_player.wound_count -=1
+                print("One of your wounds has been healed.")
+            else:
+                print("You do not have any wounds to heal.")
         elif dice_roll == "fatigue":
             current_player.fat_count += 1
         elif dice_roll == "death":

@@ -92,18 +92,14 @@ class dice:
         elif type_of_roll == "dmg":
             self.roll_them_bones("dmg")
             #Damage: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
-        elif type_of_roll ==  "trait":
+        elif type_of_roll ==  "traits":
             self.dice_dictionary["6"] += 1
             if current_player.wound_count > 0 or current_player.fat_count > 0:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
             print("DEBUG::pick_your_poison::self.roll_them_bones()::" + str(self.dice_dictionary))
             self.roll_them_bones("trait")
             #Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
-        elif type_of_roll == "soak" or type_of_roll == "heal":
-            if type_of_roll == "heal":
-                current_player.wound_count -= 1
-                print("One of your wounds has been healed.")
-            if type_of_roll == "soak":
+        elif type_of_roll == "soak":
                 if current_player.wound_count > 0 and current_player.benny_counter >= 0:
                     self.dice_dictionary["6"] += 1
                     self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
