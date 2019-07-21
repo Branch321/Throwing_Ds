@@ -167,10 +167,9 @@ if __name__ == '__main__':
                 current_player.benny_counter -= 1
                 all_dice.pick_your_poison("benny", current_player)
         elif dice_roll == "wound":
-            # FIXME Incapacitation only triggers once before not triggering
             if current_player.wound_count >= 3:
-                current_player.incap = True
                 current_player.wound_count = 3
+                current_player.incap = True
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
             while current_player.incap:
                 input("* You are incapacitated. Hit enter to roll a vigor.")
@@ -183,12 +182,13 @@ if __name__ == '__main__':
                     current_player.dead = True
                 if all_dice.last_actual_roll >= 4:
                     current_player.incap = False
+            if current_player.wound_count >= 3:
+                current_player.wound_count = 3
             else:
                 current_player.wound_count += 1
             # This is for shaken status
         elif dice_roll == "shaken":
             current_player.shaken = True
-            #FIXME Cannot unshake with spirit roll
                 # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             while current_player.shaken:
                 main_menu()
