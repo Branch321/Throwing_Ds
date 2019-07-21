@@ -186,7 +186,7 @@ if __name__ == '__main__':
     current_player = player.player()
     all_dice = dice.dice()
 
-    intro_banner()
+    #intro_banner()
     while True:
         #main_menu()
         dice_roll = input("* Input: ")
@@ -255,11 +255,32 @@ if __name__ == '__main__':
                     user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
                     if user_input == "benny":
                         if current_player.benny_counter == 0:
-                            print("No more bennies")
+                            print("* No more bennies")
                         else:
                             current_player.benny_counter -= 1
                             current_player.shaken = False
-                            print("You've used a benny to unshake.")
+                            print("* You've used a benny to unshake.")
+                    else:
+                        dice_roll = current_player.traits['spirit']
+                        parse_down(dice_roll, all_dice)
+                        all_dice.pick_your_poison("traits", current_player)
+                        if all_dice.last_actual_roll >= 4:
+                            current_player.shaken = False
+                            print("* Your spirit is strong!")
+        # For shaken status
+        # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
+            elif dice_roll == "shaken":
+                current_player.shaken = True
+                while current_player.shaken:
+                    main_menu()
+                    user_input = input("* " + "You are shaken. Hit enter to roll a spirit or use a benny:")
+                    if user_input == "benny":
+                        if current_player.benny_counter == 0:
+                            print("* " + "No more bennies")
+                        else:
+                            current_player.benny_counter -= 1
+                            current_player.shaken = False
+                            print("* " + "You've used a benny to unshake.")
                     else:
                         dice_roll = current_player.traits['spirit']
                         parse_down(dice_roll, all_dice)
@@ -275,17 +296,32 @@ if __name__ == '__main__':
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("soak", current_player)
 
-            # For healing wounds
+        # For healing wounds
             elif dice_roll == "heal":
                 if current_player.wound_count > 0:
-                    current_player.wound_count -= 1
-                    print("One of your wounds has been healed.")
+                    current_player.wound_count -=1
+                    print("* " + "One of your wounds has been healed.")
                 else:
-                    print("You do not have any wounds to heal.")
+                    print("* " + "You do not have any wounds to heal.")
 
-            # For fatigue counting
+        # For fatigue counting
             elif dice_roll == "fatigue":
-                current_player.fat_count += 1
+                if current_player.fat_count == 3:
+                    print(current_player.fat_count)
+                    current_player.fat_count = 3
+                    current_player.incap = True
+                    print(current_player.incap)
+                else:
+                    current_player.fat_count += 1
+
+        # For recovering from fatigue using "rest" command
+            elif dice_roll == "rest":
+                if current_player.fat_count == 3 and current_player.incap:
+                    current_player.fat_count = 0
+                    current_player.incap = False
+                    print("* " + "You feel rested.")
+                else:
+                    print("* " + "You aren't quite tired enough to sleep.")
 
             # To roll death banner
             elif dice_roll == "death":
@@ -294,7 +330,7 @@ if __name__ == '__main__':
             # To exit game
             elif dice_roll == "exit":
                 # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
-                print("* You played for ")
+                print("* " + "You played for ")
                 sys.exit()
             else:
                 parse_down(dice_roll, all_dice)
