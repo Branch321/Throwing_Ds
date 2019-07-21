@@ -104,7 +104,7 @@ class dice:
                 current_player.benny_counter -= 1
             if current_player.wound_count > 0 or current_player.fat_count > 0:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
-             else:
+            else:
                 print("You don't have any bennies left")
             self.roll_them_bones("soak")
 
