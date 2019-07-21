@@ -13,6 +13,7 @@ class dice:
         self.last_roll = {}
         self.number_of_explosions = 0
         self.last_roll_was_crit_fail = False
+        self.last_actual_roll = 0
         with open("crit_fail_quotes.txt") as file:
             self.crit_quote_list = file.read().splitlines()
         with open("explosion_quotes.txt") as file:
@@ -54,6 +55,7 @@ class dice:
                 self.number_of_explosions = 0
         print("DEBUG::actual_roll::" + str(actual_rolls))
         final_roll = max(actual_rolls)
+        self.last_actual_roll = final_roll
         # below deals with crit fail roll
         # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
         if final_roll == 1:
@@ -79,6 +81,7 @@ class dice:
         # Post:
         """
         # FIXME crit fail message appearing for all roll. Needs to be just trait rolls
+
         # this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
         if type_of_roll == "init":
             self.dice_dictionary["20"] = 1
@@ -97,17 +100,24 @@ class dice:
             print("DEBUG::pick_your_poison::self.roll_them_bones()::" + str(self.dice_dictionary))
             self.roll_them_bones("trait")
             #Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
-        elif type_of_roll == "soak":
-            self.dice_dictionary["6"] += 1
-            if current_player.wound_count >= 1 and current_player.benny_counter >= 1:
+        elif type_of_roll == "soak" or type_of_roll == "heal":
+            if type_of_roll == "heal":
                 current_player.wound_count -= 1
-                current_player.benny_counter -= 1
-            if current_player.wound_count > 0 or current_player.fat_count > 0:
-                self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
+                print("One of your wounds has been healed.")
+            if type_of_roll == "soak":
+                if current_player.wound_count > 0 and current_player.benny_counter >= 0:
+                    self.dice_dictionary["6"] += 1
+                    self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
+                    current_player.benny_counter -= 1
+                    self.roll_them_bones("soak")
+                    if self.last_actual_roll % 4 == 0:
+                        soak_roll = self.last_actual_roll / 4
+                        current_player.wound_count -= soak_roll
+                        print("That didn't hurt so bad.")
             else:
                 print("You don't have any bennies left")
-            self.roll_them_bones("soak")
-
+            #Soak and Heals - uses wild die - modified by wounds and fatigue - modified by custom modifiers
+        #TODO: Add healing roll
         else:
             self.roll_them_bones("custom")
             #Custom: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers

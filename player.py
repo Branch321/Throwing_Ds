@@ -29,6 +29,7 @@ class player:
         self.shaken = False
         self.session_duration = datetime.time
         self.incap = False
+        self.name = (config['name']['name'])
 
     def time_to_quit(self):
         pass

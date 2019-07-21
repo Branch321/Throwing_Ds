@@ -62,6 +62,7 @@ def main_menu():
     """
 
     print("*" * 65)
+    print("*" + " " + "Name: " + current_player.name)
     print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
     print("*          " + "Wounds: " + str(current_player.wound_count))
     print("*          " + "Fatigue: " + str(current_player.fat_count))
