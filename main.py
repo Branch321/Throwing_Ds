@@ -3,10 +3,9 @@
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
 import os
-import sys
-import threading
-import time
 import re
+import sys
+import time
 
 import pyttsx3
 
@@ -69,23 +68,25 @@ def main_menu():
     print("*" + " " * 20 + "Take a wound (Format: wound)")
     print("*" * 65)
 
-def onWord(name,location,length):
+
+def onWord(name, location, length):
     onWord.index += 1
-    print(name,onWord.index)
+    print(name, onWord.index)
+
 
 def intro_banner_voice():
-    onWord.index=0
+    onWord.index = 0
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
     rate = engine.getProperty('rate')  # getting details of current speaking rate
     engine.setProperty('rate', 125)  # setting up new voice rate
     engine.connect('started-word', onWord)
-    engine.say("Hello, ","Hello, ")
-    onWord.index=0
+    engine.say("Hello, ", "Hello, ")
+    onWord.index = 0
     engine.say("I am your Ice Era Assistant.", "I am your Ice Era Assistant.")
     onWord.index = 0
-    engine.say("I hope you have fun in tonight's session.","I hope you have fun in tonight's session.")
+    engine.say("I hope you have fun in tonight's session.", "I hope you have fun in tonight's session.")
     onWord.index = 0
     engine.runAndWait()
     engine.stop()
@@ -101,9 +102,9 @@ def intro_banner():
     # TODO: Add a character selection so you can have multiple
     # TODO: change how this works using callbacks so the prints happen with the voice
     # Below is sample code for text to voice
-    #voice_thread = threading.Thread(target=intro_banner_voice)
-    #voice_thread.start()
-    #intro_banner_voice()
+    # voice_thread = threading.Thread(target=intro_banner_voice)
+    # voice_thread.start()
+    # intro_banner_voice()
     '''
     time.sleep(.5)
     print("*" * 65)
@@ -153,6 +154,7 @@ def death_banner():
     input("Better luck next time. Press enter to exit")
     sys.exit()
 
+
 def sanitize_user_input(command):
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
@@ -160,24 +162,20 @@ def sanitize_user_input(command):
     modifier_regular_expression = re.compile(r"[+-]\d")
     number_of_modifiers = 0
     possible_options = list(current_player.traits.keys())
-    possible_options.extend(["benny","exit","wound","shaken","init","dmg","soak","heal","exit","fatigue","rest"])
-    print("DEBUG::possible_options::" + str(possible_options))
-    print("DEBUG::command::" + str(command))
+    possible_options.extend(
+        ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest"])
     break_up_command = command.split(' ')
     # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
-        print("DEBUG::option::" + str(option))
-        if option not in possible_options and not dice_regular_expression.match(option) and not modifier_regular_expression.match(option):
+        if option not in possible_options and not dice_regular_expression.match(
+                option) and not modifier_regular_expression.match(option):
             follows_rules = False
-            print("DEBUG::does not follow rules::")
         if option in possible_options and break_up_command.count(option) > 1:
-            print("DEBUG::Repeated Trait Found")
             follows_rules = False
-        if modifier_regular_expression.match(option) and break_up_command.count(option)>1:
-            print("DEBUG::Repeated Modifier Found")
+        if modifier_regular_expression.match(option) and break_up_command.count(option) > 1:
             follows_rules = False
-        print("DEBUG::follow_rules::"+str(follows_rules))
     return follows_rules
+
 
 # Main Start of Program
 if __name__ == '__main__':
@@ -186,13 +184,13 @@ if __name__ == '__main__':
     current_player = player.player()
     all_dice = dice.dice()
 
-    #intro_banner()
+    # intro_banner()
     while True:
-        #main_menu()
+        main_menu()
         dice_roll = input("* Input: ")
         if not sanitize_user_input(dice_roll):
-            print("Unrecognized Command.")
-            print("*"*65)
+            print("* Unrecognized Command.")
+            print("*" * 65)
         else:
             print("*" * 65)
 
@@ -267,28 +265,6 @@ if __name__ == '__main__':
                         if all_dice.last_actual_roll >= 4:
                             current_player.shaken = False
                             print("* Your spirit is strong!")
-        # For shaken status
-        # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
-            elif dice_roll == "shaken":
-                current_player.shaken = True
-                while current_player.shaken:
-                    main_menu()
-                    user_input = input("* " + "You are shaken. Hit enter to roll a spirit or use a benny:")
-                    if user_input == "benny":
-                        if current_player.benny_counter == 0:
-                            print("* " + "No more bennies")
-                        else:
-                            current_player.benny_counter -= 1
-                            current_player.shaken = False
-                            print("* " + "You've used a benny to unshake.")
-                    else:
-                        dice_roll = current_player.traits['spirit']
-                        parse_down(dice_roll, all_dice)
-                        all_dice.pick_your_poison("traits", current_player)
-                        if all_dice.last_actual_roll >= 4:
-                            current_player.shaken = False
-                            print("Your spirit is strong!")
-
             # For soak rolls
             # Soak rolls will automatically remove wounds
             elif dice_roll == "soak":
@@ -296,15 +272,15 @@ if __name__ == '__main__':
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("soak", current_player)
 
-        # For healing wounds
+            # For healing wounds
             elif dice_roll == "heal":
                 if current_player.wound_count > 0:
-                    current_player.wound_count -=1
+                    current_player.wound_count -= 1
                     print("* " + "One of your wounds has been healed.")
                 else:
                     print("* " + "You do not have any wounds to heal.")
 
-        # For fatigue counting
+            # For fatigue counting
             elif dice_roll == "fatigue":
                 if current_player.fat_count == 3:
                     print(current_player.fat_count)
@@ -314,7 +290,7 @@ if __name__ == '__main__':
                 else:
                     current_player.fat_count += 1
 
-        # For recovering from fatigue using "rest" command
+            # For recovering from fatigue using "rest" command
             elif dice_roll == "rest":
                 if current_player.fat_count == 3 and current_player.incap:
                     current_player.fat_count = 0
