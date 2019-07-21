@@ -32,7 +32,6 @@ engine.stop()
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-# TODO: Add Soak Rolls
 
 def parse_down(dice_list, all_dice):
     # TODO: Need to check if user input is valid dice
@@ -141,7 +140,6 @@ if __name__ == '__main__':
     # intro_banner()
     while True:
         main_menu()
-        # TODO: Add skill to options(only have attributes right now)
         dice_roll = input("* Input: ")
         print("*" * 65)
 
@@ -161,8 +159,6 @@ if __name__ == '__main__':
             # wound modifier
         # Rerolls the last current_player.last_roll
         elif dice_roll == "benny":
-            # FIXME BENNIES NOT WORKING!
-            # FIXME Not supposed to be able to use benny on crit fails
             if current_player.benny_counter == 0:
                 print("No more bennies")
             elif all_dice.last_roll_was_crit_fail:

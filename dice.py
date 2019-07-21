@@ -80,7 +80,6 @@ class dice:
         # Pre:
         # Post:
         """
-        # FIXME crit fail message appearing for all roll. Needs to be just trait rolls
 
         # this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
         if type_of_roll == "init":
@@ -117,17 +116,16 @@ class dice:
             else:
                 print("You don't have any bennies left")
             #Soak and Heals - uses wild die - modified by wounds and fatigue - modified by custom modifiers
-        #TODO: Add healing roll
         else:
             self.roll_them_bones("custom")
             #Custom: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
 
     def reset_roll(self):
+        # FIXME: fix all the documentation
         """
         # Purpose:
         # Pre:
         # Post:
         """
-        # FIXME: fix all the documentation
         self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
         self.explosions = 0
