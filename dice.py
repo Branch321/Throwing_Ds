@@ -55,7 +55,6 @@ class dice:
                 self.number_of_explosions = 0
         print("DEBUG::actual_roll::" + str(actual_rolls))
         final_roll = max(actual_rolls)
-        self.last_actual_roll = final_roll
         # below deals with crit fail roll
         # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
         if final_roll == 1:
@@ -73,6 +72,7 @@ class dice:
             print("* " + "Dice Roll is " + str(final_roll_with_modifier) + ".")
         self.last_roll_was_crit_fail = crit_fail
         self.reset_roll()
+        self.last_actual_roll = final_roll_with_modifier
 
     def pick_your_poison(self, type_of_roll, current_player):
         """
