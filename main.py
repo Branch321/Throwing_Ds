@@ -177,11 +177,11 @@ if __name__ == '__main__':
                 input("* You are incapacitated. Hit enter to roll a vigor.")
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
-                vigor_check_value = all_dice.roll_them_bones("traits", current_player)
-                if vigor_check_value == 1:
+                all_dice.pick_your_poison("traits", current_player)
+                if all_dice.last_actual_roll == 1:
                     death_banner()
                     current_player.dead = True
-                if vigor_check_value >= 4:
+                if all_dice.last_actual_roll >= 4:
                     current_player.incap = False
             else:
                 current_player.wound_count += 1
@@ -203,7 +203,7 @@ if __name__ == '__main__':
                 else:
                     dice_roll = current_player.traits['spirit']
                     parse_down(dice_roll, all_dice)
-                    spirit_check_value = all_dice.pick_your_poison("traits", current_player)
+                    all_dice.pick_your_poison("traits", current_player)
                     if spirit_check_value >= 4:
                         current_player.shaken = False
         elif dice_roll == "soak":
