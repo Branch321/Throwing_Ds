@@ -4,7 +4,7 @@
 
 import sys
 import time
-
+import os
 import dice
 import player
 
@@ -134,6 +134,8 @@ def death_banner():
 
 # Main Start of Program
 if __name__ == '__main__':
+    cmd = 'mode 65,40'
+    os.system(cmd)
     current_player = player.player()
     all_dice = dice.dice()
 
