@@ -178,6 +178,7 @@ if __name__ == '__main__':
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("traits", current_player)
+                print("DEBUG::last_actual_roll for incap::" + str(all_dice.last_actual_roll))
                 if all_dice.last_actual_roll == 1:
                     death_banner()
                     current_player.dead = True
