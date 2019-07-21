@@ -5,22 +5,13 @@
 import sys
 import time
 import os
+import threading
+import pyttsx3
 import dice
 import player
 
-# import pyttsx3
 
-'''
-# Below is sample code for text to voice
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')       #getting details of current voice
-engine.setProperty('voice', voices[1].id)   #changing index, changes voices. 1 for female
-rate = engine.getProperty('rate')   # getting details of current speaking rate
-engine.setProperty('rate', 125)     # setting up new voice rate
-engine.say("I will speak this text")
-engine.runAndWait()
-engine.stop()
-'''
+
 
 
 # TODO: Add this to Discord for friends to use
@@ -77,7 +68,16 @@ def main_menu():
     print("*" + " " * 20 + "Take a wound (Format: wound)")
     print("*" * 65)
 
-
+def intro_banner_voice():
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')  # getting details of current voice
+    engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
+    rate = engine.getProperty('rate')  # getting details of current speaking rate
+    engine.setProperty('rate', 125)  # setting up new voice rate
+    engine.say("Hello, ")
+    engine.say("I am your Ice Era Assistant. I hope you have fun in tonight's session. I am loading now.")
+    engine.runAndWait()
+    engine.stop()
 def intro_banner():
     """
     # Purpose: Welcome banner for startup
@@ -86,14 +86,19 @@ def intro_banner():
     """
     # TODO: Need to multi-thread  the voice to test for the intro_banner function
     # TODO: Add a character selection so you can have multiple
+
+    # Below is sample code for text to voice
+    voice_thread = threading.Thread(target = intro_banner_voice)
+    voice_thread.start()
+    time.sleep(.5)
     print("*" * 65)
     print("* ", end='')
     for letter in "Hello,":
         print(letter, end='', flush=True)
-        time.sleep(.3)
+        time.sleep(.5)
     print("")
     print("* ", end='')
-    time.sleep(1)
+    time.sleep(2)
     for letter in "I am your Ice Era Assistant.":
         print(letter, end='', flush=True)
         time.sleep(.1)
