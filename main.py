@@ -144,20 +144,25 @@ if __name__ == '__main__':
         print("*" * 65)
 
         # TODO damage for melee weapons includes trait dice
+        # For rolling initiative
         # Roll a d20 for init with no modifier and no default d6
         if dice_roll == "init":
             all_dice.pick_your_poison("init", current_player)
+
+        # For rolling traits and any other dice than below
         elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
             selected_trait = dice_roll.split(' ')[0]
             dice_roll = dice_roll.replace(selected_trait, current_player.traits[selected_trait])
             parse_down(dice_roll, all_dice)
             all_dice.pick_your_poison("traits", current_player)
+
+        # For rolling damage
         elif "dmg" in dice_roll:
             dice_roll = dice_roll.replace("dmg", '')
             parse_down(dice_roll, all_dice)
             all_dice.pick_your_poison("dmg", current_player)
-            # wound modifier
-        # Rerolls the last current_player.last_roll
+
+        # For rerolling using bennies
         elif dice_roll == "benny":
             if current_player.benny_counter == 0:
                 print("No more bennies")
@@ -166,17 +171,18 @@ if __name__ == '__main__':
             else:
                 current_player.benny_counter -= 1
                 all_dice.pick_your_poison("benny", current_player)
+
+        # For wounds and incapacitation
+        # If incapacitated you will stay in loop until you beat a vigor roll of 4
         elif dice_roll == "wound":
             if current_player.wound_count >= 3:
                 current_player.wound_count = 3
                 current_player.incap = True
-            # If incapacitated you will stay in loop until you beat a vigor roll of 4
             while current_player.incap:
                 input("* You are incapacitated. Hit enter to roll a vigor.")
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("traits", current_player)
-                print("DEBUG::last_actual_roll for incap::" + str(all_dice.last_actual_roll))
                 if all_dice.last_roll_was_crit_fail:
                     death_banner()
                     current_player.dead = True
@@ -186,10 +192,11 @@ if __name__ == '__main__':
                 current_player.wound_count = 3
             else:
                 current_player.wound_count += 1
-            # This is for shaken status
+
+        # For shaken status
+        # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
         elif dice_roll == "shaken":
             current_player.shaken = True
-                # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             while current_player.shaken:
                 main_menu()
                 user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
@@ -207,20 +214,31 @@ if __name__ == '__main__':
                     if all_dice.last_actual_roll >= 4:
                         current_player.shaken = False
                         print("Your spirit is strong!")
+
+        # For soak rolls
+        # Soak rolls will automatically remove wounds
         elif dice_roll == "soak":
-                dice_roll = current_player.traits['vigor']
-                parse_down(dice_roll, all_dice)
-                all_dice.pick_your_poison("soak", current_player)
+            dice_roll = current_player.traits['vigor']
+            parse_down(dice_roll, all_dice)
+            all_dice.pick_your_poison("soak", current_player)
+
+        # For healing wounds
         elif dice_roll == "heal":
             if current_player.wound_count > 0:
                 current_player.wound_count -=1
                 print("One of your wounds has been healed.")
             else:
                 print("You do not have any wounds to heal.")
+
+        # For fatigue counting
         elif dice_roll == "fatigue":
             current_player.fat_count += 1
+
+        # To roll death banner
         elif dice_roll == "death":
             death_banner()
+
+        # To exit game
         elif dice_roll == "exit":
             # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
             print("* You played for ")

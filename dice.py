@@ -1,6 +1,6 @@
-#class to hold all the dice configuration
-import random
+# class to hold all the dice configuration
 import copy
+import random
 
 
 class dice:
@@ -8,8 +8,9 @@ class dice:
     # Purpose:
     # Variables:
     """
+
     def __init__(self):
-        self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
+        self.dice_dictionary = {'4': 0, '6': 0, '8': 0, '10': 0, '12': 0, '20': 0, 'modifier': 0}
         self.last_roll = {}
         self.number_of_explosions = 0
         self.last_roll_was_crit_fail = False
@@ -19,8 +20,8 @@ class dice:
         with open("explosion_quotes.txt") as file:
             self.explosion_quote_list = file.read().splitlines()
 
-    def roll_them_bones(self, type_of_roll, allow_explosions = True):
-        #FIXME: fix the documentation
+    def roll_them_bones(self, type_of_roll, allow_explosions=True):
+        # FIXME: fix the documentation
         """
         # Purpose: Randomizes the dice rolls and prints the max of the rolls
         # Pre: type_of_roll is a 'iniative','benny', or 'damage'
@@ -32,7 +33,6 @@ class dice:
 
         crit_fail = False
         actual_rolls = []
-        print("DEBUG::dice_dictionary::" + str(self.dice_dictionary))
 
         self.last_roll = copy.deepcopy(self.dice_dictionary)
         # if the type_of_roll is a benny then copy the last_roll back into dice_dictionary and roll with previous
@@ -40,8 +40,6 @@ class dice:
         # Set and delete modifier from dice_dictionary
         modifier = self.dice_dictionary['modifier']
         del self.dice_dictionary['modifier']
-        print("DEBUG::modifier:: " + str(modifier))
-        print("DEBUG::dice_dictionary in random_dice_generator::" + str(self.dice_dictionary))
         for dice in self.dice_dictionary.keys():
             for number in range(0, int(self.dice_dictionary[dice])):
                 current_roll = random.randint(1, int(dice))
@@ -49,17 +47,20 @@ class dice:
                     while current_roll == int(dice):
                         self.number_of_explosions += 1
                         current_roll = random.randint(1, int(dice))
-                actual_rolls.append(current_roll+self.number_of_explosions*int(dice))
-                if self.number_of_explosions!=0:
-                    print("* There were " + str(self.number_of_explosions) + " explosions " if self.number_of_explosions!=1 else " explosion " + " on the " + dice + " die")
+                actual_rolls.append(current_roll + self.number_of_explosions * int(dice))
+                if self.number_of_explosions >= 1:
+                    print("* " + "There were " + str(
+                        self.number_of_explosions) + " explosions " + "on the " + dice + " die" if
+                          self.number_of_explosions > 1  else "* " + "There was " + str(self.number_of_explosions) + " explosion " + "on the " + dice + " die")
                 self.number_of_explosions = 0
-        print("DEBUG::actual_roll::" + str(actual_rolls))
+        print("* " + "Your rolls before modifiers were: " + str(actual_rolls)[1:-1])
+        print("* " + "The modifiers used were: " + str(modifier))
         final_roll = max(actual_rolls)
         # below deals with crit fail roll
         # FIXME: if you have multiple dice rolls, if over half crit fail then the entire roll is crit fail
         if final_roll == 1:
             # testing the for loop below
-            random_quote_index = random.randint(0, len(self.crit_quote_list)-1)
+            random_quote_index = random.randint(0, len(self.crit_quote_list) - 1)
             print("* " + str(self.crit_quote_list[random_quote_index]))
             crit_fail = True
             final_roll_with_modifier = final_roll
@@ -85,20 +86,19 @@ class dice:
         if type_of_roll == "init":
             self.dice_dictionary["20"] = 1
             self.roll_them_bones("init", False)
-            #Initiative: does not explode - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers - roll 1d20
+            # Initiative: does not explode - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers - roll 1d20
         elif type_of_roll == "benny":
             self.dice_dictionary = copy.deepcopy(self.last_roll)
             self.roll_them_bones("benny")
         elif type_of_roll == "dmg":
             self.roll_them_bones("dmg")
-            #Damage: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
-        elif type_of_roll ==  "traits":
+            # Damage: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
+        elif type_of_roll == "traits":
             self.dice_dictionary["6"] += 1
             if current_player.wound_count > 0 or current_player.fat_count > 0:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
-            print("DEBUG::pick_your_poison::self.roll_them_bones()::" + str(self.dice_dictionary))
             self.roll_them_bones("traits")
-            #Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
+            # Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
         elif type_of_roll == "soak":
             if current_player.wound_count > 0 and current_player.benny_counter >= 0:
                 self.dice_dictionary["6"] += 1
@@ -111,10 +111,10 @@ class dice:
                     print("That didn't hurt so bad.")
             else:
                 print("You don't have any bennies left")
-            #Soak and Heals - uses wild die - modified by wounds and fatigue - modified by custom modifiers
+            # Soak and Heals - uses wild die - modified by wounds and fatigue - modified by custom modifiers
         else:
             self.roll_them_bones("custom")
-            #Custom: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
+            # Custom: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
 
     def reset_roll(self):
         # FIXME: fix all the documentation
@@ -123,5 +123,5 @@ class dice:
         # Pre:
         # Post:
         """
-        self.dice_dictionary = {'4': 0,'6': 0, '8': 0,'10': 0,'12': 0,'20': 0,'modifier':0}
+        self.dice_dictionary = {'4': 0, '6': 0, '8': 0, '10': 0, '12': 0, '20': 0, 'modifier': 0}
         self.explosions = 0
