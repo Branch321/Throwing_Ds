@@ -159,7 +159,7 @@ if __name__ == '__main__':
             # wound modifier
         # Rerolls the last current_player.last_roll
         elif dice_roll == "benny":
-            # FIXME Not supposed to be able to use benny on crit fails
+            # FIXME: bennies are not currently working
             if current_player.benny_counter == 0:
                 print("No more bennies")
             elif all_dice.last_roll_was_crit_fail:
@@ -190,7 +190,6 @@ if __name__ == '__main__':
             current_player.shaken = True
             # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             while current_player.shaken:
-                main_menu()
                 user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
                 if user_input == "benny":
                     if current_player.benny_counter == 0:
@@ -201,7 +200,7 @@ if __name__ == '__main__':
                         print("You've used a benny to unshake.")
                 else:
                     dice_roll = current_player.traits['spirit']
-                    dice_options = parse_down(dice_roll, all_dice)
+                    parse_down(dice_roll, all_dice)
                     spirit_check_value = all_dice.roll_them_bones("traits", current_player)
                     if spirit_check_value >= 4:
                         current_player.shaken = False
