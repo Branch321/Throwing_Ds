@@ -38,7 +38,7 @@ def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
     # Pre: dice_list is the user input and all_dice is an object of dice class
-    # Post: will modify all_dice
+    # Post: will modify all_dice.dice_dictionary
     """
 
     dice_list_split_on_spaces = dice_list.split(' ')
