@@ -153,7 +153,7 @@ if __name__ == '__main__':
             selected_trait = dice_roll.split(' ')[0]
             dice_roll = dice_roll.replace(selected_trait, current_player.traits[selected_trait])
             parse_down(dice_roll, all_dice)
-            all_dice.pick_your_poison("trait", current_player)
+            all_dice.pick_your_poison("traits", current_player)
         elif "dmg" in dice_roll:
             dice_roll = dice_roll.replace("dmg", '')
             parse_down(dice_roll, all_dice)
@@ -180,7 +180,7 @@ if __name__ == '__main__':
             while current_player.incap:
                 input("* You are incapacitated. Hit enter to roll a vigor.")
                 dice_roll = current_player.traits['vigor']
-                dice_options = parse_down(dice_roll, all_dice)
+                parse_down(dice_roll, all_dice)
                 vigor_check_value = all_dice.roll_them_bones("traits", current_player)
                 if vigor_check_value == 1:
                     death_banner()
@@ -206,13 +206,13 @@ if __name__ == '__main__':
                         print("You've used a benny to unshake.")
                 else:
                     dice_roll = current_player.traits['spirit']
-                    dice_options = parse_down(dice_roll, all_dice)
+                    parse_down(dice_roll, all_dice)
                     spirit_check_value = all_dice.pick_your_poison("traits", current_player)
                     if spirit_check_value >= 4:
                         current_player.shaken = False
         elif dice_roll == "soak":
                 dice_roll = current_player.traits['vigor']
-                dice_options = parse_down(dice_roll, all_dice)
+                parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("soak", current_player)
         elif dice_roll == "heal":
             if current_player.wound_count > 0:
