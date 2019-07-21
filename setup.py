@@ -13,4 +13,4 @@ setup(  name = "Ice Era Assistant",
         version = "1.0",
         options = {'build_exe': includesfiles},
         description = "Ice Era Assistant",
-        executables = [Executable("main.py", base=base)])
+        executables = [Executable("main.py", base=base,shortcutName="Ice Era Assistant",shortcutDir="DesktopFolder")])

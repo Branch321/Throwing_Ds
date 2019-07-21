@@ -59,7 +59,7 @@ def main_menu():
     # Pre: None
     # Post: Will print to standard output
     """
-
+    # TODO We need an option to open up your character sheet ("player.ini")
     print("*" * 65)
     print("*" + " " + "Name: " + current_player.name)
     print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
@@ -85,6 +85,7 @@ def intro_banner():
     # Post: Will print to standard output
     """
     # TODO: Need to multi-thread  the voice to test for the intro_banner function
+    # TODO: Add a character selection so you can have multiple
     print("*" * 65)
     print("* ", end='')
     for letter in "Hello,":
@@ -139,7 +140,7 @@ if __name__ == '__main__':
     current_player = player.player()
     all_dice = dice.dice()
 
-    # intro_banner()
+    intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ")
