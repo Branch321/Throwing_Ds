@@ -83,6 +83,9 @@ class dice:
             self.dice_dictionary["20"] = 1
             self.roll_them_bones("init", False)
             #Initiative: does not explode - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers - roll 1d20
+        elif type_of_roll == "benny":
+            self.dice_dictionary = copy.deepcopy(self.last_roll)
+            self.roll_them_bones("benny")
         elif type_of_roll == "dmg":
             self.roll_them_bones("dmg")
             #Damage: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
