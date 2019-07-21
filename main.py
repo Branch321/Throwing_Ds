@@ -172,7 +172,6 @@ if __name__ == '__main__':
                 current_player.incap = True
                 current_player.wound_count = 3
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
-            # FIXME Cannot get out of incap loop
             while current_player.incap:
                 input("* You are incapacitated. Hit enter to roll a vigor.")
                 dice_roll = current_player.traits['vigor']
@@ -205,8 +204,9 @@ if __name__ == '__main__':
                     dice_roll = current_player.traits['spirit']
                     parse_down(dice_roll, all_dice)
                     all_dice.pick_your_poison("traits", current_player)
-                    if spirit_check_value >= 4:
+                    if all_dice.last_actual_roll >= 4:
                         current_player.shaken = False
+                        print("Your spirit is strong!")
         elif dice_roll == "soak":
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
