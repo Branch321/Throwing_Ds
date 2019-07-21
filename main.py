@@ -188,7 +188,7 @@ if __name__ == '__main__':
 
     intro_banner()
     while True:
-        main_menu()
+        #main_menu()
         dice_roll = input("* Input: ")
         if not sanitize_user_input(dice_roll):
             print("Unrecognized Command.")
