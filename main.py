@@ -82,7 +82,7 @@ def intro_banner_voice():
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
     rate = engine.getProperty('rate')  # getting details of current speaking rate
     engine.setProperty('rate', 125)  # setting up new voice rate
-    engine.say("Hello, ")
+    engine.say("Hello, " + current_player.name)
     engine.say("I am your RPG assistant.")
     engine.say("I hope you have fun in tonight's session.")
     engine.runAndWait()
@@ -101,15 +101,15 @@ def intro_banner():
     # Below is sample code for text to voice
     voice_thread = threading.Thread(target=intro_banner_voice)
     voice_thread.start()
-    time.sleep(.5)
+    time.sleep(.25)
     print("*" * 65)
     print("* ", end='')
-    for letter in "Hello,":
+    for letter in "Hello," + " " + current_player.name:
         print(letter, end='', flush=True)
-        time.sleep(.2)
+        time.sleep(.1)
     print("")
     print("* ", end='')
-    time.sleep(2)
+    time.sleep(1)
     for letter in "I am your RPG assistant.":
         print(letter, end='', flush=True)
         time.sleep(.1)
@@ -118,7 +118,7 @@ def intro_banner():
     time.sleep(1)
     for letter in "I hope you have fun in tonight's session.":
         print(letter, end='', flush=True)
-        time.sleep(.1)
+        time.sleep(.06)
     print("")
     print("*" * 65)
     print("* ", end="")
