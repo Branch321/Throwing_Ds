@@ -187,6 +187,10 @@ if __name__ == '__main__':
     os.system(cmd)
     current_player = player.player()
     all_dice = dice.dice()
+    traits_ls = ("agility,smarts,spirit,strength,vigor,athletics,battle,boating,common knowledge,driving,"
+                 "electronics,faith,fighting,focus,gambling,hacking,healing,intimidation,language,notice,"
+                 "occult,performance,persuasion,piloting,psionics,repair,research,riding,science,shooting,"
+                 "spellcasting,stealth,survival,taunt,thievery,weird science")
     intro_banner()
     while True:
         main_menu()
