@@ -181,7 +181,7 @@ if __name__ == '__main__':
     os.system(cmd)
     current_player = player.player()
     all_dice = dice.dice()
-    # intro_banner()
+    intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ")
