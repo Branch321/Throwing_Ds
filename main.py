@@ -27,7 +27,6 @@ import player
 # TODO: add a full option list in main function for user_input
 # TODO: need to be able to do a "strength 1d4 -2" this is currently not supported.
 # FIXME: modifiers for wounds and fatigues not working
-# FIXME: does not work in python 3.7
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -163,22 +162,23 @@ def sanitize_user_input(command):
     # Pre: None
     # Post: Outputs a True if command is valid and False if not
     """
-
+    # TODO need to change to allow for "dmg trait dice mod" works but "trait dice mod" does not work
+    print("DEBUG::command" + str(command))
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
-    dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d[^0-1]")
-    modifier_regular_expression = re.compile(r"[+-]\d")
+    dice_regular_expression = re.compile(r"([1-9]|[1-9][0-9])d([2-9]|[1-9][0-9])")
+    modifier_regular_expression = re.compile(r"[+-]\d{1,3}")
     possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
                                     "fatigue", "rest", "update"]
     break_up_command = command.split(' ')
     # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
-        if option not in possible_options and not dice_regular_expression.match(
-                option) and not modifier_regular_expression.match(option):
+        if option not in possible_options and not dice_regular_expression.fullmatch(
+                option) and not modifier_regular_expression.fullmatch(option):
             follows_rules = False
         if option in possible_options and break_up_command.count(option) > 1:
             follows_rules = False
-        if modifier_regular_expression.match(option) and break_up_command.count(option) > 1:
+        if modifier_regular_expression.fullmatch(option) and break_up_command.count(option) > 1:
             follows_rules = False
     return follows_rules
 
@@ -196,7 +196,7 @@ if __name__ == '__main__':
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
-    intro_banner()
+    # intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
@@ -211,7 +211,7 @@ if __name__ == '__main__':
             print("*" * 65)
         else:
             print("*" * 65)
-
+            print("DEBUG::main_menu::" + str(dice_roll))
             # TODO damage for melee weapons includes trait dice
             # For rolling initiative
             # Roll a d20 for init with no modifier and no default d6
