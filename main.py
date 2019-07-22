@@ -24,6 +24,9 @@ import player
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
 # FIXME: crashes on "dmg strength 1d4"
+# FIXME: 1d0 and 1d1 are ALL MESSED UP
+# TODO: Add unskilled rolls
+
 
 # TODO before release: sanitizer , update player.ini in main menu, output fat/wound, and maybe a logger.
 def parse_down(dice_list, all_dice):
@@ -60,17 +63,21 @@ def main_menu():
     # FIXME: Need to make the "Last Roll" option look prettier
     print("*" + " Last Roll - " + str(all_dice.last_roll))
     print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
-    print("*" + " " * 20 + "Attribute roll (Format: vigor -2)")
+    print("*" + " " * 20 + "Trait roll (Format: vigor -2)")
     print("*" + " " * 20 + "Reroll with a benny (Format: benny)")
     print("*" + " " * 20 + "Roll for initiative (Format: init)")
     print("*" + " " * 20 + "Roll for damage (Format: dmg 1d4 -2)")
     print("*" + " " * 20 + "Shaken status (Format: shaken)")
-    print("*" + " " * 20 + "Exit this program (Format: exit)")
+    print("*" + " " * 20 + "Take a fatigue (Format: fatigue)")
     print("*" + " " * 20 + "Take a wound (Format: wound)")
+    print("*" + " " * 20 + "Heal from wound (Format: heal)")
+    print("*" + " " * 20 + "Rest from fatigue (Format: rest)")
+    print("*" + " " * 20 + "Exit this program (Format: exit)")
     print("*" * 65)
 
 
 def intro_banner_voice():
+    onWord.index = 0
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
@@ -148,7 +155,7 @@ def death_banner():
 def sanitize_user_input(command):
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
-    dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d\d")
+    dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d\d[>1]")
     modifier_regular_expression = re.compile(r"[+-]\d")
     number_of_modifiers = 0
     possible_options = list(current_player.traits.keys())
