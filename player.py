@@ -32,6 +32,11 @@ class player:
         self.name = self.config['name']['name']
     #we will use this function for exiting the program and writing all variables back out to player.ini
     def time_to_quit(self):
+        """
+        # Purpose:
+        # Pre:
+        # Post:
+        """
         self.config.set("wounds","wounds", str(self.wound_count))
         self.config.set("fatigue","fatigue",str(self.fat_count))
         with open("player.ini",'w') as file:
@@ -39,4 +44,9 @@ class player:
 
     # We will use this function if we need to make a seperate incap loop for fat and wound
     def incap_loop(self):
+        """
+        # Purpose:
+        # Pre:
+        # Post:
+        """
         pass

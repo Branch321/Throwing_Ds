@@ -19,16 +19,10 @@ import player
 # TODO: Add an ascii dice in the far future
 # TODO: Need to add a verbosity flag for DEBUG:: messages
 # TODO: Add better commenting
-# TODO: Need to add a sanitization function to stop program from crashing on bad input
-# TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-# FIXME: crashes on "dmg strength 1d4"
-# FIXME: 1d0 and 1d1 are ALL MESSED UP
 # TODO: Add unskilled rolls
-
-
-# TODO before release: sanitizer , update player.ini in main menu, output fat/wound, and maybe a logger.
+# TODO before release: sanitizer, and maybe a logger.
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -78,6 +72,12 @@ def main_menu():
 
 
 def intro_banner_voice():
+    """
+    # Purpose:
+    # Pre:
+    # Post:
+    """
+
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
@@ -153,6 +153,12 @@ def death_banner():
 
 
 def sanitize_user_input(command):
+    """
+    # Purpose:
+    # Pre:
+    # Post:
+    """
+
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
     dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d[^0-1]")
