@@ -26,6 +26,8 @@ import player
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
 # TODO: need to be able to do a "strength 1d4 -2" this is currently not supported.
+# FIXME: modifiers for wounds and fatigues not working
+# FIXME: does not work in python 3.7
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -194,7 +196,7 @@ if __name__ == '__main__':
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
-    # intro_banner()
+    intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
