@@ -20,16 +20,19 @@ class player:
         self.last_roll = {}
         self.benny_counter = 3
         self.traits = {}
-        config = configparser.ConfigParser()
-        config.read('player.ini')
-        for key in config['traits']:
-            self.traits[key] = config['traits'][key]
-        self.wound_count = int(config['wounds']['wounds'])
-        self.fat_count = int(config['fatigue']['fatigue'])
+        self.config = configparser.ConfigParser()
+        self.config.read('player.ini')
+        for key in self.config['traits']:
+            self.traits[key] = self.config['traits'][key]
+        self.wound_count = int(self.config['wounds']['wounds'])
+        self.fat_count = int(self.config['fatigue']['fatigue'])
         self.shaken = False
         self.session_duration = datetime.time
         self.incap = False
-        self.name = config['name']['name']
-
+        self.name = self.config['name']['name']
+    #we will use this function for exiting the program and writing all variables back out to player.ini
     def time_to_quit(self):
-        pass
+        self.config.set("wounds","wounds", str(self.wound_count))
+        self.config.set("fatigue","fatigue",str(self.fat_count))
+        with open("player.ini",'w') as file:
+            self.config.write(file)

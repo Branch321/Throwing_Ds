@@ -14,7 +14,7 @@ import player
 
 
 # TODO: Add this to Discord for friends to use
-# TODO Check for luck and great luck edges
+# TODO: Check for luck and great luck edges
 # TODO: Add an ascii dice in the far future
 # TODO: Need to add a verbosity flag for DEBUG:: messages
 # TODO: Add better commenting
@@ -307,6 +307,7 @@ if __name__ == '__main__':
             elif dice_roll == "exit":
                 # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
                 print("* " + "You played for ")
+                current_player.time_to_quit()
                 sys.exit()
             else:
                 parse_down(dice_roll, all_dice)
