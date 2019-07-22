@@ -73,6 +73,7 @@ def main_menu():
     print("*" + " " * 20 + "Heal from wound (Format: heal)")
     print("*" + " " * 20 + "Rest from fatigue (Format: rest)")
     print("*" + " " * 20 + "Exit this program (Format: exit)")
+    print("*" + " " * 20 + "Update your character sheet (Format: update)")
     print("*" * 65)
 
 
@@ -159,7 +160,7 @@ def sanitize_user_input(command):
     number_of_modifiers = 0
     possible_options = list(current_player.traits.keys())
     possible_options.extend(
-        ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest"])
+        ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest","update"])
     break_up_command = command.split(' ')
     # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
@@ -301,6 +302,8 @@ if __name__ == '__main__':
                 print("* " + "You played for ")
                 current_player.time_to_quit()
                 sys.exit()
+            elif dice_roll =="update":
+                os.system("player.ini")
             else:
                 parse_down(dice_roll, all_dice)
                 all_dice.roll_them_bones("custom_roll", current_player)
