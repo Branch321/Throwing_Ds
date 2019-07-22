@@ -5,8 +5,8 @@
 import os
 import re
 import sys
-import time
 import threading
+import time
 
 import pyttsx3
 
@@ -70,7 +70,6 @@ def main_menu():
     print("*" * 65)
 
 
-
 def intro_banner_voice():
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
@@ -115,8 +114,8 @@ def intro_banner():
         print(letter, end='', flush=True)
         time.sleep(.1)
     print("")
-    print("*"*65)
-    print("* ",end="")
+    print("*" * 65)
+    print("* ", end="")
     print("Loading", end='')
     time.sleep(1)
     for letter in "....":
