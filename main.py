@@ -187,14 +187,19 @@ if __name__ == '__main__':
     current_player = player.player()
     all_dice = dice.dice()
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
-                 'common knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
+                 'common_knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
-                 'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird science']
+                 'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
     #intro_banner()
     while True:
         main_menu()
-        dice_roll = input("* Input: ")
+        dice_roll = input("* Input: ").lower()
+        if "weird science" in dice_roll:
+            dice_roll = dice_roll.replace("weird science", "weird_science")
+        if "common knowledge" in dice_roll:
+            dice_roll = dice_roll.replace("common knowledge", "weird_science")
+        print("DEBUG::dice_roll", dice_roll)
         if not sanitize_user_input(dice_roll):
             print("* Unrecognized Command.")
             print("*" * 65)
