@@ -51,7 +51,8 @@ class dice:
                 if self.number_of_explosions >= 1:
                     print("* " + "There were " + str(
                         self.number_of_explosions) + " explosions " + "on the " + dice + " die" if
-                          self.number_of_explosions > 1  else "* " + "There was " + str(self.number_of_explosions) + " explosion " + "on the " + dice + " die")
+                          self.number_of_explosions > 1 else "* " + "There was " + str(
+                        self.number_of_explosions) + " explosion " + "on the " + dice + " die")
                 self.number_of_explosions = 0
         print("* " + "Your rolls before modifiers were: " + str(actual_rolls)[1:-1])
         print("* " + "The modifiers used were: " + str(modifier))

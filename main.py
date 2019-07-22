@@ -77,7 +77,6 @@ def main_menu():
 
 
 def intro_banner_voice():
-    onWord.index = 0
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
