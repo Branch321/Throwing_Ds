@@ -33,3 +33,7 @@ class player:
 
     def time_to_quit(self):
         pass
+
+    # We will use this function if we need to make a seperate incap loop for fat and wound
+    def incap_loop(self):
+        pass
