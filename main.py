@@ -23,6 +23,9 @@ import player
 # TODO: Create a logger for all dice history
 # TODO: Add unskilled rolls
 # TODO before release: sanitizer, and maybe a logger.
+# FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
+# TODO: add a full option list in main function for user_input
+# TODO: need to be able to do a "strength 1d4 -2" this is currently not supported.
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -73,9 +76,9 @@ def main_menu():
 
 def intro_banner_voice():
     """
-    # Purpose:
-    # Pre:
-    # Post:
+    # Purpose: Does all speech to text
+    # Pre: None
+    # Post: Outputs audio
     """
 
     engine = pyttsx3.init()
@@ -154,17 +157,17 @@ def death_banner():
 
 def sanitize_user_input(command):
     """
-    # Purpose:
-    # Pre:
-    # Post:
+    # Purpose: Takes the raw user input and checks to see if valid
+    # Pre: None
+    # Post: Outputs a True if command is valid and False if not
     """
 
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
     dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d[^0-1]")
     modifier_regular_expression = re.compile(r"[+-]\d")
-    number_of_modifiers = 0
-    possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest", "update"]
+    possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
+                                    "fatigue", "rest", "update"]
     break_up_command = command.split(' ')
     # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
@@ -180,16 +183,18 @@ def sanitize_user_input(command):
 
 # Main Start of Program
 if __name__ == '__main__':
-    cmd = 'mode 65,40'
+    # sets window size of terminal
+    cmd = 'mode 66,40'
     os.system(cmd)
     current_player = player.player()
     all_dice = dice.dice()
+    # list of all the traits and skills
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
                  'common_knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
-    #intro_banner()
+    # intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
@@ -198,6 +203,7 @@ if __name__ == '__main__':
             dice_roll = dice_roll.replace("weird science", "weird_science")
         if "common knowledge" in dice_roll:
             dice_roll = dice_roll.replace("common knowledge", "weird_science")
+        # if user input is not valid ignore rest of main program
         if not sanitize_user_input(dice_roll):
             print("* Unrecognized Command.")
             print("*" * 65)
@@ -210,7 +216,7 @@ if __name__ == '__main__':
             if dice_roll == "init":
                 all_dice.pick_your_poison("init", current_player)
 
-            # For rolling traits and any other dice than below
+            # For rolling traits, first elif statemnts is traits you have and second is traits you do not have
             elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
                 selected_trait = dice_roll.split(' ')[0]
                 dice_roll = dice_roll.replace(selected_trait, current_player.traits[selected_trait])
@@ -218,9 +224,9 @@ if __name__ == '__main__':
                 all_dice.pick_your_poison("traits", current_player)
             elif any(elem in dice_roll.split(' ') for elem in traits_ls):
                 selected_trait = dice_roll.split(' ')[0]
-                dice_roll = dice_roll.replace(selected_trait,'1d4 -2')
-                parse_down(dice_roll,all_dice)
-                all_dice.pick_your_poison("other_traits",current_player)
+                dice_roll = dice_roll.replace(selected_trait, '1d4 -2')
+                parse_down(dice_roll, all_dice)
+                all_dice.pick_your_poison("other_traits", current_player)
 
             # For rolling damage
             elif "dmg" in dice_roll:
@@ -229,6 +235,7 @@ if __name__ == '__main__':
                 all_dice.pick_your_poison("dmg", current_player)
 
             # For rerolling using bennies
+            # FIXME: need a way to increase bennies
             elif dice_roll == "benny":
                 if current_player.benny_counter == 0:
                     print("No more bennies")
@@ -249,11 +256,13 @@ if __name__ == '__main__':
                     dice_roll = current_player.traits['vigor']
                     parse_down(dice_roll, all_dice)
                     all_dice.pick_your_poison("traits", current_player)
+                    # You die if you crit fail in incapacitated
                     if all_dice.last_roll_was_crit_fail:
                         death_banner()
                         current_player.dead = True
                     if all_dice.last_actual_roll >= 4:
                         current_player.incap = False
+                # FIXME: I don't think the if statement below needs to be here
                 if current_player.wound_count >= 3:
                     current_player.wound_count = 3
                 else:
@@ -264,6 +273,7 @@ if __name__ == '__main__':
             elif dice_roll == "shaken":
                 current_player.shaken = True
                 while current_player.shaken:
+                    # FIXME: could remove this main_menu() during shaken
                     main_menu()
                     user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
                     if user_input == "benny":
