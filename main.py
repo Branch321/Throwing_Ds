@@ -62,18 +62,18 @@ def main_menu():
     print("*          " + "Fatigue: " + str(current_player.fat_count))
     # FIXME: Need to make the "Last Roll" option look prettier
     print("*" + " Last Roll - " + str(all_dice.last_roll))
-    print("*" + " Types of Commands- Roll a dice (Format: 1d10 2d20 -2)")
-    print("*" + " " * 20 + "Trait roll (Format: vigor -2)")
-    print("*" + " " * 20 + "Reroll with a benny (Format: benny)")
-    print("*" + " " * 20 + "Roll for initiative (Format: init)")
-    print("*" + " " * 20 + "Roll for damage (Format: dmg 1d4 -2)")
-    print("*" + " " * 20 + "Shaken status (Format: shaken)")
-    print("*" + " " * 20 + "Take a fatigue (Format: fatigue)")
-    print("*" + " " * 20 + "Take a wound (Format: wound)")
-    print("*" + " " * 20 + "Heal from wound (Format: heal)")
-    print("*" + " " * 20 + "Rest from fatigue (Format: rest)")
-    print("*" + " " * 20 + "Exit this program (Format: exit)")
-    print("*" + " " * 20 + "Update your character sheet (Format: update)")
+    print("*" + " Types of Commands - Roll a dice (Format: 1d10 2d20 -2)")
+    print("*" + " " * 21 + "Trait roll (Format: vigor -2)")
+    print("*" + " " * 21 + "Reroll with a benny (Format: benny)")
+    print("*" + " " * 21 + "Roll for initiative (Format: init)")
+    print("*" + " " * 21 + "Roll for damage (Format: dmg 1d4 -2)")
+    print("*" + " " * 21 + "Shaken status (Format: shaken)")
+    print("*" + " " * 21 + "Take a fatigue (Format: fatigue)")
+    print("*" + " " * 21 + "Take a wound (Format: wound)")
+    print("*" + " " * 21 + "Heal from wound (Format: heal)")
+    print("*" + " " * 21 + "Rest from fatigue (Format: rest)")
+    print("*" + " " * 21 + "Exit this program (Format: exit)")
+    print("*" + " " * 21 + "Update character sheet (Format: update)")
     print("*" * 65)
 
 
@@ -160,8 +160,9 @@ def sanitize_user_input(command):
     number_of_modifiers = 0
     possible_options = list(current_player.traits.keys())
     possible_options.extend(
-        ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest","update"])
+        ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest", "update"])
     break_up_command = command.split(' ')
+    print("DEBUG::dmg::" + str(break_up_command))
     # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
         if option not in possible_options and not dice_regular_expression.match(
@@ -180,7 +181,7 @@ if __name__ == '__main__':
     os.system(cmd)
     current_player = player.player()
     all_dice = dice.dice()
-    intro_banner()
+    # intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ")
@@ -302,7 +303,7 @@ if __name__ == '__main__':
                 print("* " + "You played for ")
                 current_player.time_to_quit()
                 sys.exit()
-            elif dice_roll =="update":
+            elif dice_roll == "update":
                 os.system("player.ini")
             else:
                 parse_down(dice_roll, all_dice)
