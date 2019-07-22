@@ -280,24 +280,21 @@ if __name__ == '__main__':
                 else:
                     print("* " + "You do not have any wounds to heal.")
 
-            # For fatigue counting
+            # For fatigue counting, incapacitation, and resting
             elif dice_roll == "fatigue":
-                if current_player.fat_count == 3:
-                    print(current_player.fat_count)
-                    current_player.fat_count = 3
+                if current_player.fat_count == 2:
                     current_player.incap = True
-                    print(current_player.incap)
+                    current_player.fat_count = 3
+                    while current_player.incap:
+                        rest_input = input("* " + "You are incapacitated and need rest.")
+                        if rest_input == "rest":
+                            current_player.fat_count = 0
+                            current_player.incap = False
+                            print("* " + "You feel rested.")
+                        else:
+                            pass
                 else:
                     current_player.fat_count += 1
-
-            # For recovering from fatigue using "rest" command
-            elif dice_roll == "rest":
-                if current_player.fat_count == 3 and current_player.incap:
-                    current_player.fat_count = 0
-                    current_player.incap = False
-                    print("* " + "You feel rested.")
-                else:
-                    print("* " + "You aren't quite tired enough to sleep.")
 
             # To roll death banner
             elif dice_roll == "death":
