@@ -155,7 +155,7 @@ def death_banner():
 def sanitize_user_input(command):
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
-    dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d\d[>1]")
+    dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d[^0-1]")
     modifier_regular_expression = re.compile(r"[+-]\d")
     number_of_modifiers = 0
     possible_options = list(current_player.traits.keys())
