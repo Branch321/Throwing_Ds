@@ -22,7 +22,7 @@ import player
 # TODO: Added a text to voice for introduction
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-
+# FIXME: crashes on "dmg strength 1d4"
 
 # TODO before release: sanitizer , update player.ini in main menu, output fat/wound, and maybe a logger.
 def parse_down(dice_list, all_dice):
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     current_player = player.player()
     all_dice = dice.dice()
 
-    # intro_banner()
+    intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ")
