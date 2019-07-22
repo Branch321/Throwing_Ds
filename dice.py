@@ -100,6 +100,11 @@ class dice:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
             self.roll_them_bones("traits")
             # Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
+        elif type_of_roll =="other_traits":
+            self.dice_dictionary["6"]+=1
+            if current_player.wound_count > 0 or current_player.fat_count > 0:
+                self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
+            self.roll_them_bones("traits")
         elif type_of_roll == "soak":
             if current_player.wound_count > 0 and current_player.benny_counter >= 0:
                 self.dice_dictionary["6"] += 1

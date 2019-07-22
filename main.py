@@ -39,6 +39,7 @@ def parse_down(dice_list, all_dice):
             all_dice.dice_dictionary[split_dice[1]] = int(split_dice[0])
         # condition for modifier
         if '-' in each_dice or '+' in each_dice:
+            print("adding a modifier of " + each_dice)
             all_dice.dice_dictionary['modifier'] = int(each_dice)
 
 
@@ -164,9 +165,7 @@ def sanitize_user_input(command):
     dice_regular_expression = re.compile(r"^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])d[^0-1]")
     modifier_regular_expression = re.compile(r"[+-]\d")
     number_of_modifiers = 0
-    possible_options = list(current_player.traits.keys())
-    possible_options.extend(
-        ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest", "update"])
+    possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest", "update"]
     break_up_command = command.split(' ')
     print("DEBUG::dmg::" + str(break_up_command))
     # FIXME need to check for unique occurence of modifeirs and traits
@@ -187,11 +186,12 @@ if __name__ == '__main__':
     os.system(cmd)
     current_player = player.player()
     all_dice = dice.dice()
-    traits_ls = ("agility,smarts,spirit,strength,vigor,athletics,battle,boating,common knowledge,driving,"
-                 "electronics,faith,fighting,focus,gambling,hacking,healing,intimidation,language,notice,"
-                 "occult,performance,persuasion,piloting,psionics,repair,research,riding,science,shooting,"
-                 "spellcasting,stealth,survival,taunt,thievery,weird science")
-    intro_banner()
+    traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
+                 'common knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
+                 'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
+                 'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
+                 'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird science']
+    #intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ")
@@ -213,6 +213,11 @@ if __name__ == '__main__':
                 dice_roll = dice_roll.replace(selected_trait, current_player.traits[selected_trait])
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("traits", current_player)
+            elif any(elem in dice_roll.split(' ') for elem in traits_ls):
+                selected_trait = dice_roll.split(' ')[0]
+                dice_roll = dice_roll.replace(selected_trait,'1d4 -2')
+                parse_down(dice_roll,all_dice)
+                all_dice.pick_your_poison("other_traits",current_player)
 
             # For rolling damage
             elif "dmg" in dice_roll:
