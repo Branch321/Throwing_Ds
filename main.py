@@ -25,8 +25,6 @@ import player
 # TODO before release: sanitizer, and maybe a logger.
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
-# TODO: need to be able to do a "strength 1d4 -2" this is currently not supported.
-# FIXME: modifiers for wounds and fatigues not working
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
