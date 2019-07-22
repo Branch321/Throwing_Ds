@@ -39,7 +39,6 @@ def parse_down(dice_list, all_dice):
             all_dice.dice_dictionary[split_dice[1]] = int(split_dice[0])
         # condition for modifier
         if '-' in each_dice or '+' in each_dice:
-            print("adding a modifier of " + each_dice)
             all_dice.dice_dictionary['modifier'] = int(each_dice)
 
 
@@ -167,7 +166,6 @@ def sanitize_user_input(command):
     number_of_modifiers = 0
     possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit", "fatigue", "rest", "update"]
     break_up_command = command.split(' ')
-    print("DEBUG::dmg::" + str(break_up_command))
     # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
         if option not in possible_options and not dice_regular_expression.match(
@@ -195,11 +193,11 @@ if __name__ == '__main__':
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
+        # had to add a check for options with a space in them
         if "weird science" in dice_roll:
             dice_roll = dice_roll.replace("weird science", "weird_science")
         if "common knowledge" in dice_roll:
             dice_roll = dice_roll.replace("common knowledge", "weird_science")
-        print("DEBUG::dice_roll", dice_roll)
         if not sanitize_user_input(dice_roll):
             print("* Unrecognized Command.")
             print("*" * 65)
