@@ -96,8 +96,11 @@ def pick_your_character():
     list_of_characters = os.listdir("characters/")
     list_of_characters_without_file_format = [elem[:-4] for elem in list_of_characters]
     print("*"*65)
+    print("* Character List: ")
+    print("* ---------------")
     for character in list_of_characters_without_file_format:
         print("* " + character)
+    print("*")
     while user_character_input not in list_of_characters_without_file_format:
         user_character_input = input("* Which character would you like to play?")
     return user_character_input
