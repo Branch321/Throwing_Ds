@@ -91,6 +91,16 @@ def intro_banner_voice():
     engine.runAndWait()
     engine.stop()
 
+def pick_your_character():
+    user_character_input = ""
+    list_of_characters = os.listdir("characters/")
+    list_of_characters_without_file_format = [elem[:-4] for elem in list_of_characters]
+    print("*"*65)
+    for character in list_of_characters_without_file_format:
+        print("* " + character)
+    while user_character_input not in list_of_characters_without_file_format:
+        user_character_input = input("* Which character would you like to play?")
+    return user_character_input
 
 def intro_banner():
     """
@@ -107,7 +117,7 @@ def intro_banner():
     time.sleep(.25)
     print("*" * 65)
     print("* ", end='')
-    for letter in "Hello," + " " + current_player.name:
+    for letter in "Hello " + " " + current_player.name + ",":
         print(letter, end='', flush=True)
         time.sleep(.1)
     print("")
@@ -201,8 +211,10 @@ if __name__ == '__main__':
     # sets window size of terminal
     cmd = 'mode 66,40'
     os.system(cmd)
-    current_player = player.player()
+    chosen_character = pick_your_character()
+    current_player = player.player(chosen_character)
     all_dice = dice.dice()
+    intro_banner()
     # list of all the traits and skills
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
                  'common_knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
@@ -210,7 +222,6 @@ if __name__ == '__main__':
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
     #update_character_sheets()
-    # intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
@@ -225,7 +236,6 @@ if __name__ == '__main__':
             print("*" * 65)
         else:
             print("*" * 65)
-            print("DEBUG::main_menu::" + str(dice_roll))
             # TODO damage for melee weapons includes trait dice
             # For rolling initiative
             # Roll a d20 for init with no modifier and no default d6
