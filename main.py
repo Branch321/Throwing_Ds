@@ -1,5 +1,5 @@
 # Throwing_Ds is a dice roller for table top games(mostly Savage Worlds)
-# Written in Python 3.6
+# Written in Python 3.6.1
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
 import os
@@ -231,7 +231,11 @@ if __name__ == '__main__':
             # Roll a d20 for init with no modifier and no default d6
             if dice_roll == "init":
                 all_dice.pick_your_poison("init", current_player)
-
+            # For rolling damage
+            elif "dmg" in dice_roll:
+                dice_roll = dice_roll.replace("dmg", '')
+                parse_down(dice_roll, all_dice)
+                all_dice.pick_your_poison("dmg", current_player)
             # For rolling traits, first elif statemnts is traits you have and second is traits you do not have
             elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
                 selected_trait = dice_roll.split(' ')[0]
@@ -243,12 +247,6 @@ if __name__ == '__main__':
                 dice_roll = dice_roll.replace(selected_trait, '1d4 -2')
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("other_traits", current_player)
-
-            # For rolling damage
-            elif "dmg" in dice_roll:
-                dice_roll = dice_roll.replace("dmg", '')
-                parse_down(dice_roll, all_dice)
-                all_dice.pick_your_poison("dmg", current_player)
 
             # For rerolling using bennies
             # FIXME: need a way to increase bennies
