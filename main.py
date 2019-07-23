@@ -24,6 +24,7 @@ import player
 # TODO: Create a logger for all dice history
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
+# TODO: need to upload character sheets after done
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -124,7 +125,7 @@ def intro_banner():
     print("")
     print("*" * 65)
     print("* ", end="")
-    print("Loading", end='')
+    print("Updating your character sheets now", end='')
     time.sleep(1)
     for letter in "....":
         print(letter, end='', flush=True)
@@ -185,7 +186,6 @@ def update_character_sheets():
     # Pre:
     # Post:
     """
-
     ftp = FTP('')
     ftp.connect('localhost', 1026)
     ftp.login()
