@@ -7,6 +7,7 @@ import re
 import sys
 import threading
 import time
+from ftplib import FTP
 
 import pyttsx3
 
@@ -21,8 +22,6 @@ import player
 # TODO: Add better commenting
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # TODO: Create a logger for all dice history
-# TODO: Add unskilled rolls
-# TODO before release: sanitizer, and maybe a logger.
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
 def parse_down(dice_list, all_dice):
@@ -180,6 +179,22 @@ def sanitize_user_input(command):
             follows_rules = False
     return follows_rules
 
+def update_character_sheets():
+    """
+    # Purpose:
+    # Pre:
+    # Post:
+    """
+
+    ftp = FTP('')
+    ftp.connect('localhost', 1026)
+    ftp.login()
+    list_of_files = ftp.nlst()
+
+    for character in list_of_files:
+        with open("characters/" + character, 'wb') as file:
+            ftp.retrbinary('RETR ' + character, file.write, 1024)
+    ftp.quit()
 
 # Main Start of Program
 if __name__ == '__main__':
@@ -194,6 +209,7 @@ if __name__ == '__main__':
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
+    #update_character_sheets()
     # intro_banner()
     while True:
         main_menu()
