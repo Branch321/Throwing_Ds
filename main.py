@@ -25,6 +25,7 @@ import player
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
 # TODO: need to upload character sheets after done
+# FIXME: rest causes the program to crash
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
