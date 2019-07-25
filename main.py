@@ -1,5 +1,5 @@
 # Throwing_Ds is a dice roller for table top games(mostly Savage Worlds)
-# Written in Python 3.6
+# Written in Python 3.6.1
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
 import os
@@ -25,6 +25,7 @@ import player
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
 # TODO: need to upload character sheets after done
+# FIXME: rest causes the program to crash
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -50,7 +51,6 @@ def main_menu():
     # Pre: None
     # Post: Will print to standard output
     """
-    # TODO We need an option to open up your character sheet ("player.ini")
     print("*" * 65)
     print("*" + " " + "Name: " + current_player.name)
     print("*" + " Status - " + "Bennies: " + str(current_player.benny_counter))
@@ -91,6 +91,19 @@ def intro_banner_voice():
     engine.runAndWait()
     engine.stop()
 
+def pick_your_character():
+    user_character_input = ""
+    list_of_characters = os.listdir("characters/")
+    list_of_characters_without_file_format = [elem[:-4] for elem in list_of_characters]
+    print("*"*65)
+    print("* Character List: ")
+    print("* ---------------")
+    for character in list_of_characters_without_file_format:
+        print("* " + character)
+    print("*")
+    while user_character_input not in list_of_characters_without_file_format:
+        user_character_input = input("* Which character would you like to play? ")
+    return user_character_input
 
 def intro_banner():
     """
@@ -98,8 +111,6 @@ def intro_banner():
     # Pre: None
     # Post: Will print to standard output
     """
-    # TODO: Need to multi-thread  the voice to test for the intro_banner function
-    # TODO: Add a character selection so you can have multiple
     # TODO: change how this works using callbacks so the prints happen with the voice
     # Below is sample code for text to voice
     voice_thread = threading.Thread(target=intro_banner_voice)
@@ -107,7 +118,7 @@ def intro_banner():
     time.sleep(.25)
     print("*" * 65)
     print("* ", end='')
-    for letter in "Hello," + " " + current_player.name:
+    for letter in "Hello " + " " + current_player.name + ",":
         print(letter, end='', flush=True)
         time.sleep(.1)
     print("")
@@ -169,7 +180,6 @@ def sanitize_user_input(command):
     possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
                                     "fatigue", "rest", "update"]
     break_up_command = command.split(' ')
-    # FIXME need to check for unique occurence of modifeirs and traits
     for option in break_up_command:
         if option not in possible_options and not dice_regular_expression.fullmatch(
                 option) and not modifier_regular_expression.fullmatch(option):
@@ -196,13 +206,25 @@ def update_character_sheets():
             ftp.retrbinary('RETR ' + character, file.write, 1024)
     ftp.quit()
 
+def dmg_menu():
+    os.system("cls")
+    print("*"*65)
+    print("* Weapons List:")
+    print("* ---------------")
+    list_to_choose_from = list(enumerate(current_player.weapons_dictionary.keys(),start=1))
+    for weapon in list_to_choose_from:
+        print("* " + str(weapon[0]) +") "+  weapon[1])
+    dmg_menu_user_input = input("Type in number of weapon or custom roll. ")
+
 # Main Start of Program
 if __name__ == '__main__':
     # sets window size of terminal
     cmd = 'mode 66,40'
     os.system(cmd)
-    current_player = player.player()
+    chosen_character = pick_your_character()
+    current_player = player.player(chosen_character)
     all_dice = dice.dice()
+    #intro_banner()
     # list of all the traits and skills
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
                  'common_knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
@@ -210,7 +232,6 @@ if __name__ == '__main__':
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
     #update_character_sheets()
-    # intro_banner()
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
@@ -225,13 +246,18 @@ if __name__ == '__main__':
             print("*" * 65)
         else:
             print("*" * 65)
-            print("DEBUG::main_menu::" + str(dice_roll))
             # TODO damage for melee weapons includes trait dice
             # For rolling initiative
             # Roll a d20 for init with no modifier and no default d6
             if dice_roll == "init":
                 all_dice.pick_your_poison("init", current_player)
 
+            # For rolling damage
+            elif "dmg" in dice_roll:
+                #dice_roll = dice_roll.replace("dmg", '')
+                #parse_down(dice_roll, all_dice)
+                #all_dice.pick_your_poison("dmg", current_player)
+                dmg_menu()
             # For rolling traits, first elif statemnts is traits you have and second is traits you do not have
             elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
                 selected_trait = dice_roll.split(' ')[0]
@@ -244,17 +270,13 @@ if __name__ == '__main__':
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("other_traits", current_player)
 
-            # For rolling damage
-            elif "dmg" in dice_roll:
-                dice_roll = dice_roll.replace("dmg", '')
-                parse_down(dice_roll, all_dice)
-                all_dice.pick_your_poison("dmg", current_player)
-
             # For rerolling using bennies
             # FIXME: need a way to increase bennies
             elif dice_roll == "benny":
                 if current_player.benny_counter == 0:
-                    print("No more bennies")
+                    print("No more bennies.")
+                elif not current_player.last_roll:
+                    print("Why would you try to benny when you haven't rolled a single die yet.")
                 elif all_dice.last_roll_was_crit_fail:
                     print("* You cannot benny if you crit failed last roll.")
                 else:

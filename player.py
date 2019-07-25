@@ -16,12 +16,13 @@ class player:
     #            incap - boolean determines if player is incapacitated
     """
 
-    def __init__(self):
+    def __init__(self,name_of_character):
         self.last_roll = {}
         self.benny_counter = 3
         self.traits = {}
+        self.weapons_dictionary = {}
         self.config = configparser.ConfigParser()
-        self.config.read('player.ini')
+        self.config.read('characters/' + name_of_character+'.ini')
         for key in self.config['traits']:
             self.traits[key] = self.config['traits'][key]
         self.wound_count = int(self.config['wounds']['wounds'])
@@ -30,6 +31,8 @@ class player:
         self.session_duration = datetime.time
         self.incap = False
         self.name = self.config['name']['name']
+        for weapon in self.config['weapons']:
+            self.weapons_dictionary[weapon] = self.config['weapons'][weapon]
     #we will use this function for exiting the program and writing all variables back out to player.ini
     def time_to_quit(self):
         """
