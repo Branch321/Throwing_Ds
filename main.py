@@ -101,6 +101,8 @@ def pick_your_character():
     for character in list_of_characters_without_file_format:
         print("* " + character)
     print("*")
+    #FIXME get rid of the line below this
+    user_character_input = "Toskurr"
     while user_character_input not in list_of_characters_without_file_format:
         user_character_input = input("* Which character would you like to play? ")
     return user_character_input
@@ -206,6 +208,7 @@ def update_character_sheets():
             ftp.retrbinary('RETR ' + character, file.write, 1024)
     ftp.quit()
 
+
 def dmg_menu():
     os.system("cls")
     print("*"*65)
@@ -214,7 +217,10 @@ def dmg_menu():
     list_to_choose_from = list(enumerate(current_player.weapons_dictionary.keys(),start=1))
     for weapon in list_to_choose_from:
         print("* " + str(weapon[0]) +") "+  weapon[1])
-    dmg_menu_user_input = input("Type in number of weapon or custom roll. ")
+    dmg_menu_user_input = input("* Type in number of weapon or custom roll. ")
+    dmg_menu_user_input = current_player.weapons_dictionary[list_to_choose_from[int(dmg_menu_user_input)-1][1]].replace("+"," ")
+    print("Is input good? " + str(sanitize_user_input(dmg_menu_user_input)))
+
 
 # Main Start of Program
 if __name__ == '__main__':
@@ -273,6 +279,7 @@ if __name__ == '__main__':
             # For rerolling using bennies
             # FIXME: need a way to increase bennies
             elif dice_roll == "benny":
+                print(current_player.last_roll)
                 if current_player.benny_counter == 0:
                     print("No more bennies.")
                 elif not current_player.last_roll:
