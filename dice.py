@@ -106,7 +106,7 @@ class dice:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
             self.roll_them_bones("traits")
         elif type_of_roll == "soak":
-            if current_player.wound_count > 0 and current_player.benny_counter >= 0:
+            if current_player.wound_count > 0 and current_player.benny_counter > 0:
                 self.dice_dictionary["6"] += 1
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
                 current_player.benny_counter -= 1
@@ -115,8 +115,15 @@ class dice:
                     soak_roll = self.last_actual_roll / 4
                     current_player.wound_count -= soak_roll
                     print("That didn't hurt so bad.")
+                if current_player.benny_counter < 1:
+                    current_player.benny_counter = 0
+                if current_player.wound_count < 1:
+                    current_player.wound_count = 0
+                    print("You do not have any wounds to heal.")
+            if current_player.wound_count < 1:
+                print("You do not have any wounds to heal")
             else:
-                print("You don't have any bennies left")
+                print("You do not have any bennies left.")
             # Soak and Heals - uses wild die - modified by wounds and fatigue - modified by custom modifiers
         else:
             self.roll_them_bones("custom")
