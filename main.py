@@ -361,10 +361,15 @@ if __name__ == '__main__':
                             current_player.fat_count = 0
                             current_player.incap = False
                             print("* " + "You feel rested.")
-                        else:
-                            pass
                 else:
                     current_player.fat_count += 1
+
+            elif dice_roll == "rest":
+                if current_player.fat_count > 0:
+                    current_player.fat_count = 0
+                    print ("Your feel rested.")
+                else:
+                    print("You do not need rest.")
 
             # To roll death banner
             elif dice_roll == "death":
