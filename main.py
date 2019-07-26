@@ -279,6 +279,7 @@ if __name__ == '__main__':
             # For rerolling using bennies
             # FIXME: need a way to increase bennies
             elif dice_roll == "benny":
+                print(current_player.last_roll)
                 if current_player.benny_counter == 0:
                     print("No more bennies.")
                 elif not all_dice.last_roll:
