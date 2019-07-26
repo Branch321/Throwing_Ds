@@ -17,7 +17,7 @@ class player:
     """
 
     def __init__(self,name_of_character):
-        self.last_roll = {}
+        #self.last_roll = {}
         self.benny_counter = 3
         self.traits = {}
         self.weapons_dictionary = {}
