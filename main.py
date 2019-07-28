@@ -306,7 +306,6 @@ if __name__ == '__main__':
             elif dice_roll == "wound":
                 logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
-                    current_player.wound_count = 3
                     current_player.incap = True
                 while current_player.incap:
                     input("* You are incapacitated. Hit enter to roll a vigor.")
@@ -319,6 +318,7 @@ if __name__ == '__main__':
                         current_player.dead = True
                     if all_dice.last_actual_roll >= 4:
                         current_player.incap = False
+                        current_player.wound_count = 3
                 else:
                     current_player.wound_count += 1
 
