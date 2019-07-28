@@ -178,7 +178,7 @@ def sanitize_user_input(command):
     dice_regular_expression = re.compile(r"([1-9]|[1-9][0-9])d([2-9]|[1-9][0-9])")
     modifier_regular_expression = re.compile(r"[+-]\d{1,3}")
     possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
-                                    "fatigue", "rest", "update"]
+                                    "fatigue", "rest", "update", "benny+"]
     break_up_command = command.split(' ')
     for option in break_up_command:
         if option not in possible_options and not dice_regular_expression.fullmatch(
@@ -261,7 +261,6 @@ if __name__ == '__main__':
         else:
             logging.debug("User option did make it past sanitize_user_input()")
             print("*" * 65)
-            # TODO damage for melee weapons includes trait dice
             # For rolling initiative
             # Roll a d20 for init with no modifier and no default d6
             if dice_roll == "init":
@@ -290,7 +289,6 @@ if __name__ == '__main__':
                 all_dice.pick_your_poison("other_traits", current_player)
 
             # For rerolling using bennies
-            # FIXME: need a way to increase bennies
             elif dice_roll == "benny":
                 logging.debug("User option switched into a benny")
                 if current_player.benny_counter == 0:
@@ -307,7 +305,7 @@ if __name__ == '__main__':
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
             elif dice_roll == "wound":
                 logging.debug("User option switched into a wound.")
-                if current_player.wound_count >= 3:
+                if current_player.wound_count == 3:
                     current_player.wound_count = 3
                     current_player.incap = True
                 while current_player.incap:
@@ -321,9 +319,6 @@ if __name__ == '__main__':
                         current_player.dead = True
                     if all_dice.last_actual_roll >= 4:
                         current_player.incap = False
-                # FIXME: I don't think the if statement below needs to be here
-                if current_player.wound_count >= 3:
-                    current_player.wound_count = 3
                 else:
                     current_player.wound_count += 1
 
@@ -333,8 +328,6 @@ if __name__ == '__main__':
                 logging.debug("User option has switched into shaken.")
                 current_player.shaken = True
                 while current_player.shaken:
-                    # FIXME: could remove this main_menu() during shaken
-                    main_menu()
                     user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
                     if user_input == "benny":
                         if current_player.benny_counter == 0:
@@ -388,6 +381,9 @@ if __name__ == '__main__':
                     print ("Your feel rested.")
                 else:
                     print("You do not need rest.")
+
+            elif dice_roll == "benny+":
+                current_player.benny_counter += 1
 
             # To roll death banner
             elif dice_roll == "death":
