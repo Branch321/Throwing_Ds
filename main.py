@@ -2,13 +2,13 @@
 # Written in Python 3.6.1
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
+import logging
 import os
 import re
 import sys
 import threading
 import time
 from ftplib import FTP
-import logging
 
 import pyttsx3
 
@@ -92,21 +92,23 @@ def intro_banner_voice():
     engine.runAndWait()
     engine.stop()
 
+
 def pick_your_character():
     user_character_input = ""
     list_of_characters = os.listdir("characters/")
     list_of_characters_without_file_format = [elem[:-4] for elem in list_of_characters]
-    print("*"*65)
+    print("*" * 65)
     print("* Character List: ")
     print("* ---------------")
     for character in list_of_characters_without_file_format:
         print("* " + character)
     print("*")
-    #FIXME get rid of the line below this on release
+    # FIXME get rid of the line below this on release
     user_character_input = "Toskurr"
     while user_character_input not in list_of_characters_without_file_format:
         user_character_input = input("* Which character would you like to play? ")
     return user_character_input
+
 
 def intro_banner():
     """
@@ -191,6 +193,7 @@ def sanitize_user_input(command):
             follows_rules = False
     return follows_rules
 
+
 def update_character_sheets():
     """
     # Purpose:
@@ -210,21 +213,22 @@ def update_character_sheets():
 
 def dmg_menu():
     os.system("cls")
-    print("*"*65)
+    print("*" * 65)
     print("* Weapons List:")
     print("* ---------------")
-    list_to_choose_from = list(enumerate(current_player.weapons_dictionary.keys(),start=1))
+    list_to_choose_from = list(enumerate(current_player.weapons_dictionary.keys(), start=1))
     for weapon in list_to_choose_from:
-        print("* " + str(weapon[0]) +") "+  weapon[1])
+        print("* " + str(weapon[0]) + ") " + weapon[1])
     dmg_menu_user_input = input("* Type in number of weapon or custom roll. ")
-    dmg_menu_user_input = current_player.weapons_dictionary[list_to_choose_from[int(dmg_menu_user_input)-1][1]].replace("+"," ")
+    dmg_menu_user_input = current_player.weapons_dictionary[
+        list_to_choose_from[int(dmg_menu_user_input) - 1][1]].replace("+", " ")
     print("Is input good? " + str(sanitize_user_input(dmg_menu_user_input)) + str(dmg_menu_user_input))
     if "strength" in dmg_menu_user_input:
         dmg_menu_user_input = dmg_menu_user_input.replace("strength", current_player.traits["strength"])
         print("DEBUG::" + dmg_menu_user_input)
-    parse_down(dmg_menu_user_input,all_dice)
-    all_dice.pick_your_poison("dmg",current_player)
-
+    #FIXME: doesn't work with custom rolls yet
+    parse_down(dmg_menu_user_input, all_dice)
+    all_dice.pick_your_poison("dmg", current_player)
 
 
 # Main Start of Program
@@ -240,7 +244,7 @@ if __name__ == '__main__':
     logging.debug('player.player() initiated.')
     all_dice = dice.dice()
     logging.debug('dice.dice() initiated.')
-    #intro_banner()
+    # intro_banner()
     logging.debug('intro_banner has finished.')
     # list of all the traits and skills
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
@@ -248,12 +252,12 @@ if __name__ == '__main__':
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
-    #update_character_sheets()
+    # update_character_sheets()
     logging.debug('update_character_sheets() has finished')
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
-        logging.debug("User has picked::%s",dice_roll)
+        logging.debug("User has picked::%s", dice_roll)
         # had to add a check for options with a space in them
         if "weird science" in dice_roll:
             dice_roll = dice_roll.replace("weird science", "weird_science")
@@ -276,9 +280,9 @@ if __name__ == '__main__':
             # For rolling damage
             elif "dmg" in dice_roll:
                 logging.debug("User option switched into dmg")
-                #dice_roll = dice_roll.replace("dmg", '')
-                #parse_down(dice_roll, all_dice)
-                #all_dice.pick_your_poison("dmg", current_player)
+                # dice_roll = dice_roll.replace("dmg", '')
+                # parse_down(dice_roll, all_dice)
+                # all_dice.pick_your_poison("dmg", current_player)
                 dmg_menu()
             # For rolling traits, first elif statemnts is traits you have and second is traits you do not have
             elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
@@ -384,7 +388,7 @@ if __name__ == '__main__':
             elif dice_roll == "rest":
                 if current_player.fat_count > 0:
                     current_player.fat_count = 0
-                    print ("Your feel rested.")
+                    print("Your feel rested.")
                 else:
                     print("You do not need rest.")
 
@@ -392,6 +396,7 @@ if __name__ == '__main__':
                 current_player.benny_counter += 1
 
             # To roll death banner
+            #FIXME remove this option on release
             elif dice_roll == "death":
                 death_banner()
 
