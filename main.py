@@ -39,10 +39,10 @@ def parse_down(dice_list, all_dice):
         # condition for dice roll
         if 'd' in each_dice:
             split_dice = each_dice.split('d')
-            all_dice.dice_dictionary[split_dice[1]] = int(split_dice[0])
+            all_dice.dice_dictionary[split_dice[1]] += int(split_dice[0])
         # condition for modifier
         if '-' in each_dice or '+' in each_dice:
-            all_dice.dice_dictionary['modifier'] = int(each_dice)
+            all_dice.dice_dictionary['modifier'] += int(each_dice)
 
 
 def main_menu():
@@ -217,8 +217,13 @@ def dmg_menu():
         print("* " + str(weapon[0]) +") "+  weapon[1])
     dmg_menu_user_input = input("* Type in number of weapon or custom roll. ")
     dmg_menu_user_input = current_player.weapons_dictionary[list_to_choose_from[int(dmg_menu_user_input)-1][1]].replace("+"," ")
-    print("Is input good? " + str(sanitize_user_input(dmg_menu_user_input)))
-    #TODO: finish dmg_menu
+    print("Is input good? " + str(sanitize_user_input(dmg_menu_user_input)) + str(dmg_menu_user_input))
+    if "strength" in dmg_menu_user_input:
+        dmg_menu_user_input = dmg_menu_user_input.replace("strength", current_player.traits["strength"])
+        print("DEBUG::" + dmg_menu_user_input)
+    parse_down(dmg_menu_user_input,all_dice)
+    all_dice.pick_your_poison("dmg",current_player)
+
 
 
 # Main Start of Program
