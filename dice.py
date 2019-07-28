@@ -1,6 +1,7 @@
 # class to hold all the dice configuration
 import copy
 import random
+import logging
 
 
 class dice:
@@ -85,27 +86,33 @@ class dice:
 
         # this is the function that will choose type of rolls and apply modifiers then roll_them_bones will do actual rolling
         if type_of_roll == "init":
+            logging.debug("Choosing initiative dice roll.")
             self.dice_dictionary["20"] = 1
             self.roll_them_bones("init", False)
             # Initiative: does not explode - does not use wild die - not modified by wounds and fatigue - not modified by custom modifiers - roll 1d20
         elif type_of_roll == "benny":
+            logging.debug("User using a benny.")
             self.dice_dictionary = copy.deepcopy(self.last_roll)
             self.roll_them_bones("benny")
         elif type_of_roll == "dmg":
+            logging.debug("User choosing dmg roll or dmg menu.")
             self.roll_them_bones("dmg")
             # Damage: does explode - does not use wild die - not modified by wounds and fatigue - modified by custom modifiers
         elif type_of_roll == "traits":
+            logging.debug("User rolling a trait that they current have.")
             self.dice_dictionary["6"] += 1
             if current_player.wound_count > 0 or current_player.fat_count > 0:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
             self.roll_them_bones("traits")
             # Trait: does explode - uses a wild die - modified by wounds and fatigue - modified by custom modifiers
         elif type_of_roll =="other_traits":
+            logging.debug("User rolling a trait that they do not currently have.")
             self.dice_dictionary["6"]+=1
             if current_player.wound_count > 0 or current_player.fat_count > 0:
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)
             self.roll_them_bones("traits")
         elif type_of_roll == "soak":
+            logging.debug("User using a benny to soak a wound.")
             if current_player.wound_count > 0 and current_player.benny_counter > 0:
                 self.dice_dictionary["6"] += 1
                 self.dice_dictionary["modifier"] += -(current_player.wound_count + current_player.fat_count)

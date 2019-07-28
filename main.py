@@ -68,6 +68,7 @@ def main_menu():
     print("*" + " " * 21 + "Take a wound (Format: wound)")
     print("*" + " " * 21 + "Heal from wound (Format: heal)")
     print("*" + " " * 21 + "Rest from fatigue (Format: rest)")
+    print("*" + " " * 21 + "Roll to soak wounds (Format: soak)")
     print("*" + " " * 21 + "Exit this program (Format: exit)")
     print("*" + " " * 21 + "Update character sheet (Format: update)")
     print("*" * 65)
