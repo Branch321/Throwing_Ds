@@ -307,18 +307,18 @@ if __name__ == '__main__':
                 logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
                     current_player.incap = True
-                while current_player.incap:
-                    input("* You are incapacitated. Hit enter to roll a vigor.")
-                    dice_roll = current_player.traits['vigor']
-                    parse_down(dice_roll, all_dice)
-                    all_dice.pick_your_poison("traits", current_player)
-                    # You die if you crit fail in incapacitated
-                    if all_dice.last_roll_was_crit_fail:
-                        death_banner()
-                        current_player.dead = True
-                    if all_dice.last_actual_roll >= 4:
-                        current_player.incap = False
-                        current_player.wound_count = 3
+                    while current_player.incap:
+                        input("* You are incapacitated. Hit enter to roll a vigor.")
+                        dice_roll = current_player.traits['vigor']
+                        parse_down(dice_roll, all_dice)
+                        all_dice.pick_your_poison("traits", current_player)
+                        # You die if you crit fail in incapacitated
+                        if all_dice.last_roll_was_crit_fail:
+                            death_banner()
+                            current_player.dead = True
+                        if all_dice.last_actual_roll >= 4:
+                            current_player.incap = False
+                            current_player.wound_count = 3
                 else:
                     current_player.wound_count += 1
 
