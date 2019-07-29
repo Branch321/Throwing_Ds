@@ -212,6 +212,7 @@ def update_character_sheets():
 
 
 def dmg_menu():
+    is_valid_user_selection = False
     os.system("cls")
     print("*" * 65)
     print("* Weapons List:")
@@ -219,14 +220,16 @@ def dmg_menu():
     list_to_choose_from = list(enumerate(current_player.weapons_dictionary.keys(), start=1))
     for weapon in list_to_choose_from:
         print("* " + str(weapon[0]) + ") " + weapon[1])
-    dmg_menu_user_input = input("* Type in number of weapon or custom roll. ")
-    dmg_menu_user_input = current_player.weapons_dictionary[
-        list_to_choose_from[int(dmg_menu_user_input) - 1][1]].replace("+", " ")
-    print("Is input good? " + str(sanitize_user_input(dmg_menu_user_input)) + str(dmg_menu_user_input))
-    if "strength" in dmg_menu_user_input:
-        dmg_menu_user_input = dmg_menu_user_input.replace("strength", current_player.traits["strength"])
-        print("DEBUG::" + dmg_menu_user_input)
-    #FIXME: doesn't work with custom rolls yet
+    dmg_menu_user_input = ""
+    while not is_valid_user_selection:
+        dmg_menu_user_input = input("* Type in number of weapon or custom roll. ")
+        if dmg_menu_user_input.isnumeric() and 1<=int(dmg_menu_user_input)<=len(list_to_choose_from):
+            dmg_menu_user_input = current_player.weapons_dictionary[
+                list_to_choose_from[int(dmg_menu_user_input) - 1][1]].replace("+", " ")
+            dmg_menu_user_input = dmg_menu_user_input.replace("strength",current_player.traits["strength"])
+            is_valid_user_selection=True
+        elif sanitize_user_input(dmg_menu_user_input):
+            is_valid_user_selection=True
     parse_down(dmg_menu_user_input, all_dice)
     all_dice.pick_your_poison("dmg", current_player)
 
