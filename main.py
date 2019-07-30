@@ -227,7 +227,9 @@ def dmg_menu():
                 list_to_choose_from[int(dmg_menu_user_input) - 1][1]].replace("+", " ")
             dmg_menu_user_input = dmg_menu_user_input.replace("strength",current_player.traits["strength"])
             is_valid_user_selection=True
-        elif sanitize_user_input(dmg_menu_user_input) and dmg_menu_user_input not in menu_options+traits_ls:
+        #There may be a better way to check the boolean statement below
+        elif sanitize_user_input(dmg_menu_user_input) and (dmg_menu_user_input not in menu_options+traits_ls or "strength" in dmg_menu_user_input):
+            dmg_menu_user_input = dmg_menu_user_input.replace("strength",current_player.traits["strength"])
             is_valid_user_selection=True
     parse_down(dmg_menu_user_input, all_dice)
     all_dice.pick_your_poison("dmg", current_player)
