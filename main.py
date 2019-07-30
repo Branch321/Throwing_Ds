@@ -103,8 +103,7 @@ def pick_your_character():
     for character in list_of_characters_without_file_format:
         print("* " + character)
     print("*")
-    # FIXME get rid of the line below this on release
-    user_character_input = "Toskurr"
+    #user_character_input = "Toskurr"
     while user_character_input not in list_of_characters_without_file_format:
         user_character_input = input("* Which character would you like to play? ")
     return user_character_input
@@ -222,15 +221,16 @@ def dmg_menu():
     dmg_menu_user_input = ""
     while not is_valid_user_selection:
         dmg_menu_user_input = input("* Type in number of weapon or custom roll. ")
-        if dmg_menu_user_input.isnumeric() and 1<=int(dmg_menu_user_input)<=len(list_to_choose_from):
+        if dmg_menu_user_input.isnumeric() and 1 <= int(dmg_menu_user_input) <= len(list_to_choose_from):
             dmg_menu_user_input = current_player.weapons_dictionary[
                 list_to_choose_from[int(dmg_menu_user_input) - 1][1]].replace("+", " ")
-            dmg_menu_user_input = dmg_menu_user_input.replace("strength",current_player.traits["strength"])
-            is_valid_user_selection=True
-        #There may be a better way to check the boolean statement below
-        elif sanitize_user_input(dmg_menu_user_input) and (dmg_menu_user_input not in menu_options+traits_ls or "strength" in dmg_menu_user_input):
-            dmg_menu_user_input = dmg_menu_user_input.replace("strength",current_player.traits["strength"])
-            is_valid_user_selection=True
+            dmg_menu_user_input = dmg_menu_user_input.replace("strength", current_player.traits["strength"])
+            is_valid_user_selection = True
+        # There may be a better way to check the boolean statement below
+        elif sanitize_user_input(dmg_menu_user_input) and (
+                dmg_menu_user_input not in menu_options + traits_ls or "strength" in dmg_menu_user_input):
+            dmg_menu_user_input = dmg_menu_user_input.replace("strength", current_player.traits["strength"])
+            is_valid_user_selection = True
     parse_down(dmg_menu_user_input, all_dice)
     all_dice.pick_your_poison("dmg", current_player)
 
@@ -248,7 +248,7 @@ if __name__ == '__main__':
     logging.debug('player.player() initiated.')
     all_dice = dice.dice()
     logging.debug('dice.dice() initiated.')
-    # intro_banner()
+    intro_banner()
     logging.debug('intro_banner has finished.')
     # list of all the traits and skills
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
@@ -257,7 +257,7 @@ if __name__ == '__main__':
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
     menu_options = ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
-                                    "fatigue", "rest", "update", "benny+", "pizza"]
+                    "fatigue", "rest", "update", "benny+", "pizza"]
     # update_character_sheets()
     logging.debug('update_character_sheets() has finished')
     while True:
@@ -402,7 +402,7 @@ if __name__ == '__main__':
                 current_player.benny_counter += 1
 
             # To roll death banner
-            #FIXME remove this option on release
+            # FIXME remove this option on release
             elif dice_roll == "death":
                 death_banner()
 
