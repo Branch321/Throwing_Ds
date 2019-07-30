@@ -178,7 +178,7 @@ def sanitize_user_input(command):
     """
     follows_rules = True
     # need to change regular expressions to only allow accepted dice
-    dice_regular_expression = re.compile(r"([1-9]|[1-9][0-9])d([2-9]|[1-9][0-9])")
+    dice_regular_expression = re.compile(r"([1-9]|[1-9][0-9])d(4|6|8|10|12|20)")
     modifier_regular_expression = re.compile(r"[+-]\d{1,3}")
     possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
                                     "fatigue", "rest", "update", "benny+"]
