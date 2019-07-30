@@ -181,7 +181,7 @@ def sanitize_user_input(command):
     dice_regular_expression = re.compile(r"([1-9]|[1-9][0-9])d(4|6|8|10|12|20)")
     modifier_regular_expression = re.compile(r"[+-]\d{1,3}")
     possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
-                                    "fatigue", "rest", "update", "benny+"]
+                                    "fatigue", "rest", "update", "benny+", "pizza"]
     break_up_command = command.split(' ')
     for option in break_up_command:
         if option not in possible_options and not dice_regular_expression.fullmatch(
@@ -413,6 +413,9 @@ if __name__ == '__main__':
             elif dice_roll == "update":
                 logging.debug("User option has switched into update.")
                 os.system("player.ini")
+            elif dice_roll == "pizza":
+                logging.debug("Not hotdog!")
+                print("Not hotdog.")
             else:
                 logging.debug("User option has switched into a custom roll.")
                 parse_down(dice_roll, all_dice)
