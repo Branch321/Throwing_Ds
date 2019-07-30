@@ -180,8 +180,7 @@ def sanitize_user_input(command):
     # need to change regular expressions to only allow accepted dice
     dice_regular_expression = re.compile(r"([1-9]|[1-9][0-9])d(4|6|8|10|12|20)")
     modifier_regular_expression = re.compile(r"[+-]\d{1,3}")
-    possible_options = traits_ls + ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
-                                    "fatigue", "rest", "update", "benny+", "pizza"]
+    possible_options = traits_ls + menu_options
     break_up_command = command.split(' ')
     for option in break_up_command:
         if option not in possible_options and not dice_regular_expression.fullmatch(
@@ -228,7 +227,7 @@ def dmg_menu():
                 list_to_choose_from[int(dmg_menu_user_input) - 1][1]].replace("+", " ")
             dmg_menu_user_input = dmg_menu_user_input.replace("strength",current_player.traits["strength"])
             is_valid_user_selection=True
-        elif sanitize_user_input(dmg_menu_user_input):
+        elif sanitize_user_input(dmg_menu_user_input) and dmg_menu_user_input not in menu_options+traits_ls:
             is_valid_user_selection=True
     parse_down(dmg_menu_user_input, all_dice)
     all_dice.pick_your_poison("dmg", current_player)
@@ -255,6 +254,8 @@ if __name__ == '__main__':
                  'healing', 'intimidation', 'language', 'notice', 'occult', 'performance', 'persuasion', 'piloting',
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
+    menu_options = ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
+                                    "fatigue", "rest", "update", "benny+", "pizza"]
     # update_character_sheets()
     logging.debug('update_character_sheets() has finished')
     while True:
