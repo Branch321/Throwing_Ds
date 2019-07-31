@@ -417,9 +417,9 @@ if __name__ == '__main__':
                 current_player.time_to_quit()
                 sys.exit()
             elif dice_roll == "update":
-                #FIXME: this doesn't open for different characters only toskurr
                 #logging.debug("User option has switched into update.")
-                os.system("player.ini")
+                print("characters\\" + current_player.name_of_character +".ini")
+                os.system("characters\\" + current_player.name_of_character +".ini")
             elif dice_roll == "pizza":
                 #logging.debug("Not hotdog!")
                 print("Not hotdog.")

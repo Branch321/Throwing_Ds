@@ -23,6 +23,7 @@ class player:
         self.weapons_dictionary = {}
         self.config = configparser.ConfigParser()
         self.config.read('characters/' + name_of_character+'.ini')
+        self.name_of_character = name_of_character
         for key in self.config['traits']:
             self.traits[key] = self.config['traits'][key]
         self.wound_count = int(self.config['wounds']['wounds'])
