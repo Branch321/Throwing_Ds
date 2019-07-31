@@ -26,6 +26,9 @@ import player
 # TODO: add a full option list in main function for user_input
 # FIXME: rest causes the program to crash
 # TODO: finish logging abilities
+# FIXME: put more clear screens in
+# TODO: add an updater
+
 def parse_down(dice_list, all_dice):
     """
     # Purpose: Function that parses user input
@@ -80,7 +83,6 @@ def intro_banner_voice():
     # Pre: None
     # Post: Outputs audio
     """
-
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')  # getting details of current voice
     engine.setProperty('voice', voices[1].id)  # changing index, changes voices. 1 for female
