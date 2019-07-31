@@ -42,8 +42,8 @@ class player:
         """
         self.config.set("wounds","wounds", str(self.wound_count))
         self.config.set("fatigue","fatigue",str(self.fat_count))
-        with open("player.ini",'w') as file:
-            self.config.write(file)
+        #with open("player.ini",'w') as file:
+        #    self.config.write(file)
 
     # We will use this function if we need to make a seperate incap loop for fat and wound
     def incap_loop(self):
