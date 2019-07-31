@@ -322,6 +322,7 @@ if __name__ == '__main__':
             # For wounds and incapacitation
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
             elif dice_roll == "wound":
+                #FIXME: cannot come out of incap when someone else heals.
                 #logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
                     current_player.incap = True
@@ -416,6 +417,7 @@ if __name__ == '__main__':
                 current_player.time_to_quit()
                 sys.exit()
             elif dice_roll == "update":
+                #FIXME: this doesn't open for different characters only toskurr
                 #logging.debug("User option has switched into update.")
                 os.system("player.ini")
             elif dice_roll == "pizza":
