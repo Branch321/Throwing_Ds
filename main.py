@@ -261,7 +261,7 @@ if __name__ == '__main__':
                  'psionics', 'repair', 'research', 'riding', 'science', 'shooting',
                  'spellcasting', 'stealth', 'survival', 'taunt', 'thievery', 'weird_science']
     menu_options = ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
-                    "fatigue", "rest", "update", "benny+", "pizza"]
+                    "fatigue", "rest", "update", "benny+", "pizza", "death"]
     # update_character_sheets()
     #logging.debug('update_character_sheets() has finished')
     while True:
@@ -289,10 +289,6 @@ if __name__ == '__main__':
 
             # For rolling damage
             elif "dmg" in dice_roll:
-                #logging.debug("User option switched into dmg")
-                # dice_roll = dice_roll.replace("dmg", '')
-                # parse_down(dice_roll, all_dice)
-                # all_dice.pick_your_poison("dmg", current_player)
                 dmg_menu()
             # For rolling traits, first elif statemnts is traits you have and second is traits you do not have
             elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
@@ -310,6 +306,7 @@ if __name__ == '__main__':
 
             # For rerolling using bennies
             elif dice_roll == "benny":
+                os.system("cls")
                 #logging.debug("User option switched into a benny")
                 if current_player.benny_counter == 0:
                     print("No more bennies.")
@@ -324,18 +321,20 @@ if __name__ == '__main__':
             # For wounds and incapacitation
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
             elif dice_roll == "wound":
+                os.system("cls")
                 #logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
                     current_player.incap = True
                     while current_player.incap:
-                        user_input = input("* You are incapacitated. Hit enter to roll a vigor.")
+                        user_input = input("* You are incapacitated. Someone can heal "
+                                           "you or press enter to roll a vigor.")
                         if user_input == "":
-                            print("User hit enter")
+                            os.system("cls")
                             dice_roll = current_player.traits['vigor']
                             parse_down(dice_roll, all_dice)
                             all_dice.pick_your_poison("traits", current_player)
                         if user_input == "heal":
-                            print("Feel better?")
+                            print("* Feel better? Now say thank you.")
                             current_player.incap = False
                             current_player.wound_count = 3
                         # You die if you crit fail in incapacitated
@@ -351,6 +350,7 @@ if __name__ == '__main__':
             # For shaken status
             # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             elif dice_roll == "shaken":
+                os.system("cls")
                 #logging.debug("User option has switched into shaken.")
                 current_player.shaken = True
                 while current_player.shaken:
@@ -372,6 +372,7 @@ if __name__ == '__main__':
             # For soak rolls
             # Soak rolls will automatically remove wounds
             elif dice_roll == "soak":
+                os.system("cls")
                 #logging.debug("User option has switched into soak.")
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
@@ -379,6 +380,7 @@ if __name__ == '__main__':
 
             # For healing wounds
             elif dice_roll == "heal":
+                os.system("cls")
                 #logging.debug("User option has switched into heal.")
                 if current_player.wound_count > 0:
                     current_player.wound_count -= 1
@@ -388,6 +390,7 @@ if __name__ == '__main__':
 
             # For fatigue counting, incapacitation, and resting
             elif dice_roll == "fatigue":
+                os.system("cls")
                 #logging.debug("User option has switched into fatigue.")
                 if current_player.fat_count == 2:
                     current_player.incap = True
@@ -402,6 +405,7 @@ if __name__ == '__main__':
                     current_player.fat_count += 1
 
             elif dice_roll == "rest":
+                os.system("cls")
                 if current_player.fat_count > 0:
                     current_player.fat_count = 0
                     print("Your feel rested.")
@@ -409,11 +413,13 @@ if __name__ == '__main__':
                     print("You do not need rest.")
 
             elif dice_roll == "benny+":
+                os.system("cls")
                 current_player.benny_counter += 1
 
             # To roll death banner
             # FIXME remove this option on release
             elif dice_roll == "death":
+                os.system("cls")
                 death_banner()
 
             # To exit game
@@ -424,10 +430,12 @@ if __name__ == '__main__':
                 current_player.time_to_quit()
                 sys.exit()
             elif dice_roll == "update":
+                os.system("cls")
                 #logging.debug("User option has switched into update.")
                 print("characters\\" + current_player.name_of_character +".ini")
                 os.system("characters\\" + current_player.name_of_character +".ini")
             elif dice_roll == "pizza":
+                os.system("cls")
                 #logging.debug("Not hotdog!")
                 print("Not hotdog.")
             else:

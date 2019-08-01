@@ -1,6 +1,7 @@
 # class to hold all the dice configuration
 import copy
 import random
+import os
 import logging
 
 
@@ -34,6 +35,7 @@ class dice:
 
         crit_fail = False
         actual_rolls = []
+        os.system("cls")
 
         self.last_roll = copy.deepcopy(self.dice_dictionary)
         # if the type_of_roll is a benny then copy the last_roll back into dice_dictionary and roll with previous
