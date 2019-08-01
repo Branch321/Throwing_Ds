@@ -251,7 +251,7 @@ if __name__ == '__main__':
     #logging.debug('player.player() initiated.')
     all_dice = dice.dice()
     #logging.debug('dice.dice() initiated.')
-    intro_banner()
+    #intro_banner()
     os.system("cls")
     #logging.debug('intro_banner has finished.')
     # list of all the traits and skills
@@ -324,15 +324,20 @@ if __name__ == '__main__':
             # For wounds and incapacitation
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
             elif dice_roll == "wound":
-                #FIXME: cannot come out of incap when someone else heals.
                 #logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
                     current_player.incap = True
                     while current_player.incap:
-                        input("* You are incapacitated. Hit enter to roll a vigor.")
-                        dice_roll = current_player.traits['vigor']
-                        parse_down(dice_roll, all_dice)
-                        all_dice.pick_your_poison("traits", current_player)
+                        user_input = input("* You are incapacitated. Hit enter to roll a vigor.")
+                        if user_input == "":
+                            print("User hit enter")
+                            dice_roll = current_player.traits['vigor']
+                            parse_down(dice_roll, all_dice)
+                            all_dice.pick_your_poison("traits", current_player)
+                        if user_input == "heal":
+                            print("Feel better?")
+                            current_player.incap = False
+                            current_player.wound_count = 3
                         # You die if you crit fail in incapacitated
                         if all_dice.last_roll_was_crit_fail:
                             death_banner()
