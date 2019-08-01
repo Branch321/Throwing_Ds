@@ -15,7 +15,6 @@ import pyttsx3
 import dice
 import player
 
-
 # TODO: Add this to Discord for friends to use
 # TODO: Check for luck and great luck edges
 # TODO: Add an ascii dice in the far future
@@ -24,7 +23,6 @@ import player
 # TODO: Added a dice statistics option to print out all the statistics of the current session
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
-# FIXME: rest causes the program to crash
 # TODO: finish logging abilities
 # FIXME: put more clear screens in
 # TODO: add an updater
@@ -157,7 +155,7 @@ def death_banner():
     # Pre: None
     # Post: Will print death banner and exit program
     """
-
+    os.system("cls")
     print("\n" * 40)
     time.sleep(3)
     print("██ ╗  ██ ╗ ██████ ╗  ██ ╗  ██ ╗    ██████ ╗  ██ ╗ ███████ ╗")
@@ -204,7 +202,6 @@ def update_character_sheets():
     ftp.connect('localhost', 1026)
     ftp.login()
     list_of_files = ftp.nlst()
-
     for character in list_of_files:
         with open("characters/" + character, 'wb') as file:
             ftp.retrbinary('RETR ' + character, file.write, 1024)
@@ -236,14 +233,12 @@ def dmg_menu():
     parse_down(dmg_menu_user_input, all_dice)
     all_dice.pick_your_poison("dmg", current_player)
 
-
 # Main Start of Program
 if __name__ == '__main__':
     # sets window size of terminal
     cmd = 'mode 66,40'
     os.system(cmd)
     #logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
-
     chosen_character = pick_your_character()
     os.system("cls")
     #logging.debug('pick_your_character() has finished.')
