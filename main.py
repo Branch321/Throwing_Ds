@@ -58,7 +58,7 @@ def main_menu():
     print("*          " + "Wounds: " + str(current_player.wound_count))
     print("*          " + "Fatigue: " + str(current_player.fat_count))
     # FIXME: Need to make the "Last Roll" option look prettier
-    print("*" + " Last Roll - " + str(all_dice.last_roll))
+    print("*")
     print("*" + " Types of Commands - Roll a dice (Format: 1d10 2d20 -2)")
     print("*" + " " * 21 + "Trait roll (Format: vigor -2)")
     print("*" + " " * 21 + "Reroll with a benny (Format: benny)")
