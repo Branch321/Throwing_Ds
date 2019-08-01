@@ -6,9 +6,9 @@
 import os
 import re
 import sys
-import threading
 import time
 from ftplib import FTP
+import threading
 
 import pyttsx3
 
@@ -24,8 +24,8 @@ import player
 # FIXME: need to do a dice_roll.split() in the main program because it is the first thing we call in parse_down() and sanitize_user_input()
 # TODO: add a full option list in main function for user_input
 # TODO: finish logging abilities
-# FIXME: put more clear screens in
 # TODO: add an updater
+# FIXME: finish the session duration timer
 
 def parse_down(dice_list, all_dice):
     """
@@ -437,7 +437,6 @@ if __name__ == '__main__':
                 os.system("cls")
                 print("*" * 65)
                 #logging.debug("User option has switched into update.")
-                print("characters\\" + current_player.name_of_character +".ini")
                 os.system("characters\\" + current_player.name_of_character +".ini")
             elif dice_roll == "pizza":
                 os.system("cls")
