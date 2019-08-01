@@ -279,6 +279,7 @@ if __name__ == '__main__':
             # For rolling initiative
             # Roll a d20 for init with no modifier and no default d6
             if dice_roll == "init":
+                os.system("cls")
                 #logging.debug("User option switched into init")
                 all_dice.pick_your_poison("init", current_player)
 
@@ -302,6 +303,7 @@ if __name__ == '__main__':
             # For rerolling using bennies
             elif dice_roll == "benny":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("User option switched into a benny")
                 if current_player.benny_counter == 0:
                     print("No more bennies.")
@@ -317,6 +319,7 @@ if __name__ == '__main__':
             # If incapacitated you will stay in loop until you beat a vigor roll of 4
             elif dice_roll == "wound":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
                     current_player.incap = True
@@ -346,6 +349,7 @@ if __name__ == '__main__':
             # If shaken you will stay in loop until you beat a spirit roll of 4 or pay a benny
             elif dice_roll == "shaken":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("User option has switched into shaken.")
                 current_player.shaken = True
                 while current_player.shaken:
@@ -368,6 +372,7 @@ if __name__ == '__main__':
             # Soak rolls will automatically remove wounds
             elif dice_roll == "soak":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("User option has switched into soak.")
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
@@ -386,6 +391,7 @@ if __name__ == '__main__':
             # For fatigue counting, incapacitation, and resting
             elif dice_roll == "fatigue":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("User option has switched into fatigue.")
                 if current_player.fat_count == 2:
                     current_player.incap = True
@@ -401,6 +407,7 @@ if __name__ == '__main__':
 
             elif dice_roll == "rest":
                 os.system("cls")
+                print("*" * 65)
                 if current_player.fat_count > 0:
                     current_player.fat_count = 0
                     print("Your feel rested.")
@@ -409,12 +416,14 @@ if __name__ == '__main__':
 
             elif dice_roll == "benny+":
                 os.system("cls")
+                print("*" * 65)
                 current_player.benny_counter += 1
 
             # To roll death banner
             # FIXME remove this option on release
             elif dice_roll == "death":
                 os.system("cls")
+                print("*" * 65)
                 death_banner()
 
             # To exit game
@@ -426,11 +435,13 @@ if __name__ == '__main__':
                 sys.exit()
             elif dice_roll == "update":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("User option has switched into update.")
                 print("characters\\" + current_player.name_of_character +".ini")
                 os.system("characters\\" + current_player.name_of_character +".ini")
             elif dice_roll == "pizza":
                 os.system("cls")
+                print("*" * 65)
                 #logging.debug("Not hotdog!")
                 print("Not hotdog.")
             else:
