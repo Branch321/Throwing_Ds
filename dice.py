@@ -123,6 +123,7 @@ class dice:
                 self.roll_them_bones("soak")
                 if self.last_actual_roll >= 4:
                     current_player.wound_count -= 1
+                #FIXME FIX THIS SOON
                 if self.last_actual_roll % 4 == 0:
                     soak_roll = self.last_actual_roll / 4
                     current_player.wound_count -= soak_roll
