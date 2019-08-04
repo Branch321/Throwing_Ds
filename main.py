@@ -2,18 +2,6 @@
 # Written in Python 3.6.1
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
-# import logging
-import os
-import re
-import sys
-import time
-from ftplib import FTP
-
-import pyttsx3
-
-import dice
-import player
-# import logging
 import os
 import re
 import sys
@@ -463,11 +451,10 @@ if __name__ == '__main__':
                 # logging.debug("User option has switched into exit.")
                 # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
                 duration = datetime.datetime.now() - current_player.session_duration
-                print("* " + "You played for " + str(duration.total_seconds()//60) + " minutes.")
+                print("* " + "You played for " + str(int(duration.total_seconds()//60)) + " minutes.")
                 current_player.time_to_quit()
                 print("*"*65)
                 sys.exit()
-
             elif dice_roll == "update":
                 os.system("cls")
                 print("*" * 65)
