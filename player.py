@@ -29,7 +29,7 @@ class player:
         self.wound_count = int(self.config['wounds']['wounds'])
         self.fat_count = int(self.config['fatigue']['fatigue'])
         self.shaken = False
-        self.session_duration = datetime.time
+        self.session_duration = datetime.datetime.now()
         self.incap = False
         self.name = self.config['name']['name']
         for weapon in self.config['weapons']:

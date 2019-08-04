@@ -2,18 +2,30 @@
 # Written in Python 3.6.1
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
-#import logging
+# import logging
 import os
 import re
 import sys
 import time
 from ftplib import FTP
-import threading
 
 import pyttsx3
 
 import dice
 import player
+# import logging
+import os
+import re
+import sys
+import time
+from ftplib import FTP
+import datetime
+
+import pyttsx3
+
+import dice
+import player
+
 
 # TODO: Add this to Discord for friends to use
 # TODO: Check for luck and great luck edges
@@ -33,7 +45,6 @@ def parse_down(dice_list, all_dice):
     # Pre: dice_list is the user input and all_dice is an object of dice class
     # Post: will modify all_dice.dice_dictionary
     """
-
     dice_list_split_on_spaces = dice_list.split(' ')
     # parse and form the dictionary to return
     for each_dice in dice_list_split_on_spaces:
@@ -102,7 +113,7 @@ def pick_your_character():
     for character in list_of_characters_without_file_format:
         print("* " + character)
     print("*")
-    #user_character_input = "Toskurr"
+    # user_character_input = "Toskurr"
     while user_character_input not in list_of_characters_without_file_format:
         user_character_input = input("* Which character would you like to play? ")
     return user_character_input
@@ -116,8 +127,8 @@ def intro_banner():
     """
     # TODO: change how this works using callbacks so the prints happen with the voice
     # Below is sample code for text to voice
-    #voice_thread = threading.Thread(target=intro_banner_voice)
-    #voice_thread.start()
+    # voice_thread = threading.Thread(target=intro_banner_voice)
+    # voice_thread.start()
     time.sleep(.25)
     print("*" * 65)
     print("* ", end='')
@@ -253,22 +264,23 @@ def dmg_menu():
     parse_down(dmg_menu_user_input, all_dice)
     all_dice.pick_your_poison("dmg", current_player)
 
+
 # Main Start of Program
 if __name__ == '__main__':
     # sets window size of terminal
     cmd = 'mode 66,40'
     os.system(cmd)
-    #logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
+    # logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
     chosen_character = pick_your_character()
     os.system("cls")
-    #logging.debug('pick_your_character() has finished.')
+    # logging.debug('pick_your_character() has finished.')
     current_player = player.player(chosen_character)
-    #logging.debug('player.player() initiated.')
+    # logging.debug('player.player() initiated.')
     all_dice = dice.dice()
-    #logging.debug('dice.dice() initiated.')
-    #intro_banner()
+    # logging.debug('dice.dice() initiated.')
+    # intro_banner()
     os.system("cls")
-    #logging.debug('intro_banner has finished.')
+    # logging.debug('intro_banner has finished.')
     # list of all the traits and skills
     traits_ls = ['agility', 'smarts', 'spirit', 'strength', 'vigor', 'athletics', 'battle', 'boating',
                  'common_knowledge', 'driving', 'electronics', 'faith', 'fighting', 'focus', 'gambling', 'hacking',
@@ -278,11 +290,11 @@ if __name__ == '__main__':
     menu_options = ["benny", "exit", "wound", "shaken", "init", "dmg", "soak", "heal", "exit",
                     "fatigue", "rest", "update", "benny+", "pizza", "death"]
     # update_character_sheets()
-    #logging.debug('update_character_sheets() has finished')
+    # logging.debug('update_character_sheets() has finished')
     while True:
         main_menu()
         dice_roll = input("* Input: ").lower()
-        #logging.debug("User has picked::%s", dice_roll)
+        # logging.debug("User has picked::%s", dice_roll)
         # had to add a check for options with a space in them
         if "weird science" in dice_roll:
             dice_roll = dice_roll.replace("weird science", "weird_science")
@@ -290,17 +302,17 @@ if __name__ == '__main__':
             dice_roll = dice_roll.replace("common knowledge", "weird_science")
         # if user input is not valid ignore rest of main program
         if not sanitize_user_input(dice_roll):
-            #logging.debug("User option did not make it past sanitize_user_input()")
+            # logging.debug("User option did not make it past sanitize_user_input()")
             print("* Unrecognized Command.")
             print("*" * 65)
         else:
-            #logging.debug("User option did make it past sanitize_user_input()")
+            # logging.debug("User option did make it past sanitize_user_input()")
             print("*" * 65)
             # For rolling initiative
             # Roll a d20 for init with no modifier and no default d6
             if dice_roll == "init":
                 os.system("cls")
-                #logging.debug("User option switched into init")
+                # logging.debug("User option switched into init")
                 all_dice.pick_your_poison("init", current_player)
 
             # For rolling damage
@@ -308,13 +320,13 @@ if __name__ == '__main__':
                 dmg_menu()
             # For rolling traits, first elif statemnts is traits you have and second is traits you do not have
             elif any(elem in dice_roll.split(' ') for elem in current_player.traits.keys()):
-                #logging.debug("User option switched into a trait roll.")
+                # logging.debug("User option switched into a trait roll.")
                 selected_trait = dice_roll.split(' ')[0]
                 dice_roll = dice_roll.replace(selected_trait, current_player.traits[selected_trait])
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("traits", current_player)
             elif any(elem in dice_roll.split(' ') for elem in traits_ls):
-                #logging.debug("User option switched into a unowned trait roll.")
+                # logging.debug("User option switched into a unowned trait roll.")
                 selected_trait = dice_roll.split(' ')[0]
                 dice_roll = dice_roll.replace(selected_trait, '1d4 -2')
                 parse_down(dice_roll, all_dice)
@@ -324,7 +336,7 @@ if __name__ == '__main__':
             elif dice_roll == "benny":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("User option switched into a benny")
+                # logging.debug("User option switched into a benny")
                 if current_player.benny_counter == 0:
                     print("No more bennies.")
                 elif not all_dice.last_roll:
@@ -340,7 +352,7 @@ if __name__ == '__main__':
             elif dice_roll == "wound":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("User option switched into a wound.")
+                # logging.debug("User option switched into a wound.")
                 if current_player.wound_count == 3:
                     current_player.incap = True
                     while current_player.incap:
@@ -370,7 +382,7 @@ if __name__ == '__main__':
             elif dice_roll == "shaken":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("User option has switched into shaken.")
+                # logging.debug("User option has switched into shaken.")
                 current_player.shaken = True
                 while current_player.shaken:
                     user_input = input("* You are shaken. Hit enter to roll a spirit or use a benny:")
@@ -393,7 +405,7 @@ if __name__ == '__main__':
             elif dice_roll == "soak":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("User option has switched into soak.")
+                # logging.debug("User option has switched into soak.")
                 dice_roll = current_player.traits['vigor']
                 parse_down(dice_roll, all_dice)
                 all_dice.pick_your_poison("soak", current_player)
@@ -401,7 +413,7 @@ if __name__ == '__main__':
             # For healing wounds
             elif dice_roll == "heal":
                 os.system("cls")
-                #logging.debug("User option has switched into heal.")
+                # logging.debug("User option has switched into heal.")
                 if current_player.wound_count > 0:
                     current_player.wound_count -= 1
                     print("* " + "One of your wounds has been healed.")
@@ -412,7 +424,7 @@ if __name__ == '__main__':
             elif dice_roll == "fatigue":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("User option has switched into fatigue.")
+                # logging.debug("User option has switched into fatigue.")
                 if current_player.fat_count == 2:
                     current_player.incap = True
                     current_player.fat_count = 3
@@ -448,22 +460,25 @@ if __name__ == '__main__':
 
             # To exit game
             elif dice_roll == "exit":
-                #logging.debug("User option has switched into exit.")
+                # logging.debug("User option has switched into exit.")
                 # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
-                print("* " + "You played for ")
+                duration = datetime.datetime.now() - current_player.session_duration
+                print("* " + "You played for " + str(duration.total_seconds()//60) + " minutes.")
                 current_player.time_to_quit()
+                print("*"*65)
                 sys.exit()
+
             elif dice_roll == "update":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("User option has switched into update.")
-                os.system("characters\\" + current_player.name_of_character +".ini")
+                # logging.debug("User option has switched into update.")
+                os.system("characters\\" + current_player.name_of_character + ".ini")
             elif dice_roll == "pizza":
                 os.system("cls")
                 print("*" * 65)
-                #logging.debug("Not hotdog!")
+                # logging.debug("Not hotdog!")
                 print("Not hotdog.")
             else:
-                #logging.debug("User option has switched into a custom roll.")
+                # logging.debug("User option has switched into a custom roll.")
                 parse_down(dice_roll, all_dice)
                 all_dice.roll_them_bones("custom_roll", current_player)
