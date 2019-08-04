@@ -25,7 +25,6 @@ import player
 # TODO: add a full option list in main function for user_input
 # TODO: finish logging abilities
 # TODO: add an updater
-# FIXME: finish the session duration timer
 
 def parse_down(dice_list, all_dice):
     """
