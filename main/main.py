@@ -7,12 +7,11 @@ import os
 import re
 import sys
 import time
-from ftplib import FTP
 
 import pyttsx3
 
-import dice
 import player
+import dice
 
 
 # TODO: Add this to Discord for friends to use
@@ -138,6 +137,7 @@ def intro_banner():
     print("")
     print("*" * 65)
     print("* ", end="")
+    # FIXME: remove updating your character sheets because it is done in updater now
     print("Updating your character sheets now", end='')
     time.sleep(1)
     for letter in "....":

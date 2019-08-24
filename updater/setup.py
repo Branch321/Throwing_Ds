@@ -3,14 +3,13 @@
 
 import sys
 from cx_Freeze import setup, Executable
-#FIXME: the updater will need to different includesfiles
-includesfiles = {"include_files": ['explosion_quotes.txt',"player.ini","crit_fail_quotes.txt"]}
+includesfiles = {"include_files": ['updater_settings.ini']}
 base = None
 if sys.platform == "win32":
     base = "Console"
 
-setup(  name = "Ice Era Assistant Updater",
+setup(  name = "Ice Era Assistant",
         version = "1.0",
         options = {'build_exe': includesfiles},
-        description = "Ice Era Assistant Updater",
+        description = "Ice Era Assistant",
         executables = [Executable("updater.py", base=base)])

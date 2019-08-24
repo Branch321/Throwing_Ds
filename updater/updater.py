@@ -3,7 +3,7 @@ import os
 import configparser
 import zipfile
 from ftplib import FTP
-
+from time import sleep
 
 # TODO: In future, add an option to open up the dm tool or player tool
 
@@ -49,6 +49,7 @@ if __name__ == '__main__':
     config_file.read("updater_settings.ini")
     local_version_number = config_file['version']['version']
     print("* Your version " + local_version_number)
+    os.chdir("../main")
     if local_version_number != server_version_number:
         print("* Your version is outdated.")
         print("* Updating game files.")
@@ -58,7 +59,7 @@ if __name__ == '__main__':
         update_character_sheets()
         print("* Done!")
         config_file['version']['version'] = server_version_number
-        with open('updater_settings.ini','w') as config_file_output:
+        with open('../updater/updater_settings.ini','w') as config_file_output:
             config_file.write(config_file_output)
     else:
         print("* Luckily, you do not have to update.")
@@ -67,4 +68,10 @@ if __name__ == '__main__':
         print("* Done!")
         pass
     ftp.quit()
-    #os.system('main\')
+    print("* Loading Throwing D\'s",end='')
+    for x in range(0,3):
+        print(".", end='',flush=True)
+        sleep(1)
+    print("")
+    os.system('cls')
+    os.system("main.exe")
