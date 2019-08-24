@@ -2,18 +2,17 @@
 # Written in Python 3.6.1
 # External Libraries Needed: Text-to-Speech - pyttsx3 2.71 - https://github.com/nateshmbhat/pyttsx3
 
+import datetime
 import os
 import re
 import sys
 import time
 from ftplib import FTP
-import datetime
 
 import pyttsx3
 
 import dice
 import player
-
 
 # TODO: Add this to Discord for friends to use
 # TODO: Check for luck and great luck edges
@@ -152,6 +151,7 @@ def death_banner():
     # Pre: None
     # Post: Will print death banner and exit program
     """
+    #TODO: remove the character sheet permanent
     os.system("cls")
     print("*" * 65)
     print("\n" * 2)
@@ -265,7 +265,7 @@ if __name__ == '__main__':
     # logging.debug('player.player() initiated.')
     all_dice = dice.dice()
     # logging.debug('dice.dice() initiated.')
-    # intro_banner()
+    intro_banner()
     os.system("cls")
     # logging.debug('intro_banner has finished.')
     # list of all the traits and skills
@@ -450,9 +450,9 @@ if __name__ == '__main__':
                 # logging.debug("User option has switched into exit.")
                 # TODO: Need to write settings and stuff back out to .ini file. prototype function in player class
                 duration = datetime.datetime.now() - current_player.session_duration
-                print("* " + "You played for " + str(int(duration.total_seconds()//60)) + " minutes.")
+                print("* " + "You played for " + str(int(duration.total_seconds() // 60)) + " minutes.")
                 current_player.time_to_quit()
-                print("*"*65)
+                print("*" * 65)
                 sys.exit()
             elif dice_roll == "update":
                 os.system("cls")
